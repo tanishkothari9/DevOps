@@ -1,0 +1,20 @@
+$ gh run view -R tanishkothari9/DevOps --log --job 112945080536 | cut -f3 | sed -E 's/^[0-9T:.Z-]+ //; s/\^\[\[[0-9;]*m//g; s/\x1b\[[0-9;]*m//g' | grep -E 'Creating cluster|Ready after|STATUS: deployed|successfully rolled out|Phase:|\{"status"|service"|ghcr.io/tanishkothari9|^pod/|^deployment.apps/|^persistentvolumeclaim/|^horizontalpodautoscaler' | grep -vE 'set |_IMAGE:' | cut -c1-180 | head -40
+Creating cluster "stockpilot-ci" ...
+ • Ready after 18s 💚
+STATUS: deployed
+deployment "stockpilot-backend" successfully rolled out
+deployment "stockpilot-frontend" successfully rolled out
+pod/stockpilot-backend-fd9d6b858-bc6bq    1/1     Running   0          34s
+pod/stockpilot-backend-fd9d6b858-rp9pb    1/1     Running   0          34s
+pod/stockpilot-frontend-dc9fc8577-6kg9x   1/1     Running   0          34s
+pod/stockpilot-frontend-dc9fc8577-cw6g2   1/1     Running   0          34s
+pod/stockpilot-postgres-0                 1/1     Running   0          34s
+deployment.apps/stockpilot-backend    2/2     2            2           35s
+deployment.apps/stockpilot-frontend   2/2     2            2           35s
+horizontalpodautoscaler.autoscaling/stockpilot-backend   Deployment/stockpilot-backend   cpu: <unknown>/60%   2         5         2          35s
+persistentvolumeclaim/stockpilot-postgres-data   Bound    pvc-f6c34015-9089-438e-aedb-9c0430f6ee0f   1Gi        RWO            standard       <unset>                 35s
+STATUS: deployed
+Phase:          Succeeded
+{"status":"READY"}
+{"service":"StockPilot API","version":"1.0.0","environment":"ci-kind"}
+{"status":"UP"}{"status":"READY"}{"sku":"CI-0001","name":"Pipeline smoke item","category":"General","location":"Unassigned","quantity":3,"reorder_level":5,"unit_price":0.0,"id":1,"

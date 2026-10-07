@@ -1,0 +1,15 @@
+$ gh run view -R tanishkothari9/DevOps --log --job 112944610323 | cut -f3 | sed -E 's/^[0-9T:.Z-]+ //' | grep -E 'Loaded image|digest:|== ghcr|Name:|Digest:|\{"name"|Login Succeeded' | head -20
+- images (ID: 11502901044, Size: 94935303, Expected Digest: sha256:804107e47542dd1a231de8774407ba06b351a92d39bec6b6ef4e840ded6063e7)
+Login Succeeded!
+Loaded image: ghcr.io/tanishkothari9/stockpilot-backend:68adae859364a8653de35a9ab25473ae19baf14c
+Loaded image: ghcr.io/tanishkothari9/stockpilot-frontend:68adae859364a8653de35a9ab25473ae19baf14c
+68adae859364a8653de35a9ab25473ae19baf14c: digest: sha256:0e7baa2fd0cac0c1f70451f9cea9bbd65b35fd0fec22ab9eb8dbbc2f0b3eeb9c size: 2408
+68adae859364a8653de35a9ab25473ae19baf14c: digest: sha256:f53af7b8c43234681911b3123e60caaf1038fb97489032bc62224a797e5eba61 size: 2613
+== ghcr.io/tanishkothari9/stockpilot-backend:68adae859364a8653de35a9ab25473ae19baf14c
+Name:      ghcr.io/tanishkothari9/stockpilot-backend:68adae859364a8653de35a9ab25473ae19baf14c
+Digest:    sha256:0e7baa2fd0cac0c1f70451f9cea9bbd65b35fd0fec22ab9eb8dbbc2f0b3eeb9c
+{"name":"tanishkothari9/stockpilot-backend","tags":1,"latest_tags":["68adae859364a8653de35a9ab25473ae19baf14c"]}
+== ghcr.io/tanishkothari9/stockpilot-frontend:68adae859364a8653de35a9ab25473ae19baf14c
+Name:      ghcr.io/tanishkothari9/stockpilot-frontend:68adae859364a8653de35a9ab25473ae19baf14c
+Digest:    sha256:f53af7b8c43234681911b3123e60caaf1038fb97489032bc62224a797e5eba61
+{"name":"tanishkothari9/stockpilot-frontend","tags":1,"latest_tags":["68adae859364a8653de35a9ab25473ae19baf14c"]}

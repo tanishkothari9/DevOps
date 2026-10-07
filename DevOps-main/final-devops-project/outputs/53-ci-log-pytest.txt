@@ -1,0 +1,21 @@
+$ gh run view -R tanishkothari9/DevOps --log --job 112943750050 | cut -f3 | sed -E 's/^[0-9T:.Z-]+ //; s/\^\[\[[0-9;]*m//g; s/\x1b\[[0-9;]*m//g' | grep -E 'PASSED|passed in|TOTAL|^# (tests|pass|fail) [0-9]|built in|chart\(s\) linted' | head -30
+tests/test_api.py::test_health_is_up PASSED                              [  7%]
+tests/test_api.py::test_ready_checks_database PASSED                     [ 15%]
+tests/test_api.py::test_info_reports_environment PASSED                  [ 23%]
+tests/test_api.py::test_create_and_get_item PASSED                       [ 30%]
+tests/test_api.py::test_duplicate_sku_is_rejected PASSED                 [ 38%]
+tests/test_api.py::test_invalid_payload_is_rejected PASSED               [ 46%]
+tests/test_api.py::test_list_items_with_filters PASSED                   [ 53%]
+tests/test_api.py::test_update_item PASSED                               [ 61%]
+tests/test_api.py::test_adjust_stock_records_movement PASSED             [ 69%]
+tests/test_api.py::test_adjust_stock_cannot_go_negative PASSED           [ 76%]
+tests/test_api.py::test_stats PASSED                                     [ 84%]
+tests/test_api.py::test_delete_item PASSED                               [ 92%]
+tests/test_api.py::test_metrics_endpoint_exposes_prometheus_format PASSED [100%]
+TOTAL               208      7    97%
+============================== 13 passed in 0.39s ==============================
+# tests 3
+# pass 3
+# fail 0
+✓ built in 123ms
+1 chart(s) linted, 0 chart(s) failed

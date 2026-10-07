@@ -1,0 +1,5 @@
+$ gh run view -R tanishkothari9/DevOps --log --job 112944563898 | cut -f3 | sed -E 's/^[0-9T:.Z-]+ //; s/\^\[\[[0-9;]*m//g; s/\x1b\[[0-9;]*m//g' | grep -E '^reports/|^Security gate passed|Download artifact has finished|Artifact image-scan-reports' | head -20
+Download artifact has finished successfully
+reports/trivy-backend.json: 0 fixable HIGH/CRITICAL vulnerabilities
+reports/trivy-frontend.json: 0 fixable HIGH/CRITICAL vulnerabilities
+Security gate passed

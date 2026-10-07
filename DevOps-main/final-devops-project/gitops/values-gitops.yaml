@@ -1,0 +1,36 @@
+# Desired state of the GitOps environment (namespace taskboard-gitops), reconciled by Argo CD.
+# Promote a new build by changing the image tags below to a commit SHA that CI pushed to GHCR.
+app:
+  env: gitops-argocd
+
+global:
+  imageRegistry: ghcr.io/tanishkothari9
+
+backend:
+  image:
+    repository: stockpilot-backend
+    tag: "68adae859364a8653de35a9ab25473ae19baf14c"
+  replicaCount: 1
+
+frontend:
+  image:
+    repository: stockpilot-frontend
+    tag: "68adae859364a8653de35a9ab25473ae19baf14c"
+  replicaCount: 1
+
+postgres:
+  resources:
+    requests: {cpu: 25m, memory: 96Mi}
+    limits: {cpu: 300m, memory: 256Mi}
+
+hpa:
+  enabled: false
+
+ingress:
+  enabled: true
+  host: stockpilot-gitops.local
+
+monitoring:
+  serviceMonitor: {enabled: true}
+  prometheusRule: {enabled: false}
+  grafanaDashboard: {enabled: false}

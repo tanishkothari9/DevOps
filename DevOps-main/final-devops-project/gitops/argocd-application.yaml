@@ -1,0 +1,36 @@
+# Argo CD Application: watches the Helm chart + gitops values in Git and keeps the
+# taskboard-gitops namespace in sync (auto-sync, prune, self-heal).
+# In the standalone repository change repoURL and drop the "DevOps-main/final-devops-project/" prefix from path.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: stockpilot-gitops
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: stockpilot
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/tanishkothari9/DevOps.git
+    targetRevision: main
+    path: DevOps-main/final-devops-project/helm/stockpilot
+    helm:
+      releaseName: stockpilot
+      valueFiles:
+        - ../../gitops/values-gitops.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: taskboard-gitops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff: {duration: 10s, factor: 2, maxDuration: 3m}
+  revisionHistoryLimit: 5

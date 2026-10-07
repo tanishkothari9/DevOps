@@ -1,0 +1,54 @@
+# Final troubleshooting challenge: the healthy base (../../kubernetes) with FIVE injected faults.
+#   kubectl create namespace taskboard-troubleshoot
+#   kubectl apply -k troubleshooting/broken
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: taskboard-troubleshoot
+resources:
+  - ../../kubernetes
+  - rotated-secret.yaml
+images:
+  - name: stockpilot-backend
+    newTag: local
+  - name: stockpilot-frontend
+    newTag: lcoal                      # FAULT 1: typo in the image tag -> ErrImagePull / ImagePullBackOff
+patches:
+  # FAULT 2: backend reads a "rotated" secret whose password Postgres never got -> CrashLoopBackOff
+  # FAULT 3: readiness probe points at a path the API does not serve -> Running but never Ready
+  - target: {kind: Deployment, name: stockpilot-backend}
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/envFrom/1/secretRef/name
+        value: stockpilot-db-rotated
+      - op: replace
+        path: /spec/template/spec/containers/0/readinessProbe/httpGet/path
+        value: /readyz
+  # FAULT 4: Service selector typo -> Service has no endpoints -> 502/503 on /api
+  - target: {kind: Service, name: stockpilot-backend}
+    patch: |-
+      - op: replace
+        path: /spec/selector/app
+        value: stockpilot-backnd
+  # FAULT 5: impossible memory request on Postgres -> Pending (Insufficient memory)
+  - target: {kind: StatefulSet, name: stockpilot-postgres}
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value: {requests: {cpu: 50m, memory: 64Gi}, limits: {memory: 64Gi}}
+  # lab sizing (not a fault): one replica each, no HPA, separate ingress host
+  - target: {kind: Deployment}
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target: {kind: HorizontalPodAutoscaler}
+    patch: |-
+      $patch: delete
+      apiVersion: autoscaling/v2
+      kind: HorizontalPodAutoscaler
+      metadata: {name: stockpilot-backend}
+  - target: {kind: Ingress, name: stockpilot}
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: stockpilot-troubleshoot.local
