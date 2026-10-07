@@ -1,0 +1,25 @@
+$ diff troubleshooting/selector-mismatch.yaml troubleshooting/selector-fixed.yaml; kubectl apply -f troubleshooting/selector-fixed.yaml -n s10-troubleshoot && kubectl rollout status deployment/selector-error-demo -n s10-troubleshoot --timeout=600s && kubectl get deploy selector-error-demo -n s10-troubleshoot -o wide
+2,3c2,3
+< # INTENTIONALLY BROKEN MANIFEST FOR IMMUTABLE SELECTOR DRILL
+< # Demonstrates API server validation error when selector labels do not match pod template labels
+---
+> # FIXED VERSION OF selector-mismatch.yaml
+> # selector.matchLabels and template.metadata.labels now agree, so the API server accepts it
+18,19c18,19
+<         # BUG: Label does not match selector.matchLabels above!
+<         app: wrong-app-name
+---
+>         # FIXED: template label now matches selector.matchLabels
+>         app: correct-app-name
+23c23
+<           image: nginx:alpine
+---
+>           image: nginx:1.25-alpine
+deployment.apps/selector-error-demo created
+Waiting for deployment spec update to be observed...
+Waiting for deployment spec update to be observed...
+Waiting for deployment "selector-error-demo" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "selector-error-demo" rollout to finish: 0 of 1 updated replicas are available...
+deployment "selector-error-demo" successfully rolled out
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+selector-error-demo   1/1     1            1           62s   nginx        nginx:1.25-alpine   app=correct-app-name

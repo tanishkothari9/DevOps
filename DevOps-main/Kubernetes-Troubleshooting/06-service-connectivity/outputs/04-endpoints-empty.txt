@@ -1,0 +1,6 @@
+$ kubectl get endpointslices -n s14-svc -l kubernetes.io/service-name=web-service; kubectl describe svc web-service -n s14-svc | grep -E "Selector|TargetPort|Endpoints"
+NAME                ADDRESSTYPE   PORTS     ENDPOINTS   AGE
+web-service-m4nqv   IPv4          <unset>   <unset>     19m
+Selector:                 app=web-ahsgdf
+TargetPort:               80/TCP
+Endpoints:                

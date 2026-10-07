@@ -1,0 +1,4 @@
+$ kubectl delete pod image-demo -n s14-image && kubectl apply -n s14-image -f fixed-pod.yaml && kubectl set image pod/image-repo-demo web-app=nginx:1.27 -n s14-image
+pod "image-demo" deleted from s14-image namespace
+pod/image-demo created
+pod/image-repo-demo image updated

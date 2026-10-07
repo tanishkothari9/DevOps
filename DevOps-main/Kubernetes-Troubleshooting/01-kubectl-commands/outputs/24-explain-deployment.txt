@@ -1,0 +1,55 @@
+$ kubectl explain deployment.spec.strategy; echo; kubectl explain service.spec --recursive | head -25
+GROUP:      apps
+KIND:       Deployment
+VERSION:    v1
+
+FIELD: strategy <DeploymentStrategy>
+
+
+DESCRIPTION:
+    The deployment strategy to use to replace existing pods with new ones.
+    DeploymentStrategy describes how to replace existing pods with new ones.
+    
+FIELDS:
+  rollingUpdate	<RollingUpdateDeployment>
+    Rolling update config params. Present only if DeploymentStrategyType =
+    RollingUpdate.
+
+  type	<string>
+  enum: Recreate, RollingUpdate
+    Type of deployment. Can be "Recreate" or "RollingUpdate". Default is
+    RollingUpdate.
+    
+    Possible enum values:
+     - `"Recreate"` Kill all existing pods before creating new ones.
+     - `"RollingUpdate"` Replace the old ReplicaSets by new one using rolling
+    update i.e gradually scale down the old ReplicaSets and scale up the new
+    one.
+
+
+
+KIND:       Service
+VERSION:    v1
+
+FIELD: spec <ServiceSpec>
+
+
+DESCRIPTION:
+    Spec defines the behavior of a service.
+    https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+    ServiceSpec describes the attributes that a user creates on a service.
+    
+FIELDS:
+  allocateLoadBalancerNodePorts	<boolean>
+  clusterIP	<string>
+  clusterIPs	<[]string>
+  externalIPs	<[]string>
+  externalName	<string>
+  externalTrafficPolicy	<string>
+  enum: Cluster, Local
+  healthCheckNodePort	<integer>
+  internalTrafficPolicy	<string>
+  enum: Cluster, Local
+  ipFamilies	<[]string>
+  ipFamilyPolicy	<string>
+  enum: PreferDualStack, RequireDualStack, SingleStack

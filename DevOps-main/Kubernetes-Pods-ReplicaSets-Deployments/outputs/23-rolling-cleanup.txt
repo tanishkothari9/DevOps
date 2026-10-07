@@ -1,0 +1,2 @@
+$ kubectl delete namespace s10-rolling --wait=false
+namespace "s10-rolling" deleted

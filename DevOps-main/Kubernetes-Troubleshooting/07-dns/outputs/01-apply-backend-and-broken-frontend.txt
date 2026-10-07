@@ -1,0 +1,7 @@
+$ kubectl apply -f backend.yaml -f broken-frontend.yaml -f dns-test-pod.yaml
+namespace/s14-dns-backend created
+deployment.apps/orders-api created
+service/orders-api created
+namespace/s14-dns created
+pod/frontend created
+pod/dns-test created

@@ -1,0 +1,22 @@
+$ kubectl get pod lifecycle-readiness -n s10-lifecycle; kubectl describe pod lifecycle-readiness -n s10-lifecycle | sed -n '/^    Readiness:/p;/^    State:/,/Restart Count:/p;/^Conditions:/,/^Volumes:/p;/^Events:/,$p'
+Unable to connect to the server: net/http: TLS handshake timeout
+    State:          Running
+      Started:      Thu, 08 Oct 2026 00:15:42 +0530
+    Ready:          True
+    Restart Count:  0
+    Readiness:      http-get http://:80/ delay=5s timeout=1s period=5s successThreshold=1 failureThreshold=3
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  7m27s  default-scheduler  Successfully assigned s10-lifecycle/lifecycle-readiness to minikube
+  Normal  Pulled     5m36s  kubelet            spec.containers{nginx}: Container image "nginx:1.27" already present on machine and can be accessed by the pod
+  Normal  Created    5m35s  kubelet            spec.containers{nginx}: Container created
+  Normal  Started    5m33s  kubelet            spec.containers{nginx}: Container started

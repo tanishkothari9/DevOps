@@ -1,0 +1,6 @@
+$ helm list -n s15-helm; echo; helm list -A | grep -E "NAME|s15"
+NAME 	NAMESPACE	REVISION	UPDATED                            	STATUS  	CHART      	APP VERSION
+myapp	s15-helm 	1       	2026-10-08 00:28:39.37562 +0530 IST	deployed	myapp-0.1.0	1.16.0     
+
+NAME      	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART                       	APP VERSION
+myapp     	s15-helm  	1       	2026-10-08 00:28:39.37562 +0530 IST 	deployed	myapp-0.1.0                 	1.16.0     

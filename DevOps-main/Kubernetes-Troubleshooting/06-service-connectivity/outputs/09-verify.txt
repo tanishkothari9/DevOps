@@ -1,0 +1,6 @@
+$ kubectl exec client -n s14-svc -- curl -s -m 5 http://web-service | head -4; kubectl exec client -n s14-svc -- curl -s -m 5 -o /dev/null -w "HTTP %{http_code} from web-service.s14-svc.svc.cluster.local\n" http://web-service.s14-svc.svc.cluster.local
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+HTTP 200 from web-service.s14-svc.svc.cluster.local

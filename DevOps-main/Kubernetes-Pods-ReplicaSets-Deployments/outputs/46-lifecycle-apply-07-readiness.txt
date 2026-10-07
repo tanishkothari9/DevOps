@@ -1,0 +1,11 @@
+$ kubectl apply -f pod-lifecycle/07-readiness.yaml -n s10-lifecycle && date +%T && kubectl get pods -n s10-lifecycle
+pod/lifecycle-readiness created
+00:13:48
+NAME                    READY   STATUS    RESTARTS   AGE
+lifecycle-crashloop     0/1     Pending   0          7s
+lifecycle-failed        0/1     Pending   0          10s
+lifecycle-image-error   0/1     Pending   0          4s
+lifecycle-pending       0/1     Pending   0          22s
+lifecycle-readiness     0/1     Pending   0          1s
+lifecycle-running       0/1     Pending   0          27s
+lifecycle-succeeded     0/1     Pending   0          17s

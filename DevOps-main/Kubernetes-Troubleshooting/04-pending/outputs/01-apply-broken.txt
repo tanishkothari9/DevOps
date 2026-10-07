@@ -1,0 +1,4 @@
+$ kubectl create namespace s14-pending && kubectl apply -n s14-pending -f broken-pod.yaml -f broken-pod-resources.yaml
+namespace/s14-pending created
+pod/pending-demo created
+pod/pending-resources-demo created

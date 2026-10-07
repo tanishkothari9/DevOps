@@ -1,0 +1,6 @@
+$ kubectl get pods -n s14-svc -l app=web --show-labels; echo; kubectl get pods -n s14-svc -l app=web-ahsgdf
+NAME                   READY   STATUS    RESTARTS   AGE   LABELS
+web-557577df75-6xnmt   1/1     Running   0          19m   app=web,pod-template-hash=557577df75
+web-557577df75-sp596   1/1     Running   0          19m   app=web,pod-template-hash=557577df75
+
+No resources found in s14-svc namespace.

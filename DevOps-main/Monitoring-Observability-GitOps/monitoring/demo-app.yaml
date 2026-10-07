@@ -38,12 +38,15 @@ spec:
               port: 9898
             initialDelaySeconds: 3
             periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /readyz
               port: 9898
             initialDelaySeconds: 2
             periodSeconds: 5
+            timeoutSeconds: 5
           resources:
             requests:
               cpu: 10m

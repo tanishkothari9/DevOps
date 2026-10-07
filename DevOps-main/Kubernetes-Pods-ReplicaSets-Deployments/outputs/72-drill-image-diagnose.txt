@@ -1,0 +1,13 @@
+$ POD=$(kubectl get pods -n s10-troubleshoot -l version=broken-v3 -o jsonpath='{.items[0].metadata.name}'); kubectl describe pod $POD -n s10-troubleshoot | sed -n '/^    Image:/p;/^    State:/,/Reason:/p;/^Events:/,$p'
+    Image:          yatri-backend:non-existent-tag-v999
+    State:          Waiting
+      Reason:       ErrImagePull
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  94s                default-scheduler  Successfully assigned s10-troubleshoot/yatri-backend-77dbb657cd-8xhlz to minikube
+  Normal   Pulling    55s (x2 over 81s)  kubelet            spec.containers{backend}: Pulling image "yatri-backend:non-existent-tag-v999"
+  Warning  Failed     52s (x2 over 78s)  kubelet            spec.containers{backend}: Failed to pull image "yatri-backend:non-existent-tag-v999": failed to pull and unpack image "docker.io/library/yatri-backend:non-existent-tag-v999": failed to resolve reference "docker.io/library/yatri-backend:non-existent-tag-v999": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+  Warning  Failed     52s (x2 over 78s)  kubelet            spec.containers{backend}: Error: ErrImagePull
+  Normal   BackOff    39s (x2 over 77s)  kubelet            spec.containers{backend}: Back-off pulling image "yatri-backend:non-existent-tag-v999"
+  Warning  Failed     39s (x2 over 77s)  kubelet            spec.containers{backend}: Error: ImagePullBackOff

@@ -1,0 +1,4 @@
+$ kubectl create namespace s14-mini && kubectl apply -n s14-mini -f deployment.yaml && kubectl apply -n s14-mini -f service.yaml
+namespace/s14-mini created
+deployment.apps/troubleshooting-app created
+service/troubleshooting-service created

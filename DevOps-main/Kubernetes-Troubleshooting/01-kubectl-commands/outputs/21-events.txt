@@ -1,0 +1,16 @@
+$ kubectl events -n s14-commands | tail -15
+20m         Normal    Created             Pod/web-7f98c7b879-hh5wj    Container created
+20m         Normal    Created             Pod/get-demo                Container created
+20m         Normal    Pulled              Pod/get-demo                Container image "nginx:1.27" already present on machine and can be accessed by the pod
+20m         Normal    Created             Pod/web-7f98c7b879-gz4x2    Container created
+20m         Normal    Created             Pod/logs-demo               Container created
+20m         Normal    Started             Pod/web-7f98c7b879-gz4x2    Container started
+20m         Normal    Started             Pod/get-demo                Container started
+20m         Normal    Pulled              Pod/logs-demo               Container image "busybox:1.36" already present on machine and can be accessed by the pod
+20m         Normal    Pulled              Pod/web-7f98c7b879-hh5wj    Container image "nginx:1.27" already present on machine and can be accessed by the pod
+20m         Normal    Pulled              Pod/web-7f98c7b879-gz4x2    Container image "nginx:1.27" already present on machine and can be accessed by the pod
+20m         Normal    Started             Pod/web-7f98c7b879-hh5wj    Container started
+11m         Warning   NodeNotReady        Pod/logs-demo               Node is not ready
+11m         Warning   NodeNotReady        Pod/web-7f98c7b879-gz4x2    Node is not ready
+10m         Warning   NodeNotReady        Pod/web-7f98c7b879-hh5wj    Node is not ready
+10m         Warning   NodeNotReady        Pod/get-demo                Node is not ready

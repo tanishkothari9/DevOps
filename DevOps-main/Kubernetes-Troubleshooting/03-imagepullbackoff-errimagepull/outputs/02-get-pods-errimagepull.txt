@@ -1,0 +1,4 @@
+$ kubectl get pods -n s14-image
+NAME              READY   STATUS              RESTARTS   AGE
+image-demo        0/1     ErrImagePull        0          2m43s
+image-repo-demo   0/1     ContainerCreating   0          2m42s

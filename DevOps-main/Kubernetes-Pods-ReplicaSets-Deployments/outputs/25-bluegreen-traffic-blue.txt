@@ -1,0 +1,10 @@
+$ kubectl get svc myapp-service -n s10-bluegreen -o jsonpath='selector: {.spec.selector}{"\n"}'; kubectl get endpointslices -l kubernetes.io/service-name=myapp-service -n s10-bluegreen; kubectl exec curl-client -n s10-bluegreen -- sh -c "for i in 1 2 3 4 5 6; do curl -s -m 5 http://myapp-service; done"
+selector: {"app":"myapp","slot":"blue"}
+NAME                  ADDRESSTYPE   PORTS   ENDPOINTS                                AGE
+myapp-service-k8cqt   IPv4          80      10.244.0.206,10.244.0.207,10.244.0.208   5m47s
+BLUE ENVIRONMENT | version: v1 | pod: app-blue-5966dff86d-s2pls
+BLUE ENVIRONMENT | version: v1 | pod: app-blue-5966dff86d-jlnqs
+BLUE ENVIRONMENT | version: v1 | pod: app-blue-5966dff86d-s2pls
+BLUE ENVIRONMENT | version: v1 | pod: app-blue-5966dff86d-t5lx8
+BLUE ENVIRONMENT | version: v1 | pod: app-blue-5966dff86d-s2pls
+BLUE ENVIRONMENT | version: v1 | pod: app-blue-5966dff86d-s2pls

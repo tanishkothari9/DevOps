@@ -1,0 +1,5 @@
+$ kubectl exec api-server -n s14-net -- netstat -tln; kubectl get pod api-server -n s14-net -o jsonpath="{.spec.containers[0].command}"; echo
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       
+tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      
+["python3","-m","http.server","8080","--bind","127.0.0.1"]

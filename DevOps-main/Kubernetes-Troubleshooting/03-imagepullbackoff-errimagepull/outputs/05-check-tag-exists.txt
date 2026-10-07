@@ -1,0 +1,3 @@
+$ minikube ssh "sudo crictl pull nginx:1.27" 2>&1 | tail -1; minikube ssh "sudo crictl pull nginx:this-image-does-not-exist" 2>&1 | grep -o "not found" | head -1
+Image is up to date for sha256:7791402a0bf5691936db0f42d40032ac6fb8441867416053f3ea06199de3e7e4
+not found

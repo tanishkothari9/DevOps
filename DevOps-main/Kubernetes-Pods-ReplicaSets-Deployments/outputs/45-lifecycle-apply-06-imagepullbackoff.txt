@@ -1,0 +1,10 @@
+$ kubectl apply -f pod-lifecycle/06-imagepullbackoff.yaml -n s10-lifecycle && date +%T && kubectl get pods -n s10-lifecycle
+pod/lifecycle-image-error created
+00:13:44
+NAME                    READY   STATUS    RESTARTS   AGE
+lifecycle-crashloop     0/1     Pending   0          4s
+lifecycle-failed        0/1     Pending   0          7s
+lifecycle-image-error   0/1     Pending   0          1s
+lifecycle-pending       0/1     Pending   0          19s
+lifecycle-running       0/1     Pending   0          24s
+lifecycle-succeeded     0/1     Pending   0          14s

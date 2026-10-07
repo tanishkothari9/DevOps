@@ -1,0 +1,7 @@
+$ kubectl apply -f pod-lifecycle/03-succeeded.yaml -n s10-lifecycle && date +%T && kubectl get pods -n s10-lifecycle
+pod/lifecycle-succeeded created
+00:13:32
+NAME                  READY   STATUS    RESTARTS   AGE
+lifecycle-pending     0/1     Pending   0          6s
+lifecycle-running     0/1     Pending   0          11s
+lifecycle-succeeded   0/1     Pending   0          1s

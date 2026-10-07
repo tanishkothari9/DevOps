@@ -1,0 +1,12 @@
+$ kubectl get pod lifecycle-multi-container -n s10-lifecycle; kubectl get pod lifecycle-multi-container -n s10-lifecycle -o jsonpath='{range .status.containerStatuses[*]}{.name}{" ready="}{.ready}{" "}{.state}{"\n"}{end}'; echo '--- logs -c sidecar:'; kubectl logs lifecycle-multi-container -c sidecar -n s10-lifecycle --tail=3; echo '--- logs -c app:'; kubectl logs lifecycle-multi-container -c app -n s10-lifecycle --tail=2
+NAME                        READY   STATUS    RESTARTS   AGE
+lifecycle-multi-container   2/2     Running   0          10m
+app ready=true {"running":{"startedAt":"2026-10-07T18:45:47Z"}}
+sidecar ready=true {"running":{"startedAt":"2026-10-07T18:45:52Z"}}
+--- logs -c sidecar:
+Sidecar is running
+Sidecar is running
+Sidecar is running
+--- logs -c app:
+2026/10/07 18:45:47 [notice] 1#1: start worker process 36
+2026/10/07 18:45:47 [notice] 1#1: start worker process 37

@@ -1,0 +1,5 @@
+$ kubectl get pod lifecycle-termination -n s10-lifecycle; kubectl get pod lifecycle-termination -n s10-lifecycle -o jsonpath='terminationGracePeriodSeconds={.spec.terminationGracePeriodSeconds}{"\n"}'; kubectl logs lifecycle-termination -n s10-lifecycle
+NAME                    READY   STATUS    RESTARTS   AGE
+lifecycle-termination   1/1     Running   0          6m9s
+terminationGracePeriodSeconds=20
+Application running

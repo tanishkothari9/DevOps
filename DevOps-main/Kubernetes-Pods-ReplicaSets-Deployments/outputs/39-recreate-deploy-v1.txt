@@ -1,0 +1,24 @@
+$ kubectl apply -f 04-recreate/deployment-v1.yaml -f 04-recreate/service.yaml -f curl-client.yaml -n s10-recreate && kubectl rollout status deployment/app-recreate -n s10-recreate --timeout=900s && kubectl wait --for=condition=Ready pod/curl-client -n s10-recreate --timeout=600s >/dev/null && kubectl get deploy,rs,svc -n s10-recreate && kubectl get pods -n s10-recreate -l app=app-recreate -L version && kubectl exec curl-client -n s10-recreate -- sh -c 'for i in 1 2 3; do curl -s -m 5 http://app-recreate-service; done'
+deployment.apps/app-recreate created
+service/app-recreate-service created
+pod/curl-client created
+Waiting for deployment "app-recreate" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-recreate" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "app-recreate" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "app-recreate" rollout to finish: 2 of 3 updated replicas are available...
+deployment "app-recreate" successfully rolled out
+NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/app-recreate   3/3     3            3           72s
+
+NAME                                      DESIRED   CURRENT   READY   AGE
+replicaset.apps/app-recreate-5855d89fb9   3         3         3       72s
+
+NAME                           TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/app-recreate-service   NodePort   10.105.42.201   <none>        80:30566/TCP   72s
+NAME                            READY   STATUS    RESTARTS   AGE   VERSION
+app-recreate-5855d89fb9-97fd4   1/1     Running   0          72s   v1
+app-recreate-5855d89fb9-9s4t4   1/1     Running   0          72s   v1
+app-recreate-5855d89fb9-c52wj   1/1     Running   0          73s   v1
+STRATEGY: RECREATE | VERSION: v1 | pod: app-recreate-5855d89fb9-9s4t4
+STRATEGY: RECREATE | VERSION: v1 | pod: app-recreate-5855d89fb9-97fd4
+STRATEGY: RECREATE | VERSION: v1 | pod: app-recreate-5855d89fb9-c52wj

@@ -1,0 +1,5 @@
+$ kubectl delete pod crash-demo crash-env-demo -n s14-crash && kubectl apply -n s14-crash -f fixed-pod.yaml -f fixed-app-with-env.yaml
+pod "crash-demo" deleted from s14-crash namespace
+pod "crash-env-demo" deleted from s14-crash namespace
+pod/crash-demo created
+pod/crash-env-demo created

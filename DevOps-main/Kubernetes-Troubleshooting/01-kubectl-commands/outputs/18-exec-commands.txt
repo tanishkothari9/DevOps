@@ -1,0 +1,6 @@
+$ kubectl exec get-demo -n s14-commands -- nginx -v; kubectl exec get-demo -n s14-commands -- hostname; kubectl exec get-demo -n s14-commands -- cat /etc/resolv.conf
+nginx version: nginx/1.27.5
+get-demo
+search s14-commands.svc.cluster.local svc.cluster.local cluster.local
+nameserver 10.96.0.10
+options ndots:5

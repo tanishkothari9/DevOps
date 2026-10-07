@@ -140,6 +140,46 @@ helm upgrade kps prometheus-community/kube-prometheus-stack -n monitoring -f mon
 
 ![m03c-helm-upgrade-scrape-timeout](screenshots/m03c-helm-upgrade-scrape-timeout.png)
 
+### m03d-grafana-oom-fix
+
+```bash
+kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana -o custom-columns='POD:.metadata.name,RESTARTS:.status.containerStatuses[*].restartCount,LAST_TERMINATION:.status.containerStatuses[*].lastState.terminated.reason'
+```
+
+![m03d-grafana-oom-fix](screenshots/m03d-grafana-oom-fix.png)
+
+### m03e-tune-for-busy-node
+
+```bash
+helm upgrade kps prometheus-community/kube-prometheus-stack -n monitoring -f monitoring/kps-values.yaml | head -7
+```
+
+![m03e-tune-for-busy-node](screenshots/m03e-tune-for-busy-node.png)
+
+### m03f-helm-upgrade-lighter
+
+```bash
+helm upgrade kps prometheus-community/kube-prometheus-stack -n monitoring -f monitoring/kps-values.yaml --no-hooks --timeout 15m | head -7
+```
+
+![m03f-helm-upgrade-lighter](screenshots/m03f-helm-upgrade-lighter.png)
+
+### m03g-helm-upgrade-grafana-probe
+
+```bash
+helm upgrade kps prometheus-community/kube-prometheus-stack -n monitoring -f monitoring/kps-values.yaml --no-hooks --timeout 15m | grep -E "STATUS|REVISION"
+```
+
+![m03g-helm-upgrade-grafana-probe](screenshots/m03g-helm-upgrade-grafana-probe.png)
+
+### m03h-helm-upgrade-kubelet
+
+```bash
+helm upgrade kps prometheus-community/kube-prometheus-stack -n monitoring -f monitoring/kps-values.yaml --no-hooks --timeout 15m | grep -E "STATUS|REVISION"
+```
+
+![m03h-helm-upgrade-kubelet](screenshots/m03h-helm-upgrade-kubelet.png)
+
 ### m04-kps-pods
 
 ```bash

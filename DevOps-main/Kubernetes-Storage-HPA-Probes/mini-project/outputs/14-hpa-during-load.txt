@@ -1,0 +1,16 @@
+$ date +%T; kubectl get hpa -n production-webapp; kubectl get pods -n production-webapp; kubectl top pods -n production-webapp; kubectl -n kube-system get pods -l k8s-app=metrics-server; kubectl describe hpa web-app-hpa -n production-webapp | grep -A4 "^Conditions:"
+00:54:41
+NAME          REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          84m
+NAME                      READY   STATUS             RESTARTS         AGE
+load-generator            1/1     Running            0                83m
+web-app-d45775485-79ppb   0/1     Running            11 (36s ago)     84m
+web-app-d45775485-z92fs   0/1     CrashLoopBackOff   10 (4m25s ago)   84m
+error: Metrics API not available
+NAME                              READY   STATUS    RESTARTS         AGE
+metrics-server-768f9f6999-2ss5q   0/1     Running   21 (4m32s ago)   148m
+Conditions:
+  Type            Status  Reason                   Message
+  ----            ------  ------                   -------
+  AbleToScale     True    SucceededGetScale        the HPA controller was able to get the target's current scale
+  ScalingActive   False   FailedGetResourceMetric  the HPA was unable to compute the replica count: failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource metrics API: the server is currently unable to handle the request (get pods.metrics.k8s.io)

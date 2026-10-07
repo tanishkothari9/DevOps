@@ -1,0 +1,5 @@
+$ kubectl exec get-demo -n s14-commands -- curl -s localhost | head -4
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>

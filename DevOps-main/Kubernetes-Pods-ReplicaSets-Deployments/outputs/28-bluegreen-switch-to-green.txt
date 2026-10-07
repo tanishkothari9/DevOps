@@ -1,0 +1,12 @@
+$ date +%T; kubectl apply -f 02-blue-green/service-green.yaml -n s10-bluegreen && kubectl get svc myapp-service -n s10-bluegreen -o jsonpath='selector: {.spec.selector}{"\n"}'; sleep 3; kubectl get endpointslices -l kubernetes.io/service-name=myapp-service -n s10-bluegreen; kubectl exec curl-client -n s10-bluegreen -- sh -c "for i in 1 2 3 4 5 6; do curl -s -m 5 http://myapp-service; done"
+00:48:50
+service/myapp-service configured
+selector: {"app":"myapp","slot":"green"}
+NAME                  ADDRESSTYPE   PORTS   ENDPOINTS                                AGE
+myapp-service-k8cqt   IPv4          80      10.244.0.213,10.244.0.214,10.244.0.212   8m20s
+GREEN ENVIRONMENT | version: v2 | pod: app-green-659cf7b84c-k9vqx
+GREEN ENVIRONMENT | version: v2 | pod: app-green-659cf7b84c-ph9cb
+GREEN ENVIRONMENT | version: v2 | pod: app-green-659cf7b84c-ph9cb
+GREEN ENVIRONMENT | version: v2 | pod: app-green-659cf7b84c-k9vqx
+GREEN ENVIRONMENT | version: v2 | pod: app-green-659cf7b84c-k9vqx
+GREEN ENVIRONMENT | version: v2 | pod: app-green-659cf7b84c-k9vqx

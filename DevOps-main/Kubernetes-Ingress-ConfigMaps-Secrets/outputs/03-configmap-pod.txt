@@ -1,0 +1,6 @@
+$ kubectl apply -f 01-configmap/pod-configmap.yaml -n s12-demo && kubectl wait --for=condition=Ready pod/configmap-demo -n s12-demo --timeout=1200s && kubectl get pod configmap-demo -n s12-demo && kubectl logs configmap-demo -n s12-demo
+pod/configmap-demo created
+pod/configmap-demo condition met
+NAME             READY   STATUS    RESTARTS   AGE
+configmap-demo   1/1     Running   0          52s
+Booting in production with LOG_LEVEL=INFO

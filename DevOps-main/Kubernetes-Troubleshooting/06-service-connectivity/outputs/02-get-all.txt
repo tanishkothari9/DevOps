@@ -1,0 +1,8 @@
+$ kubectl get pods,svc -n s14-svc -o wide --show-labels
+NAME                       READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES   LABELS
+pod/client                 1/1     Running   0          18m   10.244.0.166   minikube   <none>           <none>            <none>
+pod/web-557577df75-6xnmt   1/1     Running   0          18m   10.244.0.164   minikube   <none>           <none>            app=web,pod-template-hash=557577df75
+pod/web-557577df75-sp596   1/1     Running   0          18m   10.244.0.165   minikube   <none>           <none>            app=web,pod-template-hash=557577df75
+
+NAME                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE   SELECTOR         LABELS
+service/web-service   ClusterIP   10.106.236.18   <none>        80/TCP    18m   app=web-ahsgdf   <none>

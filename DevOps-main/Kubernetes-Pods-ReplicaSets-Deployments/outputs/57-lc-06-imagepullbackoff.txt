@@ -1,0 +1,8 @@
+$ kubectl get pod lifecycle-image-error -n s10-lifecycle; kubectl describe pod lifecycle-image-error -n s10-lifecycle | sed -n '/^    Image:/p;/^    State:/,/Ready:/p;/^Events:/,$p'
+NAME                    READY   STATUS         RESTARTS   AGE
+lifecycle-image-error   0/1     ErrImagePull   0          4m52s
+    Image:          jakwehrgkaejw:kahsdfgkhj
+    State:          Waiting
+      Reason:       ErrImagePull
+    Ready:          False
+Events:                      <none>

@@ -1,0 +1,5 @@
+$ kubectl delete namespace s14-config s14-dns s14-dns-backend s14-net --wait=false
+namespace "s14-config" deleted
+namespace "s14-dns" deleted
+namespace "s14-dns-backend" deleted
+namespace "s14-net" deleted

@@ -1,0 +1,4 @@
+$ kubectl delete pod frontend -n s14-dns && kubectl apply -f fixed-frontend.yaml && kubectl wait --for=condition=Ready pod/frontend -n s14-dns --timeout=240s
+pod "frontend" deleted from s14-dns namespace
+pod/frontend created
+pod/frontend condition met

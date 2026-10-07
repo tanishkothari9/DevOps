@@ -1,0 +1,2 @@
+$ kubectl delete pod load-generator -n production-webapp --wait=false
+pod "load-generator" deleted from production-webapp namespace

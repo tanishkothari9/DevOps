@@ -1,0 +1,24 @@
+$ kubectl apply -f 02-blue-green/deployment-green.yaml -n s10-bluegreen && kubectl rollout status deployment/app-green -n s10-bluegreen --timeout=900s && kubectl get pods -n s10-bluegreen -L slot,version -o wide; echo '--- green is running but receives NO traffic yet:'; kubectl exec curl-client -n s10-bluegreen -- sh -c "for i in 1 2 3 4 5 6; do curl -s -m 5 http://myapp-service; done"
+deployment.apps/app-green created
+Waiting for deployment spec update to be observed...
+Waiting for deployment spec update to be observed...
+Waiting for deployment "app-green" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-green" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "app-green" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "app-green" rollout to finish: 2 of 3 updated replicas are available...
+deployment "app-green" successfully rolled out
+NAME                         READY   STATUS    RESTARTS   AGE    IP             NODE       NOMINATED NODE   READINESS GATES   SLOT    VERSION
+app-blue-5966dff86d-jlnqs    1/1     Running   0          8m2s   10.244.0.208   minikube   <none>           <none>            blue    v1
+app-blue-5966dff86d-s2pls    1/1     Running   0          8m4s   10.244.0.206   minikube   <none>           <none>            blue    v1
+app-blue-5966dff86d-t5lx8    1/1     Running   0          8m2s   10.244.0.207   minikube   <none>           <none>            blue    v1
+app-green-659cf7b84c-5vm24   1/1     Running   0          93s    10.244.0.214   minikube   <none>           <none>            green   v2
+app-green-659cf7b84c-k9vqx   1/1     Running   0          94s    10.244.0.213   minikube   <none>           <none>            green   v2
+app-green-659cf7b84c-ph9cb   1/1     Running   0          93s    10.244.0.212   minikube   <none>           <none>            green   v2
+curl-client                  1/1     Running   0          8m3s   10.244.0.205   minikube   <none>           <none>                    
+--- green is running but receives NO traffic yet:
+BLUE ENVIRONMENT | version: v1 | pod: app-blue-5966dff86d-jlnqs
+BLUE ENVIRONMENT | version: v1 | pod: app-blue-5966dff86d-t5lx8
+BLUE ENVIRONMENT | version: v1 | pod: app-blue-5966dff86d-s2pls
+BLUE ENVIRONMENT | version: v1 | pod: app-blue-5966dff86d-jlnqs
+BLUE ENVIRONMENT | version: v1 | pod: app-blue-5966dff86d-jlnqs
+BLUE ENVIRONMENT | version: v1 | pod: app-blue-5966dff86d-t5lx8

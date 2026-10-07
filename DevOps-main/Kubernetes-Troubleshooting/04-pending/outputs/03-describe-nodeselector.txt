@@ -1,0 +1,7 @@
+$ kubectl describe pod pending-demo -n s14-pending | grep -E "Node-Selectors|Status:" ; kubectl describe pod pending-demo -n s14-pending | grep -A5 "^Events:"
+Status:           Pending
+Node-Selectors:              kubernetes.io/hostname=node-that-does-not-exist
+Events:
+  Type     Reason            Age    From               Message
+  ----     ------            ----   ----               -------
+  Warning  FailedScheduling  2m48s  default-scheduler  0/1 nodes are available: 1 node(s) didn't match Pod's node affinity/selector. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.

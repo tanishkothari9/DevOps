@@ -1,0 +1,15 @@
+$ date +%T; kubectl get pods -n s10-lifecycle
+00:30:45
+NAME                        READY   STATUS             RESTARTS        AGE
+lifecycle-crashloop         0/1     CrashLoopBackOff   4 (5m44s ago)   17m
+lifecycle-failed            0/1     Error              0               17m
+lifecycle-image-error       0/1     ImagePullBackOff   0               17m
+lifecycle-init              1/1     Running            0               16m
+lifecycle-liveness          1/1     Running            2 (7m48s ago)   16m
+lifecycle-multi-container   2/2     Running            0               16m
+lifecycle-pending           0/1     Pending            0               17m
+lifecycle-readiness         1/1     Running            0               16m
+lifecycle-running           1/1     Running            0               17m
+lifecycle-startup           1/1     Running            1 (9m14s ago)   16m
+lifecycle-succeeded         0/1     Completed          0               17m
+lifecycle-termination       1/1     Running            0               5m55s

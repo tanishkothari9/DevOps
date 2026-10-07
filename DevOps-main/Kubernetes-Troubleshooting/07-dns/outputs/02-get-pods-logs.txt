@@ -1,0 +1,13 @@
+$ kubectl get pods -n s14-dns; kubectl get pods -n s14-dns-backend; echo; kubectl logs frontend -n s14-dns --tail=6
+NAME       READY   STATUS    RESTARTS   AGE
+dns-test   1/1     Running   0          21m
+frontend   1/1     Running   0          21m
+NAME                          READY   STATUS    RESTARTS   AGE
+orders-api-68fdc85f77-m64f9   1/1     Running   0          21m
+
+18:56:10 calling http://orders-api
+FAILED
+wget: bad address 'orders-api'
+18:56:16 calling http://orders-api
+wget: bad address 'orders-api'
+FAILED

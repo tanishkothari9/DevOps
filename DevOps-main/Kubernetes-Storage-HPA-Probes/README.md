@@ -374,6 +374,14 @@ date +%T; kubectl get hpa -n s13-hpa-demo; echo; kubectl top pods -n s13-hpa-dem
 
 ![14-after-2](02-hpa/screenshots/14-after-2.png)
 
+### 15-after-scaled-down
+
+```bash
+date +%T; kubectl get hpa -n s13-hpa-demo; echo; kubectl top pods -n s13-hpa-demo; echo; kubectl get pods -n s13-hpa-demo
+```
+
+![15-after-scaled-down](02-hpa/screenshots/15-after-scaled-down.png)
+
 ## 03-probes
 
 ### 01-apply-healthy-probes
@@ -496,6 +504,22 @@ kubectl get pod liveness-fail-demo -n s13-probes; kubectl describe pod liveness-
 
 ![14-liveness-fail-restarts-later](03-probes/screenshots/14-liveness-fail-restarts-later.png)
 
+### 15-final-state
+
+```bash
+kubectl get pods -n s13-probes; kubectl get pod liveness-fail-demo -n s13-probes -o jsonpath="liveness-fail-demo restartCount={.status.containerStatuses[0].restartCount}"; echo
+```
+
+![15-final-state](03-probes/screenshots/15-final-state.png)
+
+### 16-cleanup
+
+```bash
+kubectl delete namespace s13-probes --wait=false
+```
+
+![16-cleanup](03-probes/screenshots/16-cleanup.png)
+
 ## mini-project
 
 ### 01-namespace
@@ -601,3 +625,19 @@ kubectl run load-generator -n production-webapp --image=busybox:1.36 --restart=N
 ```
 
 ![13-start-load](mini-project/screenshots/13-start-load.png)
+
+### 14-hpa-during-load
+
+```bash
+date +%T; kubectl get hpa -n production-webapp; kubectl get pods -n production-webapp; kubectl top pods -n production-webapp; kubectl -n kube-system get pods -l k8s-app=metrics-server; kubectl describe hpa web-app-hpa -n production-webapp | grep -A4 "^Conditions:"
+```
+
+![14-hpa-during-load](mini-project/screenshots/14-hpa-during-load.png)
+
+### 15-stop-load
+
+```bash
+kubectl delete pod load-generator -n production-webapp --wait=false
+```
+
+![15-stop-load](mini-project/screenshots/15-stop-load.png)

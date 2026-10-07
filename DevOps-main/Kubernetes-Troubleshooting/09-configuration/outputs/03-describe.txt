@@ -1,0 +1,11 @@
+$ kubectl describe pod -n s14-config -l app=config-app | grep -E -A3 "^    State:"; kubectl describe pod -n s14-config -l app=config-app | grep -A8 "^Events:"
+    State:          Waiting
+      Reason:       CreateContainerConfigError
+    Ready:          False
+    Restart Count:  0
+Events:
+  Type     Reason     Age                   From               Message
+  ----     ------     ----                  ----               -------
+  Normal   Scheduled  20m                   default-scheduler  Successfully assigned s14-config/config-app-687fc6f4c8-bdtr2 to minikube
+  Normal   Pulled     9m32s (x12 over 19m)  kubelet            spec.containers{app}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Warning  Failed     9m31s (x12 over 19m)  kubelet            spec.containers{app}: Error: couldn't find key mode in ConfigMap s14-config/app-config

@@ -1,0 +1,3 @@
+$ kubectl get pods -n s14-config
+NAME                          READY   STATUS                       RESTARTS   AGE
+config-app-687fc6f4c8-bdtr2   0/1     CreateContainerConfigError   0          20m

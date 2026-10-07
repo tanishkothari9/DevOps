@@ -1,0 +1,26 @@
+$ kubectl get pod lifecycle-pending -n s10-lifecycle -o wide; kubectl describe pod lifecycle-pending -n s10-lifecycle | sed -n '/^Status:/p;/Requests:/,/memory/p;/^Conditions:/,$p'
+NAME                READY   STATUS    RESTARTS   AGE    IP       NODE     NOMINATED NODE   READINESS GATES
+lifecycle-pending   0/1     Pending   0          4m3s   <none>   <none>   <none>           <none>
+Status:           Pending
+    Requests:
+      cpu:        1
+      memory:     9Gi
+Conditions:
+  Type           Status
+  PodScheduled   False 
+Volumes:
+  kube-api-access-ssmhw:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age                   From               Message
+  ----     ------            ----                  ----               -------
+  Warning  FailedScheduling  4m4s                  default-scheduler  0/1 nodes are available: 1 node(s) had untolerated taint(s). preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+  Warning  FailedScheduling  26s (x12 over 3m59s)  default-scheduler  0/1 nodes are available: 1 Insufficient memory. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.

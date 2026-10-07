@@ -1,0 +1,4 @@
+$ kubectl create namespace s14-config && kubectl apply -n s14-config -f broken-deployment.yaml
+namespace/s14-config created
+configmap/app-config created
+deployment.apps/config-app created

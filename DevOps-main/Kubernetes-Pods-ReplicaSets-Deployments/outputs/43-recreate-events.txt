@@ -1,0 +1,16 @@
+$ kubectl get events -n s10-recreate --sort-by=.lastTimestamp | grep -E 'ScalingReplicaSet|Killing|Started' | grep -v curl-client; kubectl get rs -n s10-recreate -L version
+3m9s        Normal   ScalingReplicaSet   deployment/app-recreate              Scaled up replica set app-recreate-5855d89fb9 from 0 to 3
+2m31s       Normal   Started             pod/app-recreate-5855d89fb9-c52wj    Container started
+2m31s       Normal   Started             pod/app-recreate-5855d89fb9-9s4t4    Container started
+2m27s       Normal   Started             pod/app-recreate-5855d89fb9-97fd4    Container started
+93s         Normal   ScalingReplicaSet   deployment/app-recreate              Scaled down replica set app-recreate-5855d89fb9 from 3 to 0
+91s         Normal   Killing             pod/app-recreate-5855d89fb9-c52wj    Stopping container web
+91s         Normal   Killing             pod/app-recreate-5855d89fb9-9s4t4    Stopping container web
+91s         Normal   Killing             pod/app-recreate-5855d89fb9-97fd4    Stopping container web
+49s         Normal   ScalingReplicaSet   deployment/app-recreate              Scaled up replica set app-recreate-74696bddfb from 0 to 3
+29s         Normal   Started             pod/app-recreate-74696bddfb-v98ln    Container started
+29s         Normal   Started             pod/app-recreate-74696bddfb-rtl77    Container started
+27s         Normal   Started             pod/app-recreate-74696bddfb-ncfhz    Container started
+NAME                      DESIRED   CURRENT   READY   AGE     VERSION
+app-recreate-5855d89fb9   0         0         0       3m13s   v1
+app-recreate-74696bddfb   3         3         3       53s     v2

@@ -1,0 +1,19 @@
+$ kubectl get pod lifecycle-liveness -n s10-lifecycle; kubectl describe pod lifecycle-liveness -n s10-lifecycle | sed -n '/^    Liveness:/p;/^    State:/,/Restart Count:/p;/^Events:/,$p'; kubectl logs lifecycle-liveness -n s10-lifecycle
+NAME                 READY   STATUS    RESTARTS   AGE
+lifecycle-liveness   1/1     Running   0          7m36s
+    State:          Running
+      Started:      Thu, 08 Oct 2026 00:15:42 +0530
+    Ready:          True
+    Restart Count:  0
+    Liveness:       exec [sh -c test -f /tmp/healthy] delay=5s timeout=1s period=5s successThreshold=1 failureThreshold=2
+Events:
+  Type     Reason     Age                    From               Message
+  ----     ------     ----                   ----               -------
+  Normal   Scheduled  9m7s                   default-scheduler  Successfully assigned s10-lifecycle/lifecycle-liveness to minikube
+  Normal   Pulled     7m21s                  kubelet            spec.containers{app}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal   Created    7m20s                  kubelet            spec.containers{app}: Container created
+  Normal   Started    7m18s                  kubelet            spec.containers{app}: Container started
+  Warning  Unhealthy  6m52s (x2 over 6m55s)  kubelet            spec.containers{app}: Liveness probe failed:
+  Normal   Killing    6m51s                  kubelet            spec.containers{app}: Container app failed liveness probe, will be restarted
+App started
+Health file removed

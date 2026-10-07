@@ -1,0 +1,13 @@
+$ kubectl events -n s14-commands --for pod/get-demo; echo; kubectl get events -n s14-commands --field-selector type=Warning --sort-by=.lastTimestamp | tail -5
+LAST SEEN   TYPE      REASON         OBJECT         MESSAGE
+20m         Normal    Scheduled      Pod/get-demo   Successfully assigned s14-commands/get-demo to minikube
+20m         Normal    Pulled         Pod/get-demo   Container image "nginx:1.27" already present on machine and can be accessed by the pod
+20m         Normal    Created        Pod/get-demo   Container created
+20m         Normal    Started        Pod/get-demo   Container started
+10m         Warning   NodeNotReady   Pod/get-demo   Node is not ready
+
+LAST SEEN   TYPE      REASON         OBJECT                     MESSAGE
+11m         Warning   NodeNotReady   pod/logs-demo              Node is not ready
+11m         Warning   NodeNotReady   pod/web-7f98c7b879-gz4x2   Node is not ready
+10m         Warning   NodeNotReady   pod/web-7f98c7b879-hh5wj   Node is not ready
+10m         Warning   NodeNotReady   pod/get-demo               Node is not ready

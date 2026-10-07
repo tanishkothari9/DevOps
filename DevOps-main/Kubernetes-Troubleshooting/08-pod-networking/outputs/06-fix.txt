@@ -1,0 +1,7 @@
+$ kubectl delete pod api-server -n s14-net && kubectl apply -n s14-net -f fixed-server.yaml && kubectl wait --for=condition=Ready pod/api-server -n s14-net --timeout=300s && kubectl get pods -n s14-net -o wide
+pod "api-server" deleted from s14-net namespace
+pod/api-server created
+pod/api-server condition met
+NAME         READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+api-server   1/1     Running   0          14s   10.244.0.218   minikube   <none>           <none>
+client       1/1     Running   0          43m   10.244.0.171   minikube   <none>           <none>

@@ -1,0 +1,3 @@
+$ kubectl port-forward svc/web-service-clusterip 18080:8080 -n s11-services >/dev/null 2>&1 & PF=$!; sleep 4; echo '--- from my Mac through kubectl port-forward:'; curl -s -m 5 http://localhost:18080; kill $PF
+--- from my Mac through kubectl port-forward:
+Hello from pod web-app-clusterip-5d984469f7-g4hrl [01-clusterip]

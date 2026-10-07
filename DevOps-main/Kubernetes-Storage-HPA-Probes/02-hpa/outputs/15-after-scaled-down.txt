@@ -1,0 +1,18 @@
+$ date +%T; kubectl get hpa -n s13-hpa-demo; echo; kubectl top pods -n s13-hpa-demo; echo; kubectl get pods -n s13-hpa-demo
+23:50:37
+NAME                REFERENCE                  TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+yatri-backend-hpa   Deployment/yatri-backend   cpu: <unknown>/50%   2         10        10         39m
+
+error: Metrics API not available
+
+NAME                             READY   STATUS    RESTARTS   AGE
+yatri-backend-68b645bcdb-6g75p   0/1     Running   0          27m
+yatri-backend-68b645bcdb-849nz   0/1     Running   0          27m
+yatri-backend-68b645bcdb-96drk   0/1     Running   0          39m
+yatri-backend-68b645bcdb-cg7xl   0/1     Running   0          27m
+yatri-backend-68b645bcdb-d5bqj   0/1     Running   0          27m
+yatri-backend-68b645bcdb-ghg26   0/1     Running   0          27m
+yatri-backend-68b645bcdb-lzb4w   0/1     Running   0          27m
+yatri-backend-68b645bcdb-m6cdn   0/1     Running   0          21m
+yatri-backend-68b645bcdb-qlxdc   0/1     Running   0          40m
+yatri-backend-68b645bcdb-xzzqs   0/1     Running   0          21m

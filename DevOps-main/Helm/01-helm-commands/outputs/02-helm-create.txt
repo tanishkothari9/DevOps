@@ -1,0 +1,22 @@
+$ helm create myapp && ls -R myapp
+Creating myapp
+Chart.yaml
+charts
+templates
+values.yaml
+
+myapp/charts:
+
+myapp/templates:
+NOTES.txt
+_helpers.tpl
+deployment.yaml
+hpa.yaml
+httproute.yaml
+ingress.yaml
+service.yaml
+serviceaccount.yaml
+tests
+
+myapp/templates/tests:
+test-connection.yaml

@@ -1,0 +1,15 @@
+$ kubectl apply -n s14-net -f allow-client-networkpolicy.yaml && kubectl describe networkpolicy allow-client-to-api -n s14-net | sed -n "1,20p"
+networkpolicy.networking.k8s.io/allow-client-to-api created
+Name:         allow-client-to-api
+Namespace:    s14-net
+Created on:   2026-10-08 00:51:16 +0530 IST
+Labels:       <none>
+Annotations:  <none>
+Spec:
+  PodSelector:     app=api-server
+  Allowing ingress traffic:
+    To Port: 8080/TCP
+    From:
+      PodSelector: role=client
+  Not affecting egress traffic
+  Policy Types: Ingress

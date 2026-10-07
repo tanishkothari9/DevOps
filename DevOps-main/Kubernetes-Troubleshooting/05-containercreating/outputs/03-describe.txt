@@ -1,0 +1,19 @@
+$ kubectl describe pod config-volume-demo -n s14-cc | grep -E -A3 "^    State:"; kubectl describe pod config-volume-demo -n s14-cc | grep -A8 "^Volumes:"; kubectl describe pod config-volume-demo -n s14-cc | grep -A8 "^Events:"
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+Volumes:
+  site-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      site-content
+    Optional:  false
+  kube-api-access-t4s6p:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+Events:
+  Type     Reason       Age                   From               Message
+  ----     ------       ----                  ----               -------
+  Normal   Scheduled    11m                   default-scheduler  Successfully assigned s14-cc/config-volume-demo to minikube
+  Warning  FailedMount  35s (x12 over 9m57s)  kubelet            MountVolume.SetUp failed for volume "site-config" : configmap "site-content" not found

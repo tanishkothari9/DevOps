@@ -1,0 +1,8 @@
+$ kubectl get pods -n s14-crash; echo; kubectl logs crash-demo -n s14-crash; kubectl logs crash-env-demo -n s14-crash
+NAME             READY   STATUS    RESTARTS   AGE
+crash-demo       1/1     Running   0          75s
+crash-env-demo   1/1     Running   0          75s
+
+Application starting...
+Application is healthy
+Application started successfully! DATABASE_URL=postgres://db.s14-crash.svc.cluster.local:5432/app

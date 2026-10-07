@@ -1,0 +1,22 @@
+$ kubectl describe pod crash-demo -n s14-crash | grep -E -A5 "^    State:|Last State:|Restart Count" | head -16; echo ...; kubectl describe pod crash-demo -n s14-crash | grep -A12 "^Events:"
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Thu, 08 Oct 2026 00:03:44 +0530
+      Finished:     Thu, 08 Oct 2026 00:03:44 +0530
+    Ready:          False
+    Restart Count:  4
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-5psrf (ro)
+Conditions:
+  Type                        Status
+...
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  10m    default-scheduler  Successfully assigned s14-crash/crash-demo to minikube
+  Normal  Pulled     9m31s  kubelet            spec.containers{app}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal  Created    9m30s  kubelet            spec.containers{app}: Container created

@@ -1,0 +1,3 @@
+$ kubectl delete namespace s10-troubleshoot s10-core               --wait=false
+namespace "s10-troubleshoot" deleted
+namespace "s10-core" deleted

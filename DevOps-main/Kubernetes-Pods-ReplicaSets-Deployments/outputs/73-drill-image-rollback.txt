@@ -1,0 +1,17 @@
+$ kubectl rollout undo deployment/yatri-backend -n s10-troubleshoot && kubectl rollout status deployment/yatri-backend -n s10-troubleshoot --timeout=600s && kubectl get pods -n s10-troubleshoot -L version && kubectl rollout history deployment/yatri-backend -n s10-troubleshoot
+Warning: resource deployments/yatri-backend was previously managed with 'kubectl apply'. Rolling back will not update the kubectl.kubernetes.io/last-applied-configuration annotation, which may cause unexpected behavior on future 'kubectl apply' operations. Consider using 'kubectl apply' with your previous configuration file instead.
+deployment.apps/yatri-backend rolled back
+Waiting for deployment spec update to be observed...
+Waiting for deployment spec update to be observed...
+Waiting for deployment "yatri-backend" rollout to finish: 1 old replicas are pending termination...
+deployment "yatri-backend" successfully rolled out
+NAME                             READY   STATUS        RESTARTS   AGE     VERSION
+yatri-backend-77dbb657cd-8xhlz   0/1     Terminating   0          102s    broken-v3
+yatri-backend-78f5d8dfd6-8jscv   1/1     Running       0          8m45s   v1
+yatri-backend-78f5d8dfd6-h5n4j   1/1     Running       0          8m42s   v1
+yatri-backend-78f5d8dfd6-ppkkh   1/1     Running       0          8m41s   v1
+deployment.apps/yatri-backend 
+REVISION  CHANGE-CAUSE
+2         <none>
+3         <none>
+

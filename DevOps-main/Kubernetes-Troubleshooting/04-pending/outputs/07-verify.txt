@@ -1,0 +1,4 @@
+$ kubectl get pods -n s14-pending -o wide
+NAME                     READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+pending-demo             1/1     Running   0          18m   10.244.0.173   minikube   <none>           <none>
+pending-resources-demo   1/1     Running   0          18m   10.244.0.174   minikube   <none>           <none>

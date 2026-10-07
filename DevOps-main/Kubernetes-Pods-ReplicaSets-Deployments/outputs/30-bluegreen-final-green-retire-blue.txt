@@ -1,0 +1,12 @@
+$ kubectl apply -f 02-blue-green/service-green.yaml -n s10-bluegreen && sleep 3 && kubectl exec curl-client -n s10-bluegreen -- sh -c "for i in 1 2 3 4 5 6; do curl -s -m 5 http://myapp-service; done" && kubectl scale deployment app-blue --replicas=0 -n s10-bluegreen && kubectl get deploy -n s10-bluegreen
+service/myapp-service configured
+GREEN ENVIRONMENT | version: v2 | pod: app-green-659cf7b84c-ph9cb
+GREEN ENVIRONMENT | version: v2 | pod: app-green-659cf7b84c-k9vqx
+GREEN ENVIRONMENT | version: v2 | pod: app-green-659cf7b84c-ph9cb
+GREEN ENVIRONMENT | version: v2 | pod: app-green-659cf7b84c-5vm24
+GREEN ENVIRONMENT | version: v2 | pod: app-green-659cf7b84c-5vm24
+GREEN ENVIRONMENT | version: v2 | pod: app-green-659cf7b84c-5vm24
+deployment.apps/app-blue scaled
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+app-blue    3/0     3            3           9m6s
+app-green   3/3     3            3           2m36s

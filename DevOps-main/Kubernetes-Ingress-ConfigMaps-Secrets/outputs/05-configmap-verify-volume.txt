@@ -1,0 +1,13 @@
+$ kubectl exec configmap-demo -n s12-demo -- ls /etc/config; echo '--- /etc/config/app.properties:'; kubectl exec configmap-demo -n s12-demo -- cat /etc/config/app.properties; echo '--- /etc/config/LOG_LEVEL:'; kubectl exec configmap-demo -n s12-demo -- cat /etc/config/LOG_LEVEL; echo
+DEFAULT_CURRENCY
+ENVIRONMENT
+LOG_LEVEL
+MAX_BOOKING_DAYS
+PORT
+app.properties
+--- /etc/config/app.properties:
+app.name=yatri
+feature.new-booking-ui=true
+cache.ttl.seconds=300
+--- /etc/config/LOG_LEVEL:
+INFO

@@ -1,0 +1,10 @@
+$ sleep 5; IP=$(kubectl get pod api-server -n s14-net -o jsonpath="{.status.podIP}"); kubectl exec client -n s14-net -- curl -sS -m 5 -o /dev/null -w "client (role=client) -> api-server: HTTP %{http_code}\n" http://$IP:8080/; kubectl run intruder -n s14-net --image=curlimages/curl:8.6.0 --restart=Never --rm -i -- curl -sS -m 5 -o /dev/null -w "intruder (no label) -> api-server: HTTP %{http_code}\n" http://$IP:8080/; echo "intruder curl exit: $?"
+client (role=client) -> api-server: HTTP 200
+curl: (28) Connection timed out after 5001 milliseconds
+intruder (no label) -> api-server: HTTP 000
+All commands and output from this session will be recorded in container logs, including credentials and sensitive information passed through the command prompt.
+If you don't see a command prompt, try pressing enter.
+warning: couldn't attach to pod/intruder, falling back to streaming logs: unable to upgrade connection: container intruder not found in pod intruder_s14-net
+pod "intruder" deleted from s14-net namespace
+pod s14-net/intruder terminated (Error)
+intruder curl exit: 28

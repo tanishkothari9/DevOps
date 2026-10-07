@@ -1,0 +1,8 @@
+$ kubectl get pod frontend -n s14-dns -o jsonpath="BACKEND_URL={.spec.containers[0].env[0].value}"; echo; kubectl logs frontend -n s14-dns --tail=6
+BACKEND_URL=http://orders-api.s14-dns-backend.svc.cluster.local
+19:19:17 calling http://orders-api.s14-dns-backend.svc.cluster.local
+OK
+19:19:22 calling http://orders-api.s14-dns-backend.svc.cluster.local
+OK
+19:19:27 calling http://orders-api.s14-dns-backend.svc.cluster.local
+OK

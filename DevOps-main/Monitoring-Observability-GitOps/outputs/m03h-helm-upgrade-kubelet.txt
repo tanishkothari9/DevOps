@@ -1,0 +1,11 @@
+$ helm upgrade kps prometheus-community/kube-prometheus-stack -n monitoring -f monitoring/kps-values.yaml --no-hooks --timeout 15m | grep -E "STATUS|REVISION"
+STATUS: deployed
+REVISION: 9
+$ kubectl get servicemonitor kps-kube-prometheus-stack-kubelet -n monitoring -o jsonpath='{range .spec.endpoints[*]}{.path} interval={.interval}{"\n"}{end}'
+/metrics/cadvisor interval=30s
+/metrics/probes interval=
+$ helm history kps -n monitoring --max 3
+REVISION	UPDATED                 	STATUS    	CHART                       	APP VERSION	DESCRIPTION     
+7       	Thu Oct  8 00:38:22 2026	superseded	kube-prometheus-stack-92.1.0	v0.94.1    	Upgrade complete
+8       	Thu Oct  8 00:49:57 2026	superseded	kube-prometheus-stack-92.1.0	v0.94.1    	Upgrade complete
+9       	Thu Oct  8 00:52:14 2026	deployed  	kube-prometheus-stack-92.1.0	v0.94.1    	Upgrade complete

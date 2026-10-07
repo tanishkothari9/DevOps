@@ -1,0 +1,3 @@
+$ kubectl create namespace s14-cc && kubectl apply -n s14-cc -f broken-pod.yaml
+namespace/s14-cc created
+pod/config-volume-demo created

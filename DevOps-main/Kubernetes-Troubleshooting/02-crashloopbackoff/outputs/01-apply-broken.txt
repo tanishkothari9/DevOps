@@ -1,0 +1,4 @@
+$ kubectl create namespace s14-crash && kubectl apply -n s14-crash -f broken-pod.yaml -f broken-app-missing-env.yaml
+namespace/s14-crash created
+pod/crash-demo created
+pod/crash-env-demo created

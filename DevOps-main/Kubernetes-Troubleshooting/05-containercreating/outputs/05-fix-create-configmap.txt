@@ -1,0 +1,2 @@
+$ kubectl apply -n s14-cc -f configmap.yaml
+configmap/site-content created

@@ -1,0 +1,5 @@
+$ kubectl apply -n s14-svc -f fixed-service.yaml && sleep 3 && kubectl describe svc web-service -n s14-svc | grep -E "Selector|TargetPort|Endpoints"
+service/web-service configured
+Selector:                 app=web
+TargetPort:               80/TCP
+Endpoints:                10.244.0.164:80,10.244.0.165:80

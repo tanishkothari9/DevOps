@@ -1,0 +1,5 @@
+$ kubectl create namespace s14-svc && kubectl apply -n s14-svc -f deployment.yaml -f broken-service-selector.yaml -f client-pod.yaml
+namespace/s14-svc created
+deployment.apps/web created
+service/web-service created
+pod/client created

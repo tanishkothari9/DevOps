@@ -1,0 +1,4 @@
+$ kubectl get pods -n s14-crash
+NAME             READY   STATUS             RESTARTS        AGE
+crash-demo       0/1     CrashLoopBackOff   4 (6s ago)      10m
+crash-env-demo   0/1     Error              2 (4m12s ago)   10m

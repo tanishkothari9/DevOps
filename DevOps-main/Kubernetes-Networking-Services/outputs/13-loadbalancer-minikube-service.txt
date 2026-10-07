@@ -1,0 +1,9 @@
+$ minikube service web-service-loadbalancer -n s11-services --url > $W/lb-url.txt 2>&1 & MS=$!; for i in $(seq 1 30); do grep -q http $W/lb-url.txt && break; sleep 1; done; cat $W/lb-url.txt; URL=$(grep -m1 -o 'http://[0-9.:]*' $W/lb-url.txt); echo "--- curl $URL x6 from my Mac:"; for i in 1 2 3 4 5 6; do curl -s -m 5 $URL; done | sort | uniq -c; kill $MS; kubectl get svc web-service-loadbalancer -n s11-services
+http://127.0.0.1:63933
+! Because you are using a Docker driver on darwin, the terminal needs to be open to run it.
+--- curl http://127.0.0.1:63933 x6 from my Mac:
+   4 Hello from pod web-app-loadbalancer-669cd69dc6-l25hr [03-loadbalancer]
+   2 Hello from pod web-app-loadbalancer-669cd69dc6-nkx4x [03-loadbalancer]
+NAME                       TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+web-service-loadbalancer   LoadBalancer   10.97.104.45   <pending>     80:32161/TCP   68s
+bash: line 1: 80682 Terminated: 15          minikube service web-service-loadbalancer -n s11-services --url > $W/lb-url.txt 2>&1

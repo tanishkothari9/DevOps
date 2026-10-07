@@ -1,0 +1,16 @@
+$ kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana -o custom-columns='POD:.metadata.name,RESTARTS:.status.containerStatuses[*].restartCount,LAST_TERMINATION:.status.containerStatuses[*].lastState.terminated.reason'
+POD                            RESTARTS   LAST_TERMINATION
+kps-grafana-747c9f84fb-57zbj   2,0,0      Error
+$ helm upgrade kps prometheus-community/kube-prometheus-stack -n monitoring -f monitoring/kps-values.yaml --wait --timeout 10m | head -7
+level=WARN msg="upgrade failed" name=kps error="resource DaemonSet/monitoring/kps-prometheus-node-exporter not ready. status: InProgress, message: Available: 0/1\nresource Deployment/monitoring/kps-grafana not ready. status: Failed, message: Progress deadline exceeded\ncontext deadline exceeded"
+Error: UPGRADE FAILED: resource DaemonSet/monitoring/kps-prometheus-node-exporter not ready. status: InProgress, message: Available: 0/1
+resource Deployment/monitoring/kps-grafana not ready. status: Failed, message: Progress deadline exceeded
+context deadline exceeded
+$ kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana
+NAME                           READY   STATUS    RESTARTS        AGE
+kps-grafana-747c9f84fb-57zbj   2/3     Running   6 (4m51s ago)   89m
+kps-grafana-78b57db8f-hql4q    2/3     Running   1 (112s ago)    11m
+$ kubectl get deploy kps-grafana -n monitoring -o jsonpath='{range .spec.template.spec.containers[*]}{.name}: limits={.resources.limits}{"\n"}{end}'
+grafana-sc-dashboard: limits=
+grafana-sc-datasources: limits=
+grafana: limits={"memory":"768Mi"}

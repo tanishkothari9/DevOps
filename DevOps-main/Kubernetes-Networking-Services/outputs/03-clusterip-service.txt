@@ -1,0 +1,13 @@
+$ kubectl apply -f 01-clusterip/service.yaml -n s11-services && kubectl get svc web-service-clusterip -n s11-services -o wide && kubectl describe svc web-service-clusterip -n s11-services | sed -n '/^Selector:/,/^Endpoints:/p'
+service/web-service-clusterip created
+NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE   SELECTOR
+web-service-clusterip   ClusterIP   10.101.36.245   <none>        8080/TCP   1s    app=web-clusterip
+Selector:                 app=web-clusterip
+Type:                     ClusterIP
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.101.36.245
+IPs:                      10.101.36.245
+Port:                     http  8080/TCP
+TargetPort:               80/TCP
+Endpoints:                10.244.0.217:80,10.244.0.215:80,10.244.0.216:80

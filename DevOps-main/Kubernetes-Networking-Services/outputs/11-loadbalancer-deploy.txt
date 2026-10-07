@@ -1,0 +1,9 @@
+$ kubectl apply -f 03-loadbalancer/app-deployment.yaml -f 03-loadbalancer/service.yaml -n s11-services && kubectl rollout status deployment/web-app-loadbalancer -n s11-services --timeout=1200s && sleep 5 && kubectl get svc web-service-loadbalancer -n s11-services -o wide
+deployment.apps/web-app-loadbalancer created
+service/web-service-loadbalancer created
+Waiting for deployment "web-app-loadbalancer" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "web-app-loadbalancer" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "web-app-loadbalancer" rollout to finish: 2 of 3 updated replicas are available...
+deployment "web-app-loadbalancer" successfully rolled out
+NAME                       TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE   SELECTOR
+web-service-loadbalancer   LoadBalancer   10.97.104.45   <pending>     80:32161/TCP   50s   app=web-loadbalancer

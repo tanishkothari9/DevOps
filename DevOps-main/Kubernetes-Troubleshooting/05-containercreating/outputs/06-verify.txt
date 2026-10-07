@@ -1,0 +1,7 @@
+$ kubectl get pods -n s14-cc; kubectl describe pod config-volume-demo -n s14-cc | grep -A6 "^Events:" | tail -3; kubectl exec config-volume-demo -n s14-cc -- curl -s localhost
+NAME                 READY   STATUS    RESTARTS   AGE
+config-volume-demo   1/1     Running   0          38m
+  Warning  FailedMount   22m (x14 over 37m)   kubelet            MountVolume.SetUp failed for volume "site-config" : configmap "site-content" not found
+  Normal   Pulled        18m                  kubelet            spec.containers{nginx}: Container image "nginx:1.27" already present on machine and can be accessed by the pod
+  Normal   Created       18m                  kubelet            spec.containers{nginx}: Container created
+<h1>Served from the site-content ConfigMap</h1>

@@ -1,0 +1,14 @@
+$ kubectl rollout status deployment/myapp -n s15-helm --timeout=240s; kubectl get all -n s15-helm
+Waiting for deployment "myapp" rollout to finish: 0 of 1 updated replicas are available...
+deployment "myapp" successfully rolled out
+NAME                         READY   STATUS    RESTARTS   AGE
+pod/myapp-7fb596c867-dt8ph   1/1     Running   0          64s
+
+NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+service/myapp   ClusterIP   10.105.227.173   <none>        80/TCP    65s
+
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/myapp   1/1     1            1           64s
+
+NAME                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/myapp-7fb596c867   1         1         1       64s

@@ -1,0 +1,4 @@
+$ kubectl wait --for=condition=Ready pod --all -n s14-net --timeout=240s >/dev/null; kubectl get pods -n s14-net -o wide
+NAME         READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+api-server   1/1     Running   0          34m   10.244.0.169   minikube   <none>           <none>
+client       1/1     Running   0          34m   10.244.0.171   minikube   <none>           <none>

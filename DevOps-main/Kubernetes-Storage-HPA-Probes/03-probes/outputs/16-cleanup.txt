@@ -1,0 +1,2 @@
+$ kubectl delete namespace s13-probes --wait=false
+namespace "s13-probes" deleted

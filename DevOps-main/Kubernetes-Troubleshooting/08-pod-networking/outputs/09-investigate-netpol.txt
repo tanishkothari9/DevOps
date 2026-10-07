@@ -1,0 +1,17 @@
+$ kubectl get networkpolicy -n s14-net; kubectl describe networkpolicy default-deny-ingress -n s14-net; kubectl get pods -n s14-net --show-labels
+NAME                   POD-SELECTOR   AGE
+default-deny-ingress   <none>         45s
+Name:         default-deny-ingress
+Namespace:    s14-net
+Created on:   2026-10-08 00:50:27 +0530 IST
+Labels:       <none>
+Annotations:  <none>
+Spec:
+  PodSelector:     <none> (Allowing the specific traffic to all pods in this namespace)
+  Allowing ingress traffic:
+    <none> (Selected pods are isolated for ingress connectivity)
+  Not affecting egress traffic
+  Policy Types: Ingress
+NAME         READY   STATUS    RESTARTS   AGE     LABELS
+api-server   1/1     Running   0          2m48s   app=api-server
+client       1/1     Running   0          46m     role=client

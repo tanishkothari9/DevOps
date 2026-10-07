@@ -1,0 +1,3 @@
+$ kubectl create namespace s11-services && kubectl create namespace s11-other
+namespace/s11-services created
+namespace/s11-other created

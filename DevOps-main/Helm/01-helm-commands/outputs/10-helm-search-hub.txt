@@ -1,0 +1,13 @@
+$ helm search hub nginx --max-col-width 60 | head -12
+URL                                                         	CHART VERSION  	APP VERSION                                     	DESCRIPTION                                                 
+https://artifacthub.io/packages/helm/cloudpirates-nginx/n...	0.16.12        	1.31.6                                          	Nginx is a high-performance HTTP server and reverse proxy.  
+https://artifacthub.io/packages/helm/quench-nginx/nginx     	0.0.15         	1.30.5                                          	High-performance web server, reverse proxy, and load bala...
+https://artifacthub.io/packages/helm/krakazyabra/nginx      	1.0.0          	1.19.0                                          	Nginx Helm chart for Kubernetes                             
+https://artifacthub.io/packages/helm/dhinesh/nginx          	25.2.1         	1.31.6                                          	NGINX Open Source is a web server that can be also used a...
+https://artifacthub.io/packages/helm/bitnami/nginx          	25.2.1         	1.31.6                                          	NGINX Open Source is a web server that can be also used a...
+https://artifacthub.io/packages/helm/niceos/nginx           	1.31.1+niceos.2	1.31.1                                          	Bitnami-compatible NGINX Helm chart for NiceOS              
+https://artifacthub.io/packages/helm/bitnami-aks/nginx      	13.2.12        	1.23.2                                          	NGINX Open Source is a web server that can be also used a...
+https://artifacthub.io/packages/helm/wiremind/nginx         	2.1.1          	                                                	An NGINX HTTP server                                        
+https://artifacthub.io/packages/helm/ashu-nginx-chart/nginx 	0.1.0          	1.16.0                                          	A Helm chart for Kubernetes                                 
+https://artifacthub.io/packages/helm/zrepo-test/nginx       	5.1.5          	1.16.1                                          	Chart for the nginx server                                  
+https://artifacthub.io/packages/helm/cloudnativeapp/nginx   	3.2.0          	1.16.0                                          	Chart for the nginx server                                  

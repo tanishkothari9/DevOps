@@ -1,0 +1,2 @@
+$ kubectl apply -f troubleshooting/selector-mismatch.yaml -n s10-troubleshoot
+The Deployment "selector-error-demo" is invalid: spec.template.metadata.labels: Invalid value: {"app":"wrong-app-name"}: `selector` does not match template `labels`

@@ -1,0 +1,6 @@
+$ minikube service web-service-nodeport -n s11-services --url > $W/np-url.txt 2>&1 & MS=$!; for i in $(seq 1 30); do grep -q http $W/np-url.txt && break; sleep 1; done; cat $W/np-url.txt; URL=$(grep -m1 -o 'http://[0-9.:]*' $W/np-url.txt); echo "--- curl $URL from my Mac:"; curl -s -m 5 $URL; curl -s -m 5 $URL; kill $MS
+http://127.0.0.1:63829
+! Because you are using a Docker driver on darwin, the terminal needs to be open to run it.
+--- curl http://127.0.0.1:63829 from my Mac:
+Hello from pod web-app-nodeport-6d76dbbf45-n4wv8 [02-nodeport]
+Hello from pod web-app-nodeport-6d76dbbf45-4xdqg [02-nodeport]

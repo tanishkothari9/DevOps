@@ -1,0 +1,15 @@
+$ kubectl get pods,svc -n ingress-nginx; echo; kubectl get ingressclass; echo; minikube addons list | grep -E 'ADDON NAME|ingress '
+NAME                                           READY   STATUS      RESTARTS        AGE
+pod/ingress-nginx-admission-create-x4tbq       0/1     Completed   0               146m
+pod/ingress-nginx-admission-patch-9hp6j        0/1     Completed   0               146m
+pod/ingress-nginx-controller-d7cd8c989-mj2cs   1/1     Running     9 (9m22s ago)   146m
+
+NAME                                         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+service/ingress-nginx-controller             NodePort    10.107.72.243    <none>        80:32490/TCP,443:32301/TCP   146m
+service/ingress-nginx-controller-admission   ClusterIP   10.108.139.255   <none>        443/TCP                      146m
+
+NAME              CONTROLLER             PARAMETERS   AGE
+nginx (default)   k8s.io/ingress-nginx   <none>       146m
+
+│         ADDON NAME          │ PROFILE  │   STATUS   │               MAINTAINER               │
+│ ingress                     │ minikube │ disabled   │ Kubernetes                             │

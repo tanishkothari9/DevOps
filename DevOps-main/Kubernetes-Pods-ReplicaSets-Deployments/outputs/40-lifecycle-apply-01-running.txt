@@ -1,0 +1,5 @@
+$ kubectl apply -f pod-lifecycle/01-running.yaml -n s10-lifecycle && date +%T && kubectl get pods -n s10-lifecycle
+pod/lifecycle-running created
+00:13:22
+NAME                READY   STATUS    RESTARTS   AGE
+lifecycle-running   0/1     Pending   0          3s

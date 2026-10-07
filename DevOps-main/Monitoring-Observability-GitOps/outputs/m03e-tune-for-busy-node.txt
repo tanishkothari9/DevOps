@@ -1,0 +1,12 @@
+$ helm upgrade kps prometheus-community/kube-prometheus-stack -n monitoring -f monitoring/kps-values.yaml | head -7
+I1008 00:20:10.340186   62193 reflector.go:664] "Warning: watch ended with error" reflector="k8s.io/client-go@v0.37.0/tools/cache/reflector.go:343" type="batch/v1, Kind=Job" err="an error on the server (\"unable to decode an event from the watch stream: http2: client connection lost\") has prevented the request from succeeding"
+level=WARN msg="upgrade failed" name=kps error="post-upgrade hooks failed: resource Job/monitoring/kps-kube-prometheus-stack-admission-patch not ready. status: InProgress, message: Job in progress\ncontext deadline exceeded"
+Error: UPGRADE FAILED: post-upgrade hooks failed: resource Job/monitoring/kps-kube-prometheus-stack-admission-patch not ready. status: InProgress, message: Job in progress
+context deadline exceeded
+$ kubectl apply -f monitoring/demo-app.yaml
+namespace/s20-monitoring unchanged
+deployment.apps/s20-podinfo configured
+service/s20-podinfo unchanged
+deployment.apps/s20-loadgen unchanged
+deployment.apps/s20-cpu-burner unchanged
+deployment.apps/s20-crashloop unchanged

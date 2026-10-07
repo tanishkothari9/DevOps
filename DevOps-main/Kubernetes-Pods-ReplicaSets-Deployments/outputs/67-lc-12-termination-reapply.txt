@@ -1,0 +1,6 @@
+$ kubectl apply -f pod-lifecycle/12-termination.yaml -n s10-lifecycle && kubectl wait --for=condition=Ready pod/lifecycle-termination -n s10-lifecycle --timeout=900s && kubectl get pod lifecycle-termination -n s10-lifecycle && kubectl logs lifecycle-termination -n s10-lifecycle
+pod/lifecycle-termination created
+pod/lifecycle-termination condition met
+NAME                    READY   STATUS    RESTARTS   AGE
+lifecycle-termination   1/1     Running   0          6m41s
+Application running

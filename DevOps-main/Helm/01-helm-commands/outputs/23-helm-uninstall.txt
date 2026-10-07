@@ -1,0 +1,7 @@
+$ helm uninstall myapp -n s15-helm; helm list -n s15-helm; kubectl get all -n s15-helm
+release "myapp" uninstalled
+NAME	NAMESPACE	REVISION	UPDATED	STATUS	CHART	APP VERSION
+NAME                         READY   STATUS        RESTARTS        AGE
+pod/myapp-7fb596c867-9lqpq   1/1     Terminating   0               7m58s
+pod/myapp-7fb596c867-dt8ph   1/1     Terminating   1 (7m47s ago)   9m29s
+pod/myapp-7fb596c867-pwlpt   1/1     Terminating   0               7m58s

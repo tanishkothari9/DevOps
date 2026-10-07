@@ -1,0 +1,7 @@
+$ kubectl delete namespace s14-commands s14-crash s14-image s14-pending s14-cc s14-svc --wait=false
+namespace "s14-commands" deleted
+namespace "s14-crash" deleted
+namespace "s14-image" deleted
+namespace "s14-pending" deleted
+namespace "s14-cc" deleted
+namespace "s14-svc" deleted

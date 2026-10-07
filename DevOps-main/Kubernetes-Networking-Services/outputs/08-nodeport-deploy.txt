@@ -1,0 +1,11 @@
+$ kubectl apply -f 02-nodeport/app-deployment.yaml -f 02-nodeport/service.yaml -n s11-services && kubectl rollout status deployment/web-app-nodeport -n s11-services --timeout=1200s && kubectl get svc web-service-nodeport -n s11-services -o wide && kubectl get endpointslices -l kubernetes.io/service-name=web-service-nodeport -n s11-services
+deployment.apps/web-app-nodeport created
+service/web-service-nodeport created
+Waiting for deployment "web-app-nodeport" rollout to finish: 0 out of 2 new replicas have been updated...
+Waiting for deployment "web-app-nodeport" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "web-app-nodeport" rollout to finish: 1 of 2 updated replicas are available...
+deployment "web-app-nodeport" successfully rolled out
+NAME                   TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE   SELECTOR
+web-service-nodeport   NodePort   10.109.48.84   <none>        80:31180/TCP   73s   app=web-nodeport
+NAME                         ADDRESSTYPE   PORTS   ENDPOINTS                   AGE
+web-service-nodeport-dpkzj   IPv4          80      10.244.0.221,10.244.0.222   71s

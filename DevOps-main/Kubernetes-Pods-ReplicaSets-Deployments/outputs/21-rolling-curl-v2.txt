@@ -1,0 +1,7 @@
+$ kubectl exec curl-client -n s10-rolling -- sh -c "for i in 1 2 3 4; do curl -s http://app-rolling-service; done"; kubectl rollout history deployment/app-rolling -n s10-rolling
+command terminated with exit code 6
+deployment.apps/app-rolling 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+

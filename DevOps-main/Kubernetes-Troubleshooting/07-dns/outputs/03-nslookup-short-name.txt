@@ -1,0 +1,21 @@
+$ kubectl exec dns-test -n s14-dns -- nslookup orders-api; echo "exit: $?"; kubectl exec dns-test -n s14-dns -- cat /etc/resolv.conf
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+** server can't find orders-api.s14-dns.svc.cluster.local: NXDOMAIN
+
+** server can't find orders-api.svc.cluster.local: NXDOMAIN
+
+** server can't find orders-api.cluster.local: NXDOMAIN
+
+** server can't find orders-api.s14-dns.svc.cluster.local: NXDOMAIN
+
+** server can't find orders-api.svc.cluster.local: NXDOMAIN
+
+** server can't find orders-api.cluster.local: NXDOMAIN
+
+command terminated with exit code 1
+exit: 1
+search s14-dns.svc.cluster.local svc.cluster.local cluster.local
+nameserver 10.96.0.10
+options ndots:5

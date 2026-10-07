@@ -1,0 +1,9 @@
+$ kubectl get pods -n s13-probes; kubectl get pod liveness-fail-demo -n s13-probes -o jsonpath="liveness-fail-demo restartCount={.status.containerStatuses[0].restartCount}"; echo
+NAME                  READY   STATUS             RESTARTS         AGE
+liveness-demo         1/1     Running            6 (3m20s ago)    66m
+liveness-fail-demo    0/1     CrashLoopBackOff   19 (2m1s ago)    63m
+readiness-demo        1/1     Running            0                66m
+readiness-fail-demo   0/1     Running            0                63m
+slow-startup-demo     1/1     Running            1 (2m19s ago)    63m
+startup-demo          1/1     Running            10 (3m14s ago)   65m
+liveness-fail-demo restartCount=19

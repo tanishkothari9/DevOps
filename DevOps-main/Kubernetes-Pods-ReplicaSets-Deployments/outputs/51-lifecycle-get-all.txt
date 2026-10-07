@@ -1,0 +1,14 @@
+$ date +%T; kubectl get pods -n s10-lifecycle -o wide
+00:17:06
+NAME                        READY   STATUS         RESTARTS      AGE     IP             NODE       NOMINATED NODE   READINESS GATES
+lifecycle-crashloop         1/1     Running        2 (80s ago)   3m27s   10.244.0.179   minikube   <none>           <none>
+lifecycle-failed            0/1     Error          0             3m30s   10.244.0.177   minikube   <none>           <none>
+lifecycle-image-error       0/1     ErrImagePull   0             3m24s   10.244.0.181   minikube   <none>           <none>
+lifecycle-init              1/1     Running        0             3m8s    10.244.0.185   minikube   <none>           <none>
+lifecycle-liveness          1/1     Running        0             3m16s   10.244.0.182   minikube   <none>           <none>
+lifecycle-multi-container   2/2     Running        0             3m3s    10.244.0.184   minikube   <none>           <none>
+lifecycle-pending           0/1     Pending        0             3m42s   <none>         <none>     <none>           <none>
+lifecycle-readiness         1/1     Running        0             3m21s   10.244.0.180   minikube   <none>           <none>
+lifecycle-running           1/1     Running        0             3m47s   10.244.0.176   minikube   <none>           <none>
+lifecycle-startup           0/1     Running        0             3m12s   10.244.0.183   minikube   <none>           <none>
+lifecycle-succeeded         0/1     Completed      0             3m37s   10.244.0.178   minikube   <none>           <none>

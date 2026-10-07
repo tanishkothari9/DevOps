@@ -1,0 +1,12 @@
+$ helm template demo myapp --set replicaCount=2 | grep -E "^# Source|^kind:|replicas:|image:" 
+# Source: myapp/templates/serviceaccount.yaml
+kind: ServiceAccount
+# Source: myapp/templates/service.yaml
+kind: Service
+# Source: myapp/templates/deployment.yaml
+kind: Deployment
+  replicas: 2
+          image: "nginx:1.16.0"
+# Source: myapp/templates/tests/test-connection.yaml
+kind: Pod
+      image: busybox

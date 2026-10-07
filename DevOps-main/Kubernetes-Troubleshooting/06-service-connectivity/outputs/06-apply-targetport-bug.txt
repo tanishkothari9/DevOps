@@ -1,0 +1,5 @@
+$ kubectl apply -n s14-svc -f broken-service-targetport.yaml && sleep 3 && kubectl describe svc web-service -n s14-svc | grep -E "Selector|TargetPort|Endpoints"
+service/web-service configured
+Selector:                 app=web
+TargetPort:               8080/TCP
+Endpoints:                10.244.0.164:8080,10.244.0.165:8080

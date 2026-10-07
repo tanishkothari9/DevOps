@@ -1,0 +1,5 @@
+$ kubectl rollout status deployment/config-app -n s14-config --timeout=300s; kubectl get pods -n s14-config; kubectl logs deployment/config-app -n s14-config
+deployment "config-app" successfully rolled out
+NAME                         READY   STATUS    RESTARTS   AGE
+config-app-9ff5c65cd-lt6jb   1/1     Running   0          13m
+mode=production log=info password-length=22

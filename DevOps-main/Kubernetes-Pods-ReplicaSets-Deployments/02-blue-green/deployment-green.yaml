@@ -42,3 +42,4 @@ spec:
               port: 80
             initialDelaySeconds: 3
             periodSeconds: 5
+            timeoutSeconds: 5      # generous: the shared laptop cluster is heavily loaded

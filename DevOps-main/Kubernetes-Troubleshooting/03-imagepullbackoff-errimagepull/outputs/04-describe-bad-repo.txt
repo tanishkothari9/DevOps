@@ -1,0 +1,8 @@
+$ kubectl describe pod image-repo-demo -n s14-image | grep -E "Image:|Reason:"; kubectl events -n s14-image --for pod/image-repo-demo | tail -5
+    Image:          yatri-api-service:v999-invalid-tag-does-not-exist
+      Reason:       ErrImagePull
+LAST SEEN            TYPE      REASON      OBJECT                MESSAGE
+3m37s                Normal    Scheduled   Pod/image-repo-demo   Successfully assigned s14-image/image-repo-demo to minikube
+90s (x2 over 119s)   Normal    Pulling     Pod/image-repo-demo   Pulling image "yatri-api-service:v999-invalid-tag-does-not-exist"
+85s (x2 over 117s)   Warning   Failed      Pod/image-repo-demo   Failed to pull image "yatri-api-service:v999-invalid-tag-does-not-exist": failed to pull and unpack image "docker.io/library/yatri-api-service:v999-invalid-tag-does-not-exist": failed to resolve reference "docker.io/library/yatri-api-service:v999-invalid-tag-does-not-exist": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+85s (x2 over 117s)   Warning   Failed      Pod/image-repo-demo   Error: ErrImagePull

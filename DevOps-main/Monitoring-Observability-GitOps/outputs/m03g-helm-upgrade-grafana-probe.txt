@@ -1,0 +1,18 @@
+$ helm upgrade kps prometheus-community/kube-prometheus-stack -n monitoring -f monitoring/kps-values.yaml --no-hooks --timeout 15m | grep -E "STATUS|REVISION"
+STATUS: deployed
+REVISION: 8
+$ kubectl get rs -n monitoring -l app.kubernetes.io/name=grafana
+NAME                     DESIRED   CURRENT   READY   AGE
+kps-grafana-747c9f84fb   0         0         0       132m
+kps-grafana-78b57db8f    1         1         1       54m
+kps-grafana-7d5b6c5f88   0         0         0       34m
+$ kubectl get pods -n monitoring
+NAME                                                    READY   STATUS              RESTARTS        AGE
+alertmanager-kps-kube-prometheus-stack-alertmanager-0   2/2     Running             0               125m
+kps-grafana-78b57db8f-hql4q                             3/3     Running             2 (40m ago)     54m
+kps-grafana-7d5b6c5f88-g5wg2                            2/3     Terminating         4 (2m53s ago)   34m
+kps-kube-prometheus-stack-admission-patch-h24wf         0/1     ContainerCreating   0               32m
+kps-kube-prometheus-stack-operator-58d67cfcf8-nfb7b     1/1     Running             1 (8m59s ago)   34m
+kps-kube-state-metrics-5bc6965bdf-ssf62                 1/1     Running             0               34m
+kps-prometheus-node-exporter-b2rhb                      1/1     Running             0               22m
+prometheus-kps-kube-prometheus-stack-prometheus-0       2/2     Running             4 (8m47s ago)   125m

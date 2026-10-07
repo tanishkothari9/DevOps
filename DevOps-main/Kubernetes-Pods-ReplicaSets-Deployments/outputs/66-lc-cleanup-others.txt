@@ -1,0 +1,12 @@
+$ kubectl delete pod lifecycle-running lifecycle-pending lifecycle-succeeded lifecycle-failed lifecycle-crashloop lifecycle-image-error lifecycle-readiness lifecycle-liveness lifecycle-startup lifecycle-init lifecycle-multi-container -n s10-lifecycle --wait=false
+pod "lifecycle-running" deleted from s10-lifecycle namespace
+pod "lifecycle-pending" deleted from s10-lifecycle namespace
+pod "lifecycle-succeeded" deleted from s10-lifecycle namespace
+pod "lifecycle-failed" deleted from s10-lifecycle namespace
+pod "lifecycle-crashloop" deleted from s10-lifecycle namespace
+pod "lifecycle-image-error" deleted from s10-lifecycle namespace
+pod "lifecycle-readiness" deleted from s10-lifecycle namespace
+pod "lifecycle-liveness" deleted from s10-lifecycle namespace
+pod "lifecycle-startup" deleted from s10-lifecycle namespace
+pod "lifecycle-init" deleted from s10-lifecycle namespace
+pod "lifecycle-multi-container" deleted from s10-lifecycle namespace

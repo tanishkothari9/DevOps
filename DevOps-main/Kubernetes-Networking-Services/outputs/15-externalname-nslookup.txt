@@ -1,0 +1,13 @@
+$ kubectl apply -f 04-externalname/client-pod.yaml -n s11-services && kubectl wait --for=condition=Ready pod/dns-test-client -n s11-services --timeout=900s >/dev/null && kubectl exec dns-test-client -n s11-services -- nslookup external-database-service.s11-services.svc.cluster.local
+pod/dns-test-client created
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+external-database-service.s11-services.svc.cluster.local	canonical name = example.com
+
+external-database-service.s11-services.svc.cluster.local	canonical name = example.com
+Name:	example.com
+Address: 172.66.147.243
+Name:	example.com
+Address: 104.20.23.154
+

@@ -1,0 +1,9 @@
+$ kubectl apply -f pod-lifecycle/05-crashloopbackoff.yaml -n s10-lifecycle && date +%T && kubectl get pods -n s10-lifecycle
+pod/lifecycle-crashloop created
+00:13:41
+NAME                  READY   STATUS    RESTARTS   AGE
+lifecycle-crashloop   0/1     Pending   0          0s
+lifecycle-failed      0/1     Pending   0          3s
+lifecycle-pending     0/1     Pending   0          15s
+lifecycle-running     0/1     Pending   0          20s
+lifecycle-succeeded   0/1     Pending   0          10s

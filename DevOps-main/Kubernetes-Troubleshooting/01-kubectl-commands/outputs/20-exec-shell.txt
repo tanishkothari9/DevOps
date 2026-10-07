@@ -1,0 +1,12 @@
+$ kubectl exec -i get-demo -n s14-commands -- sh <<EOF
+echo "--- inside container: \$(hostname)"
+ls /usr/share/nginx/html
+echo "KUBERNETES_SERVICE_HOST=\$KUBERNETES_SERVICE_HOST  WEB_SERVICE_HOST=\$WEB_SERVICE_HOST"
+curl -s -o /dev/null -w "web service HTTP %{http_code}\n" http://web
+exit
+EOF
+--- inside container: get-demo
+50x.html
+index.html
+KUBERNETES_SERVICE_HOST=10.96.0.1  WEB_SERVICE_HOST=10.102.169.5
+web service HTTP 200

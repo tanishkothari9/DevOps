@@ -1,0 +1,8 @@
+$ kubectl logs -f lifecycle-termination -n s10-lifecycle > $W/term-logs.txt 2>&1 & echo "delete started : $(date +%T)"; kubectl delete pod lifecycle-termination -n s10-lifecycle; echo "delete finished: $(date +%T)"; sleep 1; echo '--- container logs captured while it was shutting down:'; cat $W/term-logs.txt
+bash: /term-logs.txt: Read-only file system
+delete started : 00:31:11
+pod "lifecycle-termination" deleted from s10-lifecycle namespace
+I1008 00:36:39.756571   72281 reflector.go:664] "Warning: watch ended with error" reflector="k8s.io/client-go/tools/watch/informerwatcher.go:162" type="*unstructured.Unstructured" err="an error on the server (\"unable to decode an event from the watch stream: http2: client connection lost\") has prevented the request from succeeding"
+delete finished: 00:38:48
+--- container logs captured while it was shutting down:
+cat: /term-logs.txt: No such file or directory

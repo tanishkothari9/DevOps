@@ -1,0 +1,17 @@
+$ cd docker && docker compose down && docker compose ps -a && docker volume ls | grep stockpilot
+ Container stockpilot-frontend-1 Stopping 
+ Container stockpilot-frontend-1 Stopped 
+ Container stockpilot-frontend-1 Removing 
+ Container stockpilot-frontend-1 Removed 
+ Container stockpilot-backend-1 Stopping 
+ Container stockpilot-backend-1 Stopped 
+ Container stockpilot-backend-1 Removing 
+ Container stockpilot-backend-1 Removed 
+ Container stockpilot-postgres-1 Stopping 
+ Container stockpilot-postgres-1 Stopped 
+ Container stockpilot-postgres-1 Removing 
+ Container stockpilot-postgres-1 Removed 
+ Network stockpilot_default Removing 
+ Network stockpilot_default Removed 
+NAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS
+local     stockpilot_postgres-data

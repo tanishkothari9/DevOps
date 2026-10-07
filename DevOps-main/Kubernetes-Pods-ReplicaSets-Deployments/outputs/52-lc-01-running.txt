@@ -1,0 +1,25 @@
+$ kubectl get pod lifecycle-running -n s10-lifecycle -o wide; kubectl describe pod lifecycle-running -n s10-lifecycle | sed -n "/^Status:/p;/^    State:/,/Restart Count:/p;/^Conditions:/,/^Volumes:/p;/^Events:/,\$p"; kubectl get pod lifecycle-running -n s10-lifecycle -o jsonpath='{.status.phase} {.status.containerStatuses[0].state}{"\n"}'
+NAME                READY   STATUS    RESTARTS   AGE    IP             NODE       NOMINATED NODE   READINESS GATES
+lifecycle-running   1/1     Running   0          4m3s   10.244.0.176   minikube   <none>           <none>
+Status:           Running
+    State:          Running
+      Started:      Thu, 08 Oct 2026 00:15:30 +0530
+    Ready:          True
+    Restart Count:  0
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+Events:
+  Type     Reason            Age    From               Message
+  ----     ------            ----   ----               -------
+  Warning  FailedScheduling  4m1s   default-scheduler  0/1 nodes are available: 1 node(s) had untolerated taint(s). preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+  Normal   Scheduled         3m53s  default-scheduler  Successfully assigned s10-lifecycle/lifecycle-running to minikube
+  Normal   Pulled            2m2s   kubelet            spec.containers{nginx}: Container image "nginx:1.27" already present on machine and can be accessed by the pod
+  Normal   Created           119s   kubelet            spec.containers{nginx}: Container created
+  Normal   Started           115s   kubelet            spec.containers{nginx}: Container started
+Running {"running":{"startedAt":"2026-10-07T18:45:30Z"}}

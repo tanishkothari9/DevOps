@@ -1,0 +1,18 @@
+$ kubectl get pods -n s14-image; echo; kubectl describe pod image-demo -n s14-image | grep -E -A3 "^    State:"; kubectl describe pod image-demo -n s14-image | grep -A10 "^Events:"
+NAME              READY   STATUS             RESTARTS   AGE
+image-demo        0/1     ImagePullBackOff   0          3m36s
+image-repo-demo   0/1     ErrImagePull       0          3m35s
+
+    State:          Waiting
+      Reason:       ImagePullBackOff
+    Ready:          False
+    Restart Count:  0
+Events:
+  Type     Reason     Age                 From               Message
+  ----     ------     ----                ----               -------
+  Normal   Scheduled  3m35s               default-scheduler  Successfully assigned s14-image/image-demo to minikube
+  Normal   BackOff    111s                kubelet            spec.containers{app}: Back-off pulling image "nginx:this-image-does-not-exist"
+  Warning  Failed     111s                kubelet            spec.containers{app}: Error: ImagePullBackOff
+  Normal   Pulling    86s (x2 over 118s)  kubelet            spec.containers{app}: Pulling image "nginx:this-image-does-not-exist"
+  Warning  Failed     75s (x2 over 116s)  kubelet            spec.containers{app}: Failed to pull image "nginx:this-image-does-not-exist": rpc error: code = NotFound desc = failed to pull and unpack image "docker.io/library/nginx:this-image-does-not-exist": failed to resolve reference "docker.io/library/nginx:this-image-does-not-exist": docker.io/library/nginx:this-image-does-not-exist: not found
+  Warning  Failed     74s (x2 over 116s)  kubelet            spec.containers{app}: Error: ErrImagePull

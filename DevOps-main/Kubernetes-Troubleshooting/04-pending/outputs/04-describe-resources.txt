@@ -1,0 +1,10 @@
+$ kubectl describe pod pending-resources-demo -n s14-pending | grep -A4 "Requests:"; kubectl describe pod pending-resources-demo -n s14-pending | grep -A5 "^Events:"
+    Requests:
+      cpu:        500
+      memory:     1000Gi
+    Environment:  <none>
+    Mounts:
+Events:
+  Type     Reason            Age                    From               Message
+  ----     ------            ----                   ----               -------
+  Warning  FailedScheduling  2m20s (x2 over 2m50s)  default-scheduler  0/1 nodes are available: 1 Insufficient cpu, 1 Insufficient memory. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.

@@ -1,0 +1,9 @@
+$ helm rollback myapp 1 -n s15-helm && kubectl rollout status deployment/myapp -n s15-helm --timeout=240s; kubectl get deploy myapp -n s15-helm; helm history myapp -n s15-helm
+level=WARN msg="Rollback \"myapp\" failed: could not get information about the resource: Get \"https://127.0.0.1:50992/api/v1/namespaces/s15-helm/services/myapp\": net/http: TLS handshake timeout"
+Error: could not get information about the resource: Get "https://127.0.0.1:50992/api/v1/namespaces/s15-helm/services/myapp": net/http: TLS handshake timeout
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+myapp   2/3     3            2           9m19s
+REVISION	UPDATED                 	STATUS    	CHART      	APP VERSION	DESCRIPTION                                                                                                                                                                    
+1       	Thu Oct  8 00:28:39 2026	superseded	myapp-0.1.0	1.16.0     	Install complete                                                                                                                                                               
+2       	Thu Oct  8 00:30:11 2026	superseded	myapp-0.1.0	1.16.0     	Upgrade complete                                                                                                                                                               
+3       	Thu Oct  8 00:35:59 2026	failed    	myapp-0.1.0	1.16.0     	Rollback "myapp" failed: could not get information about the resource: Get "https://127.0.0.1:50992/api/v1/namespaces/s15-helm/services/myapp": net/http: TLS handshake timeout

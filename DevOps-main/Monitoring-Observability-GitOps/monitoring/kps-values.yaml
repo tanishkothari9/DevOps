@@ -11,6 +11,18 @@ kubeEtcd:
   enabled: false
 kubeProxy:
   enabled: false
+# The API server's /metrics page is huge; scraping it took ~17s and added load to an already busy
+# shared control plane, so it is not scraped in this lab.
+kubeApiServer:
+  enabled: false
+
+# cAdvisor is scraped every 10s by default; on a crowded node that scrape takes >10s and times out.
+# The kubelet's own /metrics page kept timing out (>25s) on the shared node, so only cAdvisor
+# (container CPU / memory) and probe metrics are scraped from the kubelet.
+kubelet:
+  serviceMonitor:
+    kubelet: false
+    cAdvisorInterval: 30s
 
 prometheus:
   prometheusSpec:
@@ -41,7 +53,13 @@ alertmanager:
       limits:
         memory: 128Mi
 
+# The shared minikube node is CPU-starved at times; 1s probe timeouts caused needless restarts.
 prometheusOperator:
+  livenessProbe:
+    timeoutSeconds: 10
+    failureThreshold: 6
+  readinessProbe:
+    timeoutSeconds: 10
   resources:
     requests:
       cpu: 20m
@@ -50,6 +68,9 @@ prometheusOperator:
       memory: 256Mi
 
 kube-state-metrics:
+  livenessProbe:
+    timeoutSeconds: 10
+    failureThreshold: 6
   resources:
     requests:
       cpu: 10m
@@ -58,6 +79,9 @@ kube-state-metrics:
       memory: 128Mi
 
 prometheus-node-exporter:
+  livenessProbe:
+    timeoutSeconds: 10
+    failureThreshold: 6
   resources:
     requests:
       cpu: 10m
@@ -67,12 +91,13 @@ prometheus-node-exporter:
 
 grafana:
   adminPassword: s20-demo-admin   # demo-only password for a local lab cluster
+  # 384Mi was OOMKilled while rendering dashboards (Grafana 13), so allow 768Mi
   resources:
     requests:
       cpu: 20m
-      memory: 128Mi
+      memory: 192Mi
     limits:
-      memory: 384Mi
+      memory: 768Mi
   grafana.ini:
     auth.anonymous:
       enabled: true

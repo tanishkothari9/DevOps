@@ -1,0 +1,44 @@
+$ kubectl create namespace s12-demo && kubectl apply -f 01-configmap/app-config.yaml -n s12-demo && kubectl get configmap yatri-app-config -n s12-demo && kubectl describe configmap yatri-app-config -n s12-demo
+namespace/s12-demo created
+configmap/yatri-app-config created
+NAME               DATA   AGE
+yatri-app-config   6      1s
+Name:         yatri-app-config
+Namespace:    s12-demo
+Labels:       app=yatri-backend
+Annotations:  <none>
+
+Data
+====
+DEFAULT_CURRENCY:
+----
+INR
+
+ENVIRONMENT:
+----
+production
+
+LOG_LEVEL:
+----
+INFO
+
+MAX_BOOKING_DAYS:
+----
+30
+
+PORT:
+----
+5000
+
+app.properties:
+----
+app.name=yatri
+feature.new-booking-ui=true
+cache.ttl.seconds=300
+
+
+
+BinaryData
+====
+
+Events:  <none>

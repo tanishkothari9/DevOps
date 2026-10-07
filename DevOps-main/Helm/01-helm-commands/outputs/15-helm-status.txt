@@ -1,0 +1,31 @@
+$ helm status myapp -n s15-helm
+NAME: myapp
+LAST DEPLOYED: Thu Oct  8 00:28:39 2026
+NAMESPACE: s15-helm
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+RESOURCES:
+==> v1/Service
+NAME    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+myapp   ClusterIP   10.105.227.173   <none>        80/TCP    69s
+
+==> v1/Deployment
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+myapp   1/1     1            1           68s
+
+==> v1/Pod(related)
+NAME                     READY   STATUS    RESTARTS   AGE
+myapp-7fb596c867-dt8ph   1/1     Running   0          69s
+
+==> v1/ServiceAccount
+NAME    AGE
+myapp   69s
+
+
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace s15-helm -l "app.kubernetes.io/name=myapp,app.kubernetes.io/instance=myapp" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace s15-helm $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace s15-helm port-forward $POD_NAME 8080:$CONTAINER_PORT

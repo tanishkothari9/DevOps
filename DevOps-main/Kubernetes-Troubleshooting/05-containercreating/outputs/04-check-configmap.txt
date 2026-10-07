@@ -1,0 +1,4 @@
+$ kubectl get configmap -n s14-cc; kubectl get configmap site-content -n s14-cc
+NAME               DATA   AGE
+kube-root-ca.crt   1      11m
+Error from server (NotFound): configmaps "site-content" not found

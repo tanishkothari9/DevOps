@@ -1,0 +1,29 @@
+$ kubectl get pod lifecycle-succeeded -n s10-lifecycle; kubectl describe pod lifecycle-succeeded -n s10-lifecycle | sed -n "/^Status:/p;/^    State:/,/Restart Count:/p;/^Conditions:/,/^Volumes:/p;/^Events:/,\$p"; kubectl logs lifecycle-succeeded -n s10-lifecycle
+NAME                  READY   STATUS      RESTARTS   AGE
+lifecycle-succeeded   0/1     Completed   0          4m3s
+Status:           Succeeded
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Thu, 08 Oct 2026 00:15:30 +0530
+      Finished:     Thu, 08 Oct 2026 00:15:35 +0530
+    Ready:          False
+    Restart Count:  0
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+Events:
+  Type     Reason            Age    From               Message
+  ----     ------            ----   ----               -------
+  Warning  FailedScheduling  4m4s   default-scheduler  0/1 nodes are available: 1 node(s) had untolerated taint(s). preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+  Normal   Scheduled         4m3s   default-scheduler  Successfully assigned s10-lifecycle/lifecycle-succeeded to minikube
+  Normal   Pulled            2m11s  kubelet            spec.containers{task}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal   Created           2m10s  kubelet            spec.containers{task}: Container created
+  Normal   Started           2m5s   kubelet            spec.containers{task}: Container started
+Task started
+Task completed successfully

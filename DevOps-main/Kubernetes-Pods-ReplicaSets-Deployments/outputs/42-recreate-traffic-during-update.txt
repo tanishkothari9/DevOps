@@ -1,0 +1,9 @@
+$ echo "requests (every 0.5s) while Recreate ran - consecutive runs:"; cut -c10- $W/rec-curl.txt | cut -d"|" -f1-2 | uniq -c; echo; echo "first and last failure:"; grep FAILED $W/rec-curl.txt | sed -n "1p;\$p"
+requests (every 0.5s) while Recreate ran - consecutive runs:
+   4 STRATEGY: RECREATE | VERSION: v1 
+  61 FAILED-no-pod-available
+   6 STRATEGY: RECREATE | VERSION: v2 
+
+first and last failure:
+19:21:51 FAILED-no-pod-available
+19:22:57 FAILED-no-pod-available

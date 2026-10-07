@@ -1,0 +1,3 @@
+$ kubectl logs crash-demo -n s14-crash --previous
+Application starting...
+Something went wrong!

@@ -1,0 +1,19 @@
+$ kubectl apply -f 02-blue-green/deployment-blue.yaml -f 02-blue-green/service-blue.yaml -f curl-client.yaml -n s10-bluegreen && kubectl rollout status deployment/app-blue -n s10-bluegreen --timeout=900s && kubectl wait --for=condition=Ready pod/curl-client -n s10-bluegreen --timeout=600s >/dev/null && kubectl get deploy,svc -n s10-bluegreen && kubectl get pods -n s10-bluegreen -L slot,version
+deployment.apps/app-blue created
+service/myapp-service created
+pod/curl-client created
+Waiting for deployment "app-blue" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-blue" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "app-blue" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "app-blue" rollout to finish: 2 of 3 updated replicas are available...
+deployment "app-blue" successfully rolled out
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/app-blue   3/3     3            3           5m53s
+
+NAME                    TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/myapp-service   NodePort   10.98.163.188   <none>        80:30731/TCP   5m51s
+NAME                        READY   STATUS    RESTARTS   AGE     SLOT   VERSION
+app-blue-5966dff86d-jlnqs   1/1     Running   0          5m40s   blue   v1
+app-blue-5966dff86d-s2pls   1/1     Running   0          5m42s   blue   v1
+app-blue-5966dff86d-t5lx8   1/1     Running   0          5m40s   blue   v1
+curl-client                 1/1     Running   0          5m41s          

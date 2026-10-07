@@ -1,0 +1,5 @@
+$ kubectl apply -f 04-externalname/service.yaml -n s11-services && kubectl get svc external-database-service -n s11-services -o wide && kubectl get endpointslices -l kubernetes.io/service-name=external-database-service -n s11-services
+service/external-database-service created
+NAME                        TYPE           CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+external-database-service   ExternalName   <none>       example.com   <none>    1s    <none>
+No resources found in s11-services namespace.

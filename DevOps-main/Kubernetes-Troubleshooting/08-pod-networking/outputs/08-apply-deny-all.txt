@@ -1,0 +1,8 @@
+$ kubectl apply -n s14-net -f deny-all-networkpolicy.yaml && kubectl get networkpolicy -n s14-net && sleep 10 && IP=$(kubectl get pod api-server -n s14-net -o jsonpath="{.status.podIP}"); kubectl exec client -n s14-net -- curl -sS -m 5 -o /dev/null -w "HTTP %{http_code}\n" http://$IP:8080/; echo "curl exit code: $?"
+networkpolicy.networking.k8s.io/default-deny-ingress created
+NAME                   POD-SELECTOR   AGE
+default-deny-ingress   <none>         1s
+HTTP 000
+curl: (28) Connection timed out after 5038 milliseconds
+command terminated with exit code 28
+curl exit code: 28

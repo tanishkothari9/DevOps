@@ -1,6 +1,0 @@
-$ kubectl logs -f logs-demo -n s14-commands --since=5s & PID=$!; sleep 12; kill $PID; echo "(stopped following after 12s)"
-Application is healthy
-Application is healthy
-Application is healthy
-Application is healthy
-(stopped following after 12s)

@@ -1,0 +1,19 @@
+$ kubectl rollout status deployment/myapp -n s15-helm --timeout=240s; kubectl get deploy,pods -n s15-helm -o wide; helm get values myapp -n s15-helm
+Waiting for deployment "myapp" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "myapp" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "myapp" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "myapp" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "myapp" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "myapp" rollout to finish: 2 of 3 updated replicas are available...
+error: timed out waiting for the condition
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS   IMAGES       SELECTOR
+deployment.apps/myapp   2/3     3            2           5m36s   myapp        nginx:1.27   app.kubernetes.io/instance=myapp,app.kubernetes.io/name=myapp
+
+NAME                         READY   STATUS    RESTARTS        AGE     IP             NODE       NOMINATED NODE   READINESS GATES
+pod/myapp-7fb596c867-9lqpq   1/1     Running   0               4m5s    10.244.0.195   minikube   <none>           <none>
+pod/myapp-7fb596c867-dt8ph   1/1     Running   1 (3m54s ago)   5m36s   10.244.0.194   minikube   <none>           <none>
+pod/myapp-7fb596c867-pwlpt   1/1     Running   0               4m5s    10.244.0.196   minikube   <none>           <none>
+USER-SUPPLIED VALUES:
+image:
+  tag: "1.27"
+replicaCount: 3

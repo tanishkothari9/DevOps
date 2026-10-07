@@ -1,0 +1,5 @@
+$ kubectl get pods -n s14-image; kubectl get pod image-repo-demo -n s14-image -o jsonpath="image-repo-demo image now: {.spec.containers[0].image}"; echo
+NAME              READY   STATUS    RESTARTS   AGE
+image-demo        1/1     Running   0          10m
+image-repo-demo   1/1     Running   0          21m
+image-repo-demo image now: nginx:1.27

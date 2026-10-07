@@ -1,0 +1,18 @@
+$ kubectl get pods -n kube-system -l k8s-app=kube-dns; kubectl exec dns-test -n s14-dns -- nslookup orders-api.s14-dns-backend.svc.cluster.local; kubectl exec dns-test -n s14-dns -- nslookup orders-api.s14-dns-backend
+NAME                       READY   STATUS    RESTARTS   AGE
+coredns-559f6c778d-dfnhj   1/1     Running   1          143m
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	orders-api.s14-dns-backend.svc.cluster.local
+Address: 10.98.29.153
+
+
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Non-authoritative answer:
+
+** server can't find orders-api.s14-dns-backend: NXDOMAIN
+
+command terminated with exit code 1

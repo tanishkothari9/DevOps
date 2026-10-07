@@ -1,0 +1,6 @@
+$ kubectl get endpoints web-service-clusterip -n s11-services; kubectl get endpointslices -l kubernetes.io/service-name=web-service-clusterip -n s11-services -o wide
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME                    ENDPOINTS                                         AGE
+web-service-clusterip   10.244.0.215:80,10.244.0.216:80,10.244.0.217:80   3s
+NAME                          ADDRESSTYPE   PORTS   ENDPOINTS                                AGE
+web-service-clusterip-2q5bz   IPv4          80      10.244.0.217,10.244.0.215,10.244.0.216   2s

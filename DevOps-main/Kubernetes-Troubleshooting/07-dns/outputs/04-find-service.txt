@@ -1,0 +1,3 @@
+$ kubectl get svc -A | grep -E "NAMESPACE|orders-api"
+NAMESPACE           NAME                                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                        AGE
+s14-dns-backend     orders-api                                ClusterIP   10.98.29.153     <none>        80/TCP                         21m

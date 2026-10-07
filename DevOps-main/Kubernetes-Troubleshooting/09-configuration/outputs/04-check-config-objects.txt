@@ -1,0 +1,6 @@
+$ kubectl get configmap app-config -n s14-config -o yaml | grep -A3 "^data:"; kubectl get secret db-credentials -n s14-config
+data:
+  app_mode: production
+  log_level: info
+kind: ConfigMap
+Error from server (NotFound): secrets "db-credentials" not found

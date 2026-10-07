@@ -88,6 +88,14 @@ cd docker && docker compose exec -T postgres psql -U stockpilot -d stockpilot -c
 
 ![12-compose-postgres-tables](screenshots/12-compose-postgres-tables.png)
 
+### 12b-compose-down
+
+```bash
+cd docker && docker compose down && docker compose ps -a && docker volume ls | grep stockpilot
+```
+
+![12b-compose-down](screenshots/12b-compose-down.png)
+
 ### 13-minikube-image-load
 
 ```bash
@@ -271,3 +279,167 @@ docker run --rm -v "$PWD:/repo" --workdir /repo rhysd/actionlint:latest .github/
 ```
 
 ![36-actionlint-workflow](screenshots/36-actionlint-workflow.png)
+
+### 37-terraform-init
+
+```bash
+cd terraform && terraform init -input=false
+```
+
+![37-terraform-init](screenshots/37-terraform-init.png)
+
+### 38-terraform-fmt-validate
+
+```bash
+cd terraform && terraform fmt -recursive -check -diff && echo 'terraform fmt: all files formatted' && terraform validate
+```
+
+![38-terraform-fmt-validate](screenshots/38-terraform-fmt-validate.png)
+
+### 39-terraform-plan-eks-preview
+
+```bash
+cd terraform && terraform plan -input=false -var-file=localstack.tfvars -var use_localstack=true -var enable_eks=true -var enable_ecr=true -var enable_k3s_node=false -no-color | grep -E '^  # |^Plan:'
+```
+
+![39-terraform-plan-eks-preview](screenshots/39-terraform-plan-eks-preview.png)
+
+### 40-terraform-plan-localstack
+
+```bash
+cd terraform && terraform plan -input=false -var-file=localstack.tfvars -out=localstack.tfplan -no-color | grep -E '^  # |^Plan:|Saved the plan'
+```
+
+![40-terraform-plan-localstack](screenshots/40-terraform-plan-localstack.png)
+
+### 41-terraform-apply-localstack
+
+```bash
+cd terraform && terraform apply -input=false -auto-approve localstack.tfplan -no-color | grep -E 'Creation complete|Apply complete|Error'
+```
+
+![41-terraform-apply-localstack](screenshots/41-terraform-apply-localstack.png)
+
+### 42-terraform-output
+
+```bash
+cd terraform && terraform output
+```
+
+![42-terraform-output](screenshots/42-terraform-output.png)
+
+### 43-terraform-state-list
+
+```bash
+cd terraform && terraform state list
+```
+
+![43-terraform-state-list](screenshots/43-terraform-state-list.png)
+
+### 44-localstack-verify-aws-cli
+
+```bash
+export AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test AWS_DEFAULT_REGION=ap-south-1; A='aws --endpoint-url http://localhost:4566'; $A ec2 describe-vpcs --filters Name=tag:Project,Values=stockpilot --query 'Vpcs[].[VpcId,CidrBlock,Tags[?Key==`Name`]|[0].Value]' --output table && $A ec2 describe-subnets --filters Name=tag:Project,Values=stockpilot --query 'Subnets[].[SubnetId,CidrBlock,Availabili ...
+```
+
+![44-localstack-verify-aws-cli](screenshots/44-localstack-verify-aws-cli.png)
+
+### 45-terraform-plan-after-apply
+
+```bash
+cd terraform && terraform plan -input=false -var-file=localstack.tfvars -no-color -detailed-exitcode | grep -E '^  # |^Plan:|No changes|~ |http_tokens'; echo "plan exit code: ${PIPESTATUS[0]}"
+```
+
+![45-terraform-plan-after-apply](screenshots/45-terraform-plan-after-apply.png)
+
+### 46-terraform-destroy
+
+```bash
+cd terraform && terraform destroy -input=false -auto-approve -var-file=localstack.tfvars -no-color | grep -E 'Destruction complete|Destroy complete|Error' | tail -12 && terraform state list | wc -l | xargs echo 'resources left in state:'
+```
+
+![46-terraform-destroy](screenshots/46-terraform-destroy.png)
+
+### 47-trivy-config-iac-after
+
+```bash
+trivy config --quiet --severity HIGH,CRITICAL --format json --output security/reports/trivy-config.json . ; jq -r '[.Results[]? | .Misconfigurations // [] | .[] | select(.Status=="FAIL")] | length | "HIGH/CRITICAL misconfigurations: \(.)"' security/reports/trivy-config.json; jq -r '[.Results[]? | select(.Misconfigurations) | .Target] | unique | .[]' security/reports/trivy-config.json | sed 's/^/sc ...
+```
+
+![47-trivy-config-iac-after](screenshots/47-trivy-config-iac-after.png)
+
+### 47-trivy-config-iac-before
+
+```bash
+trivy config --quiet --severity HIGH,CRITICAL --format json --output security/reports/trivy-config.json . ; trivy config --quiet --severity HIGH,CRITICAL . 2>&1 | grep -E 'Tests:|Failures:|^[A-Z]+ ?\(|AVD-|^\S+ \(' | head -40; jq -r '[.Results[]? | .Misconfigurations // [] | .[] | select(.Status=="FAIL")] | group_by(.ID) | map({id: .[0].ID, severity: .[0].Severity, title: .[0].Title, count: length ...
+```
+
+![47-trivy-config-iac-before](screenshots/47-trivy-config-iac-before.png)
+
+### 48-helm-upgrade-postgres-hardening
+
+```bash
+helm upgrade stockpilot helm/stockpilot -n taskboard -f helm/stockpilot/values-local.yaml --wait --timeout 12m | head -7 && kubectl exec -n taskboard stockpilot-postgres-0 -- id && kubectl get sts stockpilot-postgres -n taskboard -o jsonpath='{.spec.template.spec.securityContext}{"\n"}{.spec.template.spec.containers[0].securityContext}{"\n"}' && kubectl get pods -n taskboard && curl -s -H 'Host: s ...
+```
+
+![48-helm-upgrade-postgres-hardening](screenshots/48-helm-upgrade-postgres-hardening.png)
+
+### 49-ghcr-images
+
+```bash
+for img in stockpilot-backend stockpilot-frontend; do T=$(curl -s "https://ghcr.io/token?scope=repository:tanishkothari9/$img:pull" | jq -r .token); curl -s -H "Authorization: Bearer $T" https://ghcr.io/v2/tanishkothari9/$img/tags/list | jq -c .; done; docker pull ghcr.io/tanishkothari9/stockpilot-frontend:68adae859364a8653de35a9ab25473ae19baf14c | tail -2; docker images --format 'table {{.Reposit ...
+```
+
+![49-ghcr-images](screenshots/49-ghcr-images.png)
+
+### 50-ghcr-package-page-backend
+
+![50-ghcr-package-page-backend](screenshots/50-ghcr-package-page-backend.png)
+
+### 51-gha-run-green-graph
+
+![51-gha-run-green-graph](screenshots/51-gha-run-green-graph.png)
+
+### 52-gha-run1-failed-gate-blocked
+
+![52-gha-run1-failed-gate-blocked](screenshots/52-gha-run1-failed-gate-blocked.png)
+
+### 53-ci-log-pytest
+
+```bash
+gh run view -R tanishkothari9/DevOps --log --job 112943750050 | cut -f3 | sed -E 's/^[0-9T:.Z-]+ //; s/\^\[\[[0-9;]*m//g; s/\x1b\[[0-9;]*m//g' | grep -E 'PASSED|passed in|TOTAL|^# (tests|pass|fail) [0-9]|built in|chart\(s\) linted' | head -30
+```
+
+![53-ci-log-pytest](screenshots/53-ci-log-pytest.png)
+
+### 54-ci-log-trivy-image-scan
+
+```bash
+gh run view -R tanishkothari9/DevOps --log --job 112944043999 | cut -f3 | sed -E 's/^[0-9T:.Z-]+ //; s/\^\[\[[0-9;]*m//g; s/\x1b\[[0-9;]*m//g' | grep -E 'Report Summary|Target|stockpilot-(backend|frontend):|debian|alpine|Legend|Clean|naming to' | grep -vE 'METADATA|docker run' | head -40
+```
+
+![54-ci-log-trivy-image-scan](screenshots/54-ci-log-trivy-image-scan.png)
+
+### 55-ci-log-security-gate
+
+```bash
+gh run view -R tanishkothari9/DevOps --log --job 112944563898 | cut -f3 | sed -E 's/^[0-9T:.Z-]+ //; s/\^\[\[[0-9;]*m//g; s/\x1b\[[0-9;]*m//g' | grep -E '^reports/|^Security gate passed|Download artifact has finished|Artifact image-scan-reports' | head -20
+```
+
+![55-ci-log-security-gate](screenshots/55-ci-log-security-gate.png)
+
+### 56-ci-log-push-ghcr
+
+```bash
+gh run view -R tanishkothari9/DevOps --log --job 112944610323 | cut -f3 | sed -E 's/^[0-9T:.Z-]+ //' | grep -E 'Loaded image|digest:|== ghcr|Name:|Digest:|\{"name"|Login Succeeded' | head -20
+```
+
+![56-ci-log-push-ghcr](screenshots/56-ci-log-push-ghcr.png)
+
+### 57-ci-log-deploy-kind
+
+```bash
+gh run view -R tanishkothari9/DevOps --log --job 112945080536 | cut -f3 | sed -E 's/^[0-9T:.Z-]+ //; s/\^\[\[[0-9;]*m//g; s/\x1b\[[0-9;]*m//g' | grep -E 'Creating cluster|Ready after|STATUS: deployed|successfully rolled out|Phase:|\{"status"|service"|ghcr.io/tanishkothari9|^pod/|^deployment.apps/|^persistentvolumeclaim/|^horizontalpodautoscaler' | grep -vE 'set |_IMAGE:' | cut -c1-180 | head -40
+```
+
+![57-ci-log-deploy-kind](screenshots/57-ci-log-deploy-kind.png)

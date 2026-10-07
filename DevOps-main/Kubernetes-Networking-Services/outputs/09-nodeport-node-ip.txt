@@ -1,0 +1,6 @@
+$ echo "node IP: $(minikube ip)"; minikube ssh -- 'for i in 1 2 3 4; do curl -s -m 5 http://192.168.49.2:31180; done'
+node IP: 192.168.49.2
+Hello from pod web-app-nodeport-6d76dbbf45-4xdqg [02-nodeport]
+Hello from pod web-app-nodeport-6d76dbbf45-n4wv8 [02-nodeport]
+Hello from pod web-app-nodeport-6d76dbbf45-n4wv8 [02-nodeport]
+Hello from pod web-app-nodeport-6d76dbbf45-4xdqg [02-nodeport]

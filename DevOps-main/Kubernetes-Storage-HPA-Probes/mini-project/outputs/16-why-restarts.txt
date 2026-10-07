@@ -1,0 +1,11 @@
+$ POD=$(kubectl get pod -n production-webapp -l app=web-app -o jsonpath="{.items[0].metadata.name}"); kubectl describe pod $POD -n production-webapp | grep -E "Last State|Reason|Exit Code|Restart Count"; kubectl events -n production-webapp --for pod/$POD --types=Warning | tail -6
+    Last State:     Terminated
+      Reason:       Completed
+      Exit Code:    0
+    Restart Count:  11
+  Type     Reason        Age                 From             Message
+LAST SEEN            TYPE      REASON         OBJECT                        MESSAGE
+16m (x13 over 78m)   Warning   Unhealthy      Pod/web-app-d45775485-79ppb   Readiness probe failed: Get "http://10.244.0.130:80/": dial tcp 10.244.0.130:80: connect: connection refused
+13m (x2 over 72m)    Warning   NodeNotReady   Pod/web-app-d45775485-79ppb   Node is not ready
+5m (x62 over 80m)    Warning   Unhealthy      Pod/web-app-d45775485-79ppb   Readiness probe failed: Get "http://10.244.0.130:80/": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+16s (x67 over 80m)   Warning   Unhealthy      Pod/web-app-d45775485-79ppb   Liveness probe failed: Get "http://10.244.0.130:80/": context deadline exceeded (Client.Timeout exceeded while awaiting headers)

@@ -1,0 +1,8 @@
+$ kubectl apply -f pod-lifecycle/04-failed.yaml -n s10-lifecycle && date +%T && kubectl get pods -n s10-lifecycle
+pod/lifecycle-failed created
+00:13:38
+NAME                  READY   STATUS    RESTARTS   AGE
+lifecycle-failed      0/1     Pending   0          0s
+lifecycle-pending     0/1     Pending   0          12s
+lifecycle-running     0/1     Pending   0          17s
+lifecycle-succeeded   0/1     Pending   0          7s

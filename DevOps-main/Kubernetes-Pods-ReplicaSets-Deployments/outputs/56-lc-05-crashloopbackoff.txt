@@ -1,0 +1,25 @@
+$ kubectl get pod lifecycle-crashloop -n s10-lifecycle; kubectl describe pod lifecycle-crashloop -n s10-lifecycle | sed -n '/^    State:/,/Restart Count:/p;/^Events:/,$p'; echo '--- logs (current):'; kubectl logs lifecycle-crashloop -n s10-lifecycle; echo '--- logs --previous:'; kubectl logs lifecycle-crashloop -n s10-lifecycle --previous
+NAME                  READY   STATUS    RESTARTS        AGE
+lifecycle-crashloop   1/1     Running   2 (2m36s ago)   4m43s
+    State:          Running
+      Started:      Thu, 08 Oct 2026 00:16:07 +0530
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Thu, 08 Oct 2026 00:15:44 +0530
+      Finished:     Thu, 08 Oct 2026 00:15:48 +0530
+    Ready:          True
+    Restart Count:  2
+Events:
+  Type     Reason     Age                    From               Message
+  ----     ------     ----                   ----               -------
+  Normal   Scheduled  4m45s                  default-scheduler  Successfully assigned s10-lifecycle/lifecycle-crashloop to minikube
+  Warning  BackOff    2m30s (x2 over 2m33s)  kubelet            spec.containers{crashing-app}: Back-off restarting failed container crashing-app in pod lifecycle-crashloop_s10-lifecycle(294ce4a0-6260-47b0-89a7-d6dff0ad8047)
+  Normal   Pulled     2m26s (x3 over 2m53s)  kubelet            spec.containers{crashing-app}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal   Created    2m22s (x3 over 2m51s)  kubelet            spec.containers{crashing-app}: Container created
+  Normal   Started    2m19s (x3 over 2m50s)  kubelet            spec.containers{crashing-app}: Container started
+--- logs (current):
+Application started
+Application crashed
+--- logs --previous:
+unable to retrieve container logs for containerd://53d3b6b46afbcade95ef6152b484a24789bb7daff63f4cefdf7588d10a78ce34

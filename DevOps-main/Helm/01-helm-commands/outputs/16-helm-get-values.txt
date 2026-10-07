@@ -1,0 +1,25 @@
+$ helm get values myapp -n s15-helm; echo; helm get values myapp -n s15-helm --all | head -20
+USER-SUPPLIED VALUES:
+image:
+  tag: "1.27"
+
+COMPUTED VALUES:
+affinity: {}
+autoscaling:
+  enabled: false
+  maxReplicas: 100
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 80
+fullnameOverride: ""
+httpRoute:
+  annotations: {}
+  enabled: false
+  hostnames:
+  - chart-example.local
+  parentRefs:
+  - name: gateway
+    sectionName: http
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix

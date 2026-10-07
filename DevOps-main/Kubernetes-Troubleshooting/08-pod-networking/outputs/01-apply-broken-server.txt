@@ -1,0 +1,4 @@
+$ kubectl create namespace s14-net && kubectl apply -n s14-net -f broken-server.yaml -f client-pod.yaml
+namespace/s14-net created
+pod/api-server created
+pod/client created

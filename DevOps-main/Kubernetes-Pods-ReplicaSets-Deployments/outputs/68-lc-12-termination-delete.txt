@@ -1,0 +1,8 @@
+$ kubectl logs -f lifecycle-termination -n s10-lifecycle > $W/term-logs.txt 2>&1 & echo "delete started : $(date +%T)"; kubectl delete pod lifecycle-termination -n s10-lifecycle; echo "delete finished: $(date +%T)"; sleep 1; echo '--- container logs captured (kubectl logs -f) while it was shutting down:'; cat $W/term-logs.txt
+delete started : 00:46:17
+pod "lifecycle-termination" deleted from s10-lifecycle namespace
+delete finished: 00:48:39
+--- container logs captured (kubectl logs -f) while it was shutting down:
+Application running
+SIGTERM received; cleaning up...
+Cleanup complete

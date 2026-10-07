@@ -1,0 +1,6 @@
+$ kubectl exec dns-test-client -n s11-services -- curl -sI -m 10 -H 'Host: example.com' http://external-database-service | head -5
+HTTP/1.1 200 OK
+Date: Wed, 07 Oct 2026 19:23:07 GMT
+Content-Type: text/html; charset=utf-8
+Connection: keep-alive
+Server: cloudflare

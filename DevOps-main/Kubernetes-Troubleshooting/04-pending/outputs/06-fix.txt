@@ -1,0 +1,5 @@
+$ kubectl delete pod pending-demo pending-resources-demo -n s14-pending && kubectl apply -n s14-pending -f fixed-pod.yaml -f fixed-pod-resources.yaml
+pod "pending-demo" deleted from s14-pending namespace
+pod "pending-resources-demo" deleted from s14-pending namespace
+pod/pending-demo created
+pod/pending-resources-demo created

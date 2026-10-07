@@ -1,0 +1,18 @@
+$ helm get all myapp -n s15-helm | grep -E "^NAME|^LAST DEPLOYED|^NAMESPACE|^STATUS|^REVISION|^CHART|^VERSION|^APP_VERSION|^USER-SUPPLIED VALUES|^COMPUTED VALUES|^HOOKS|^MANIFEST|^NOTES|^# Source" 
+NAME: myapp
+LAST DEPLOYED: Thu Oct  8 00:28:39 2026
+NAMESPACE: s15-helm
+STATUS: deployed
+REVISION: 1
+CHART: myapp
+VERSION: 0.1.0
+APP_VERSION: 1.16.0
+USER-SUPPLIED VALUES:
+COMPUTED VALUES:
+HOOKS:
+# Source: myapp/templates/tests/test-connection.yaml
+MANIFEST:
+# Source: myapp/templates/serviceaccount.yaml
+# Source: myapp/templates/service.yaml
+# Source: myapp/templates/deployment.yaml
+NOTES:

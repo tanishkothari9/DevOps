@@ -1,0 +1,30 @@
+# kube-prometheus-stack settings StockPilot relies on (release "kps", namespace "monitoring").
+# The shared course cluster already runs kps; these are the values that make it pick up this project:
+#   helm upgrade --install kps prometheus-community/kube-prometheus-stack -n monitoring --create-namespace -f monitoring/kps-values.yaml
+prometheus:
+  prometheusSpec:
+    # discover ServiceMonitors / PrometheusRules in every namespace, whatever their labels
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorNamespaceSelector: {}
+    ruleSelectorNilUsesHelmValues: false
+    ruleNamespaceSelector: {}
+    retention: 2d
+    resources:
+      requests: {cpu: 100m, memory: 400Mi}
+
+grafana:
+  grafana.ini:
+    auth.anonymous:
+      enabled: true
+      org_role: Viewer
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      searchNamespace: ALL   # loads helm/stockpilot dashboard ConfigMap from the app namespace
+
+alertmanager:
+  alertmanagerSpec:
+    resources:
+      requests: {cpu: 10m, memory: 32Mi}

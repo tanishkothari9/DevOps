@@ -1,0 +1,20 @@
+$ kubectl rollout status deployment/app-rolling -n s10-rolling; kubectl get rs -n s10-rolling -L version; kubectl get pods -n s10-rolling -l app=app-rolling -L version; kubectl exec curl-client -n s10-rolling -- sh -c "for i in 1 2 3 4; do curl -s -m 3 http://app-rolling-service; done"; kubectl rollout history deployment/app-rolling -n s10-rolling
+deployment "app-rolling" successfully rolled out
+NAME                     DESIRED   CURRENT   READY   AGE   VERSION
+app-rolling-65597c5cf5   4         4         4       44m   v1
+app-rolling-69bb799997   0         0         0       43m   v2
+NAME                           READY   STATUS        RESTARTS   AGE   VERSION
+app-rolling-65597c5cf5-6jwjj   1/1     Running       0          19m   v1
+app-rolling-65597c5cf5-84rn7   1/1     Running       0          26m   v1
+app-rolling-65597c5cf5-nm9qn   1/1     Running       0          11m   v1
+app-rolling-65597c5cf5-rxxms   1/1     Running       0          12m   v1
+app-rolling-69bb799997-nm2fz   1/1     Terminating   0          43m   v2
+VERSION: v1 | image: nginx:1.24-alpine | pod: app-rolling-65597c5cf5-rxxms
+VERSION: v1 | image: nginx:1.24-alpine | pod: app-rolling-65597c5cf5-nm9qn
+VERSION: v1 | image: nginx:1.24-alpine | pod: app-rolling-65597c5cf5-nm9qn
+VERSION: v1 | image: nginx:1.24-alpine | pod: app-rolling-65597c5cf5-rxxms
+deployment.apps/app-rolling 
+REVISION  CHANGE-CAUSE
+2         <none>
+3         <none>
+

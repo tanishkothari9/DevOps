@@ -1,0 +1,5 @@
+$ IP=$(kubectl get pod api-server -n s14-net -o jsonpath="{.status.podIP}"); echo "api-server pod IP: $IP"; kubectl exec client -n s14-net -- curl -sS -m 5 http://$IP:8080/; echo "curl exit code: $?"
+api-server pod IP: 10.244.0.169
+curl: (7) Failed to connect to 10.244.0.169 port 8080 after 1 ms: Couldn't connect to server
+command terminated with exit code 7
+curl exit code: 7

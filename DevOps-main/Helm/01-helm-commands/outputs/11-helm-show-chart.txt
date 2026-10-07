@@ -1,0 +1,21 @@
+$ helm show chart bitnami/nginx | head -20
+annotations:
+  fips: "true"
+  images: |
+    - name: git
+      version: 2.56.0
+      image: registry-1.docker.io/bitnami/git:latest
+    - name: nginx
+      version: 1.31.6
+      image: registry-1.docker.io/bitnami/nginx:latest
+    - name: nginx-exporter
+      version: 1.5.3
+      image: registry-1.docker.io/bitnami/nginx-exporter:latest
+  licenses: Apache-2.0
+  tanzuCategory: clusterUtility
+apiVersion: v2
+appVersion: 1.31.6
+dependencies:
+- name: common
+  repository: oci://registry-1.docker.io/bitnamicharts
+  tags:

@@ -1,0 +1,12 @@
+$ kubectl get nodes --show-labels | tr "," "\n" | grep -E "NAME|hostname"; kubectl describe node minikube | grep -A3 "^Allocatable:"; kubectl describe node minikube | grep -A4 "Allocated resources:"
+NAME       STATUS   ROLES           AGE    VERSION   LABELS
+kubernetes.io/hostname=minikube
+Allocatable:
+  cpu:                10
+  ephemeral-storage:  485473984512
+  hugepages-1Gi:      0
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests      Limits
+  --------           --------      ------
+  cpu                4140m (41%)   10 (100%)

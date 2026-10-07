@@ -1,0 +1,13 @@
+$ kubectl get pods -n s14-net -o wide; IP=$(kubectl get pod api-server -n s14-net -o jsonpath="{.status.podIP}"); echo "api-server pod IP: $IP"; kubectl exec client -n s14-net -- curl -sS -m 5 http://$IP:8080/ | head -4; kubectl exec api-server -n s14-net -- netstat -tln; kubectl logs api-server -n s14-net
+NAME         READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+api-server   1/1     Running   0          87s   10.244.0.218   minikube   <none>           <none>
+client       1/1     Running   0          44m   10.244.0.171   minikube   <none>           <none>
+api-server pod IP: 10.244.0.218
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       
+tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      
+10.244.0.171 - - [07/Oct/2026 19:20:14] "GET / HTTP/1.1" 200 -

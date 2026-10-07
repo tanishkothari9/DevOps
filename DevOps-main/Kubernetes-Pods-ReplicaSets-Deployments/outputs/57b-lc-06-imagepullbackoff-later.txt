@@ -1,0 +1,16 @@
+$ kubectl get pod lifecycle-image-error -n s10-lifecycle; kubectl describe pod lifecycle-image-error -n s10-lifecycle | sed -n '/^    Image:/p;/^    State:/,/Ready:/p;/^Events:/,$p'
+NAME                    READY   STATUS             RESTARTS   AGE
+lifecycle-image-error   0/1     ImagePullBackOff   0          16m
+    Image:          jakwehrgkaejw:kahsdfgkhj
+    State:          Waiting
+      Reason:       ImagePullBackOff
+    Ready:          False
+Events:
+  Type     Reason     Age                  From               Message
+  ----     ------     ----                 ----               -------
+  Normal   Scheduled  16m                  default-scheduler  Successfully assigned s10-lifecycle/lifecycle-image-error to minikube
+  Normal   Pulling    5m28s (x4 over 14m)  kubelet            spec.containers{broken-image}: Pulling image "jakwehrgkaejw:kahsdfgkhj"
+  Warning  Failed     5m25s (x4 over 14m)  kubelet            spec.containers{broken-image}: Failed to pull image "jakwehrgkaejw:kahsdfgkhj": failed to pull and unpack image "docker.io/library/jakwehrgkaejw:kahsdfgkhj": failed to resolve reference "docker.io/library/jakwehrgkaejw:kahsdfgkhj": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+  Warning  Failed     5m24s (x4 over 14m)  kubelet            spec.containers{broken-image}: Error: ErrImagePull
+  Normal   BackOff    4m6s (x3 over 14m)   kubelet            spec.containers{broken-image}: Back-off pulling image "jakwehrgkaejw:kahsdfgkhj"
+  Warning  Failed     4m6s (x3 over 14m)   kubelet            spec.containers{broken-image}: Error: ImagePullBackOff

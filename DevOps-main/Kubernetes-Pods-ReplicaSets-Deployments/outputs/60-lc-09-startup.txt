@@ -1,0 +1,18 @@
+$ kubectl get pod lifecycle-startup -n s10-lifecycle; kubectl describe pod lifecycle-startup -n s10-lifecycle | sed -n '/^    Startup:/p;/^    State:/,/Restart Count:/p;/^Events:/,$p'; kubectl logs lifecycle-startup -n s10-lifecycle
+NAME                READY   STATUS    RESTARTS   AGE
+lifecycle-startup   0/1     Running   0          10m
+    State:          Running
+      Started:      Thu, 08 Oct 2026 00:15:44 +0530
+    Ready:          False
+    Restart Count:  0
+    Startup:        exec [sh -c test -f /tmp/started] delay=0s timeout=1s period=5s successThreshold=1 failureThreshold=10
+Events:
+  Type     Reason     Age                    From               Message
+  ----     ------     ----                   ----               -------
+  Normal   Scheduled  10m                    default-scheduler  Successfully assigned s10-lifecycle/lifecycle-startup to minikube
+  Normal   Pulled     8m21s                  kubelet            spec.containers{slow-app}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal   Created    8m20s                  kubelet            spec.containers{slow-app}: Container created
+  Normal   Started    8m18s                  kubelet            spec.containers{slow-app}: Container started
+  Warning  Unhealthy  7m44s (x6 over 8m11s)  kubelet            spec.containers{slow-app}: Startup probe failed:
+Application starting...
+Application started

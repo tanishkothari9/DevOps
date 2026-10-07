@@ -1,0 +1,5 @@
+$ kubectl apply -f 01-clusterip/client-pod.yaml -n s11-services && kubectl wait --for=condition=Ready pod/curl-client -n s11-services --timeout=900s && kubectl get pod curl-client -n s11-services -o wide
+pod/curl-client created
+pod/curl-client condition met
+NAME          READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+curl-client   1/1     Running   0          15s   10.244.0.220   minikube   <none>           <none>
