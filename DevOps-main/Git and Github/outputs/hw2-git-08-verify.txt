@@ -1,0 +1,27 @@
+$ cd git-practice && git branch --show-current && git log --oneline && echo '--- files on main ---' && ls && echo '--- fix.txt ---' && cat fix.txt && echo '--- graph of all branches ---' && git log --oneline --graph --all
+main
+dcccd7e Feature branch: IMPORTANT fix in fix.txt
+654fe04 Add feature B
+f140dbb Add feature A
+cf06486 add untracked.txt explicitly with git add
+199da77 commit tracked change with -a
+e40d92e Initial commit with notes.txt
+--- files on main ---
+a.txt
+b.txt
+fix.txt
+notes.txt
+untracked.txt
+--- fix.txt ---
+important fix
+--- graph of all branches ---
+* dcccd7e Feature branch: IMPORTANT fix in fix.txt
+| * 62efa8e Feature branch: add y.txt
+| * ac69013 Feature branch: IMPORTANT fix in fix.txt
+| * 84e7f9c Feature branch: add x.txt
+|/  
+* 654fe04 Add feature B
+* f140dbb Add feature A
+* cf06486 add untracked.txt explicitly with git add
+* 199da77 commit tracked change with -a
+* e40d92e Initial commit with notes.txt

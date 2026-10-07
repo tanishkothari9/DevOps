@@ -1,0 +1,8 @@
+$ DBIP=$(docker inspect hw-database --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'); echo "database IP = $DBIP"; echo '--- frontend -> database by IP (different network) ---'; docker exec hw-frontend nc -zv -w 3 $DBIP 3306; echo "exit code: $?"; echo '--- backend -> database by IP (shared hw-db-net) ---'; docker exec hw-backend nc -zv -w 3 $DBIP 3306; echo "exit code: $?"
+database IP = 172.24.0.2
+--- frontend -> database by IP (different network) ---
+nc: 172.24.0.2 (172.24.0.2:3306): Operation timed out
+exit code: 1
+--- backend -> database by IP (shared hw-db-net) ---
+172.24.0.2 (172.24.0.2:3306) open
+exit code: 0

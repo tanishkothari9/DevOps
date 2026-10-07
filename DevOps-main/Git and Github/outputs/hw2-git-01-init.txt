@@ -1,0 +1,5 @@
+$ cd git-practice && echo 'line1' > notes.txt && git add notes.txt && git commit -m 'Initial commit with notes.txt' && git log --oneline
+[main (root-commit) e40d92e] Initial commit with notes.txt
+ 1 file changed, 1 insertion(+)
+ create mode 100644 notes.txt
+e40d92e Initial commit with notes.txt

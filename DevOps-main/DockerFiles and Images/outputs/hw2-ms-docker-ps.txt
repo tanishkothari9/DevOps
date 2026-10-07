@@ -1,0 +1,6 @@
+$ docker ps --filter name=hw-multistage && echo && docker port hw-multistage
+CONTAINER ID   IMAGE               COMMAND      CREATED          STATUS          PORTS                                           NAMES
+11390f4dc2b3   hw-multistage-app   "./server"   16 seconds ago   Up 14 seconds   0.0.0.0:18090->8080/tcp, [::]:18090->8080/tcp   hw-multistage
+
+8080/tcp -> 0.0.0.0:18090
+8080/tcp -> [::]:18090

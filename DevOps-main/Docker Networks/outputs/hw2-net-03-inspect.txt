@@ -1,0 +1,17 @@
+$ echo '--- networks of hw-backend ---'; docker inspect hw-backend --format '{{range $n, $v := .NetworkSettings.Networks}}{{$n}} -> {{$v.IPAddress}}{{println}}{{end}}'; for n in hw-frontend-net hw-backend-net hw-db-net; do echo "--- containers on $n ---"; docker network inspect $n --format '{{range .Containers}}{{.Name}} ({{.IPv4Address}}){{println}}{{end}}'; done
+--- networks of hw-backend ---
+hw-backend-net -> 172.23.0.2
+hw-db-net -> 172.24.0.3
+hw-frontend-net -> 172.22.0.3
+
+--- containers on hw-frontend-net ---
+hw-backend (172.22.0.3/16)
+hw-frontend (172.22.0.2/16)
+
+--- containers on hw-backend-net ---
+hw-backend (172.23.0.2/16)
+
+--- containers on hw-db-net ---
+hw-backend (172.24.0.3/16)
+hw-database (172.24.0.2/16)
+

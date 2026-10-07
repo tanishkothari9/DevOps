@@ -1,0 +1,9 @@
+$ docker rm -f hw-frontend hw-backend hw-database hw-nginx-bind && docker network rm hw-frontend-net hw-backend-net hw-db-net && echo "remaining hw- containers: $(docker ps -aq --filter name=hw- | wc -l | tr -d ' ')  remaining hw- networks: $(docker network ls -q --filter name=hw- | wc -l | tr -d ' ')"
+hw-frontend
+hw-backend
+hw-database
+hw-nginx-bind
+hw-frontend-net
+hw-backend-net
+hw-db-net
+remaining hw- containers: 0  remaining hw- networks: 0

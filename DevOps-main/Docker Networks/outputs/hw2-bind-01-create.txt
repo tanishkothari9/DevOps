@@ -1,0 +1,7 @@
+$ mkdir -p site && echo '<h1>Hello students</h1>' > site/index.html && cat site/index.html && docker run -d --name hw-nginx-bind -p 18095:80 -v "$PWD/site":/usr/share/nginx/html:ro nginx:alpine && sleep 2 && docker inspect hw-nginx-bind --format 'Mount: {{range .Mounts}}{{.Type}} {{.Source}} -> {{.Destination}} (RW={{.RW}}){{end}}' && echo '$ curl -s http://localhost:18095' && curl -s http://localhost:18095 && echo "StartedAt: $(docker inspect hw-nginx-bind --format '{{.State.StartedAt}}')  RestartCount: $(docker inspect hw-nginx-bind --format '{{.RestartCount}}')"
+<h1>Hello students</h1>
+c3431743fe1fc55df627a68136f66ce8645486d1d06ea3f78f9c53f93a8c2ba7
+Mount: bind /private/tmp/claude-501/-Users-tanishkothari-Code-learning-sst-devops-devops-2/e68a0ffe-ac42-4077-9a09-92e41c2ade38/scratchpad/bindmount/site -> /usr/share/nginx/html (RW=false)
+$ curl -s http://localhost:18095
+<h1>Hello students</h1>
+StartedAt: 2026-10-07T17:47:33.73092184Z  RestartCount: 0

@@ -112,3 +112,44 @@ a.txt  b.txt  fix.txt  notes.txt
 Main now carries `fix.txt`, while `x.txt` and `y.txt` are **absent** - clear evidence that only the single chosen commit came across rather than the entire branch.
 
 **What I understood:** With `cherry-pick` I can name a commit by its hash and bring just that change onto my branch, skipping a full merge. It is ideal when only one bug fix from a branch is worth having and the surrounding work is not.
+
+
+## Screenshot Evidence (re-run)
+
+The submission asks for screenshots **or** an `.md` file. To have both, I re-ran the whole exercise in a fresh throwaway repo (`git-practice/`) and captured every step. Commit hashes differ from the walkthrough above because it is a new repo. The full text output of each step is in [`outputs/`](outputs/).
+
+### Task 1: `git commit -m` vs `git commit -a -m`
+
+1. Initial commit:
+
+![init](screenshots/hw2-git-01-init.png)
+
+2. Edited the tracked `notes.txt` and created a new `untracked.txt`, then ran `git commit -m` without `git add`. Git refuses (exit code 1) with `no changes added to commit (use "git add" and/or "git commit -a")`:
+
+![commit -m without add](screenshots/hw2-git-02-commit-m.png)
+
+3. `git commit -a -m` stages and commits the modified tracked file by itself. `untracked.txt` still shows `??` afterwards, so `-a` never picks up new files. Those still need `git add` before `git commit -m`:
+
+![commit -a -m](screenshots/hw2-git-03-commit-am.png)
+
+### Task 2: Cherry-pick
+
+4. Two more commits on `main` (`Add feature A`, `Add feature B`), shown with `git log`:
+
+![main commits](screenshots/hw2-git-04-main-commits.png)
+
+5. Created the `feature` branch and made 3 commits on it:
+
+![feature branch](screenshots/hw2-git-05-feature-branch.png)
+
+6. Used `git log` to find the commit I wanted: `ac69013`, the IMPORTANT fix:
+
+![identify commit](screenshots/hw2-git-06-identify.png)
+
+7. Switched back to `main` and ran `git cherry-pick ac69013`. Git created a new commit `dcccd7e` on main with the same change:
+
+![cherry-pick](screenshots/hw2-git-07-cherry-pick.png)
+
+8. Checked the result. `main` now has `fix.txt` (content `important fix`), but `x.txt` and `y.txt` from the feature branch are not there. The graph shows only that one commit was copied:
+
+![verify](screenshots/hw2-git-08-verify.png)

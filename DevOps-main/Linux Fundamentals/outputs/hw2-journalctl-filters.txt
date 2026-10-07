@@ -1,0 +1,26 @@
+$ docker exec hw-systemd bash -c 'echo "## journalctl --list-boots"; journalctl --list-boots --no-pager; echo; echo "## journalctl -b -n 5 (this boot, last 5)"; journalctl -b -n 5 --no-pager; echo; echo "## journalctl --since \"10 min ago\" -u cron"; journalctl --since "10 min ago" -u cron --no-pager | tail -4; echo; echo "## journalctl -t hw-demo (custom tag written with logger)"; journalctl -t hw-demo --no-pager; echo; echo "## journalctl -p err -b -n 5 (errors only)"; journalctl -p err -b -n 5 --no-pager; echo; echo "## journalctl --disk-usage"; journalctl --disk-usage'
+## journalctl --list-boots
+IDX BOOT ID                          FIRST ENTRY                 LAST ENTRY
+  0 3ea24698de534cad811fc12340cab4af Wed 2026-10-07 16:56:31 UTC Wed 2026-10-07 16:56:51 UTC
+
+## journalctl -b -n 5 (this boot, last 5)
+Oct 07 16:56:51 hw2 kernel: br-e61a6907bbb6: port 1(veth4023a33) entered blocking state
+Oct 07 16:56:51 hw2 kernel: br-e61a6907bbb6: port 1(veth4023a33) entered forwarding state
+Oct 07 16:56:51 hw2 kernel: eth0: renamed from vethdb02a6d
+Oct 07 16:56:51 hw2 kernel: br-e61a6907bbb6: port 5(veth0198451) entered blocking state
+Oct 07 16:56:51 hw2 kernel: br-e61a6907bbb6: port 5(veth0198451) entered forwarding state
+
+## journalctl --since "10 min ago" -u cron
+Oct 07 16:56:49 hw2 systemd[1]: Started cron.service - Regular background program processing daemon.
+Oct 07 16:56:49 hw2 (cron)[126]: cron.service: Referenced but unset environment variable evaluates to an empty string: EXTRA_OPTS
+Oct 07 16:56:49 hw2 cron[126]: (CRON) INFO (pidfile fd = 3)
+Oct 07 16:56:49 hw2 cron[126]: (CRON) INFO (Skipping @reboot jobs -- not system startup)
+
+## journalctl -t hw-demo (custom tag written with logger)
+Oct 07 16:56:49 hw2 hw-demo[114]: Hello from the journalctl homework
+
+## journalctl -p err -b -n 5 (errors only)
+-- No entries --
+
+## journalctl --disk-usage
+Archived and active journals take up 8.0M in the file system.

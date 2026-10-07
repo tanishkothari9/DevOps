@@ -1,0 +1,8 @@
+$ docker rm -f hw-nodejs hw-python hw-java hw-apache hw-react hw-nginx && docker ps -a --filter name=hw- --format '{{.Names}}' | wc -l
+hw-nodejs
+hw-python
+hw-java
+hw-apache
+hw-react
+hw-nginx
+       0

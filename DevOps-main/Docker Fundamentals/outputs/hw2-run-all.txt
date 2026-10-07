@@ -1,0 +1,14 @@
+$ docker run -d --name hw-nodejs -p 18030:3000 hw-nodejs-app && docker run -d --name hw-python -p 18050:5000 hw-python-app && docker run -d --name hw-java -p 18080:8080 hw-java-app && docker run -d --name hw-apache -p 18081:80 hw-apache-app && docker run -d --name hw-react -p 18082:80 hw-react-app && docker run -d --name hw-nginx -p 18083:80 hw-nginx-app && sleep 4 && docker ps --filter name=hw- --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'
+40e567a8d1f70400c3227da63e026fef2fdf647bf5ad0586bb1336ece3809752
+b7e84541c1528791e91ec6626f052aa19d77eea8588582207df21d9ee6bc4587
+594df37fe796b5f34ea06201d8ca1a8320945f9ff41201c7011c1bfc098dbf26
+446e2ee2a6e20b9b1a5d90203d8025aa00c012eed455100e9c20eeb61dd6656a
+cb1fab2eb42bac514da545d1d4c97b5e0a30a5a31db33299259ed500db250b19
+77c120c26db765060728d863a6c09937eb609b0809f03a9e9ee77e634c5d4654
+NAMES       IMAGE           STATUS          PORTS
+hw-nginx    hw-nginx-app    Up 5 seconds    0.0.0.0:18083->80/tcp, [::]:18083->80/tcp
+hw-react    hw-react-app    Up 10 seconds   0.0.0.0:18082->80/tcp, [::]:18082->80/tcp
+hw-apache   hw-apache-app   Up 18 seconds   0.0.0.0:18081->80/tcp, [::]:18081->80/tcp
+hw-java     hw-java-app     Up 27 seconds   0.0.0.0:18080->8080/tcp, [::]:18080->8080/tcp
+hw-python   hw-python-app   Up 31 seconds   0.0.0.0:18050->5000/tcp, [::]:18050->5000/tcp
+hw-nodejs   hw-nodejs-app   Up 39 seconds   0.0.0.0:18030->3000/tcp, [::]:18030->3000/tcp

@@ -92,3 +92,58 @@ Displays the machine's own name; passing `-I` prints the addresses assigned to i
 **What I understood:** A fast way to check what this machine is called and what address it holds.
 
 ![hostname output](screenshots/hostname.png)
+
+---
+
+## Extra practice: commands from the devops-hero repo
+
+Task 1 asks for practice with the commands and notes shared in the devops-hero repo (`session4-networking/ip.md`, which covers IP classes and subnetting, plus the networking repos). The section headings above mention `dig` and `netstat`, but only `nslookup` and `ss` were captured, and subnetting was not practised at all. I ran these in an **Ubuntu 24.04 Docker container** (`dnsutils`, `net-tools`, `ipcalc` and `iproute2` installed), because my laptop runs macOS. The raw output is in [`outputs/`](outputs/).
+
+## 10. dig
+```bash
+dig +noall +answer google.com A      # A records only
+dig +short google.com MX             # mail server
+dig +short -x 8.8.8.8                # reverse lookup (IP -> name)
+dig +noall +answer +stats example.com
+```
+`dig` is a more detailed DNS tool than `nslookup`. You can ask for one record type (A, MX, NS, TXT and so on), do reverse lookups with `-x`, and see the TTL, the DNS server that answered, and the query time.
+
+**What I understood:** `dig` shows the actual DNS records. The number after the name, e.g. `27`, is the TTL in seconds. The `;; SERVER:` line shows which resolver answered, here Docker's built-in DNS at `192.168.65.7`. `-x 8.8.8.8` returned `dns.google.`, which is a reverse (PTR) lookup.
+
+![dig output](screenshots/hw2-dig.png)
+
+## 11. netstat (with ss, ip neigh, ip -br addr)
+```bash
+nc -lk -p 8080 &        # start a test listener
+netstat -tulpn          # old tool (net-tools)
+ss -tln                 # modern replacement
+ip neigh                # ARP / neighbour table
+ip -br addr             # brief interface list
+```
+**What I understood:** `netstat -tulpn` and `ss -tln` both show that a process (`nc`) is listening on `0.0.0.0:8080`. `netstat` comes from the older `net-tools` package, while `ss` is faster and installed by default. `ip neigh` shows the ARP table, which maps the gateway IP `172.17.0.1` to its MAC address. `ip -br addr` gives a one-line-per-interface summary: the container's `eth0` has `172.17.0.3/16`.
+
+![netstat output](screenshots/hw2-netstat.png)
+
+## 12. IP addressing and subnetting (ipcalc)
+I used the examples from the repo notes (`120.27.1.0/8`, `197.23.45.10/24`) plus one smaller subnet:
+```bash
+ipcalc -n -b 120.27.1.0/8
+ipcalc -n -b 197.23.45.10/24
+ipcalc -n -b 192.168.1.0/26
+ipcalc -n -b 10.0.0.0/8
+```
+| CIDR | Netmask | Network | Broadcast | Usable hosts | Class |
+|---|---|---|---|---|---|
+| 120.27.1.0/8 | 255.0.0.0 | 120.0.0.0 | 120.255.255.255 | 16,777,214 (2^24 - 2) | A |
+| 197.23.45.10/24 | 255.255.255.0 | 197.23.45.0 | 197.23.45.255 | 254 (2^8 - 2) | C |
+| 192.168.1.0/26 | 255.255.255.192 | 192.168.1.0 | 192.168.1.63 | 62 (2^6 - 2) | C, private |
+| 10.0.0.0/8 | 255.0.0.0 | 10.0.0.0 | - | 16,777,214 | A, private |
+
+**What I understood:**
+- An IPv4 address is 32 bits. The number after `/` is how many bits belong to the network part, and the remaining bits are the host part.
+- Usable hosts = 2^(host bits) - 2, because the network address and the broadcast address cannot be given to hosts. `/8` leaves 24 host bits, so 2^24 - 2 = 16,777,214, which matches the repo notes.
+- Class ranges from the notes: A = 1-127, B = 128-191, C = 192-223, D = 224-239 (multicast).
+- Private ranges: `10.0.0.0/8`, `172.16.0.0/12` and `192.168.0.0/16`. `ipcalc` labels these "Private Internet".
+- Borrowing more bits for the network, e.g. `/26` instead of `/24`, splits a network into smaller subnets: 4 subnets of 62 hosts each.
+
+![subnetting with ipcalc](screenshots/hw2-subnetting.png)

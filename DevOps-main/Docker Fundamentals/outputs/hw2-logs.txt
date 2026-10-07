@@ -1,0 +1,13 @@
+$ for c in hw-nodejs hw-python hw-java; do echo "--- docker logs $c"; docker logs $c 2>&1 | tail -4; done
+--- docker logs hw-nodejs
+> nodejs-hello-world@1.0.0 start
+> node app.js
+
+Node.js app listening on port 3000
+--- docker logs hw-python
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.0.4:5000
+Press CTRL+C to quit
+172.66.0.243 - - [07/Oct/2026 17:24:21] "GET / HTTP/1.1" 200 -
+--- docker logs hw-java
+Java app listening on port 8080

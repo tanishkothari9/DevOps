@@ -1,0 +1,39 @@
+$ (sleep 2; echo reports; sleep 1; echo processes.txt) | docker run --rm -i --hostname hw2-ubuntu -v "$PWD":/home/ubuntu/work -u ubuntu -w /home/ubuntu/work ubuntu:24.04 script -qec './sysinfo.sh && echo && echo "$ ls -l reports/" && ls -l reports/ && echo "$ cat reports/processes.txt" && cat reports/processes.txt' /dev/null
+reports
+processes.txt
+==============================
+ SYSTEM INFORMATION
+==============================
+Current Date : Wed Oct  7 17:01:44 UTC 2026
+Hostname     : hw2-ubuntu
+Username     : ubuntu
+
+----- Disk Usage -----
+Filesystem              Size  Used Avail Use% Mounted on
+overlay                 453G   47G  383G  11% /
+tmpfs                    64M     0   64M   0% /dev
+shm                      64M     0   64M   0% /dev/shm
+/dev/vda1               453G   47G  383G  11% /etc/hosts
+/run/host_mark/private  461G  431G   30G  94% /home/ubuntu/work
+tmpfs                   3.9G     0  3.9G   0% /proc/scsi
+tmpfs                   3.9G     0  3.9G   0% /sys/firmware
+
+----- Running Processes -----
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+ubuntu         1  6.7  0.0   2296  1584 ?        Ss   17:01   0:00 script -qec .
+ubuntu         7  0.0  0.0   2384  1580 pts/0    Ss+  17:01   0:00 sh -c ./sysin
+ubuntu         8 23.2  0.0   4036  3012 pts/0    S+   17:01   0:00 /bin/bash ./s
+ubuntu        13 37.5  0.0   7632  3616 pts/0    R+   17:01   0:00 ps aux
+
+Enter a name for the report directory: Enter a name for the report file: 
+Running processes saved to: reports/processes.txt
+
+$ ls -l reports/
+total 4
+-rw-r--r-- 1 ubuntu ubuntu 667 Oct  7 17:01 processes.txt
+$ cat reports/processes.txt
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+ubuntu         1  5.8  0.0   2296  1584 ?        Ss   17:01   0:00 script -qec ./sysinfo.sh && echo && echo "$ ls -l reports/" && ls -l reports/ && echo "$ cat reports/processes.txt" && cat reports/processes.txt /dev/null
+ubuntu         7  0.0  0.0   2384  1580 pts/0    Ss+  17:01   0:00 sh -c ./sysinfo.sh && echo && echo "$ ls -l reports/" && ls -l reports/ && echo "$ cat reports/processes.txt" && cat reports/processes.txt
+ubuntu         8 16.8  0.0   4036  3020 pts/0    S+   17:01   0:00 /bin/bash ./sysinfo.sh
+ubuntu        16 75.0  0.0   7632  3628 pts/0    R+   17:01   0:00 ps aux

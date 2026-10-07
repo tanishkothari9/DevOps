@@ -228,3 +228,62 @@ sudo journalctl -u ssh.service -e
 ### Screenshot
 
 ![Task 4 - basic Linux commands](screenshots/image4.png)
+
+---
+
+## Additional Practice (filling the gaps)
+
+The screenshots above came from my Ubuntu VM. A few parts of the tasks were not fully shown there: deleting the links themselves, `useradd` next to `adduser`, `journalctl` filters other than `-u`, and a full cheat-sheet run. I ran these in a throwaway **Ubuntu 24.04 Docker container** (`docker run --rm ubuntu:24.04 ...`) because my laptop runs macOS. For `journalctl` I used an Ubuntu 24.04 container booted with systemd (`/sbin/init`, run `--privileged`) so that journald was running. The full text output of each run is in [`outputs/`](outputs/).
+
+### Task 1: Creating and deleting hard and soft links
+
+```bash
+echo "Hello Linux" > original.txt
+ln original.txt hardlink.txt          # hard link -> same inode, link count goes to 2
+ln -s original.txt softlink.txt       # soft link -> new inode, points to the name
+ls -li
+rm hardlink.txt                       # delete a hard link (link count drops back to 1)
+unlink softlink.txt                   # delete a soft link
+ln -s /etc linked-etc-dir             # soft link to a directory works
+ln /etc hard-etc                      # hard link to a directory is refused
+ln -s /no/such/file dangling          # dangling soft link
+find . -xtype l                       # find broken symlinks
+```
+
+![links create/delete](screenshots/hw2-links-create-delete.png)
+
+What the output shows: `original.txt` and `hardlink.txt` share inode `933491` and the link count is `2`. Once both links are deleted, the original's link count goes back to `1` and its data is untouched. `ln /etc hard-etc` fails with `hard link not allowed for directory`, and `find -xtype l` finds the broken symlink.
+
+#### Interview Q&A
+- **Q: What is the difference between a hard link and a soft link?** A hard link is another name for the same inode, so it has the same data and the same inode number. A soft link is a separate small file that stores a path.
+- **Q: What happens if you delete the original file?** A hard link still works because the data stays until the link count reaches 0. A soft link becomes dangling.
+- **Q: Can you hard link a directory or across filesystems?** No to both. A soft link can do either.
+- **Q: How do you tell them apart?** Run `ls -li`. Hard links show the same inode number and a link count above 1. Soft links start with `l` and show `-> target`.
+- **Q: How do you delete a link safely?** Use `rm link` or `unlink link`. Deleting a symlink never touches the target file.
+
+### Task 2: `useradd` vs `adduser` side by side
+
+![useradd vs adduser](screenshots/hw2-useradd-vs-adduser.png)
+
+- `useradd user1` with no flags created the user with **no home directory** (`ls: cannot access '/home/user1'`) and the shell `/bin/sh`.
+- `useradd -m -s /bin/bash user2` needed explicit flags to get a home directory and bash.
+- `adduser testuser` created the group, the home directory, copied `/etc/skel`, set `/bin/bash` and added the user to `users`, all in one command. This is why `adduser` is the recommended command on Ubuntu.
+- Cleanup: `deluser testuser`, `userdel -r user2`, `userdel user1`. `id` then confirms that all three users are gone.
+
+### Task 3: More `journalctl` practice
+
+Service logs for `ssh.service` and `cron.service`. I started ssh and restarted cron first, so the stop and start lines are visible:
+
+![journalctl service logs](screenshots/hw2-journalctl-service.png)
+
+Other useful filters: `--list-boots`, `-b`, `--since`, `-t` (by tag, after writing an entry with `logger -t hw-demo ...`), `-p err` and `--disk-usage`:
+
+![journalctl filters](screenshots/hw2-journalctl-filters.png)
+
+> The `kernel:` lines come from the Docker Desktop VM's kernel, because the container was privileged.
+
+### Task 4: Cheat sheet commands practised
+
+`mkdir`, `touch`, `cp`, `mv`, `ls -l`, `find`, `grep -c`, `head`, `tail`, `chmod`, `tar -czf/-tzf`, `rm -r`, `whoami`, `id`, `uname`, `free -h`, `df -h` and `ps`:
+
+![cheat sheet practice](screenshots/hw2-cheatsheet-practice.png)

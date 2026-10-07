@@ -1,0 +1,8 @@
+$ docker run -d --name hw-multistage -p 18090:8080 hw-multistage-app && sleep 2 && echo '--- curl from my laptop (host port 18090 -> container port 8080)' && curl -s http://localhost:18090 && echo '--- request to port 8080 from inside the container' && docker exec hw-multistage wget -qO- http://localhost:8080 && echo '--- app log' && docker logs hw-multistage
+11390f4dc2b3ef7ca7b34da1c472a02b0e4f85f71fc05b55a06b1ecc9166614f
+--- curl from my laptop (host port 18090 -> container port 8080)
+Hello World from Docker multi-stage build
+--- request to port 8080 from inside the container
+Hello World from Docker multi-stage build
+--- app log
+Server listening on port 8080

@@ -1,0 +1,27 @@
+$ echo '1) backend -> frontend (share hw-frontend-net)'; docker exec hw-backend wget -qO- http://hw-frontend | grep -o '<title>.*</title>'; docker exec hw-backend ping -c 2 hw-frontend | tail -2; echo; echo '2) backend -> database (share hw-db-net)'; docker exec hw-backend nc -zv hw-database 3306; docker exec hw-backend ping -c 2 hw-database | tail -2; echo; echo '3) MySQL query from inside the backend network namespace'; docker run --rm --network container:hw-backend mysql:8.0 mysql -h hw-database -uroot -prootpass -e 'SELECT VERSION() AS mysql_version; SHOW DATABASES;' 2>&1 | grep -v 'Using a password'; echo; echo '4) frontend -> database (no shared network, should FAIL)'; docker exec hw-frontend ping -c 1 -W 2 hw-database; docker exec hw-frontend nc -zv -w 2 hw-database 3306; echo; echo '5) frontend -> backend works (share hw-frontend-net)'; docker exec hw-frontend wget -qO- http://hw-backend | grep -o '<title>.*</title>'
+1) backend -> frontend (share hw-frontend-net)
+<title>Welcome to nginx!</title>
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.479/0.785/1.092 ms
+
+2) backend -> database (share hw-db-net)
+hw-database (172.24.0.2:3306) open
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.225/14.767/29.309 ms
+
+3) MySQL query from inside the backend network namespace
+mysql_version
+8.0.46
+Database
+appdb
+information_schema
+mysql
+performance_schema
+sys
+
+4) frontend -> database (no shared network, should FAIL)
+ping: bad address 'hw-database'
+nc: bad address 'hw-database'
+
+5) frontend -> backend works (share hw-frontend-net)
+<title>Welcome to nginx!</title>

@@ -1,0 +1,6 @@
+$ cd git-practice && echo 'featureA' > a.txt && git add a.txt && git commit -q -m 'Add feature A' && echo 'featureB' > b.txt && git add b.txt && git commit -q -m 'Add feature B' && git log --oneline
+654fe04 Add feature B
+f140dbb Add feature A
+cf06486 add untracked.txt explicitly with git add
+199da77 commit tracked change with -a
+e40d92e Initial commit with notes.txt

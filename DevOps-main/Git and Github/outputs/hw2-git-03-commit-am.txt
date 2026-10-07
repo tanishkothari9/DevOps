@@ -1,0 +1,15 @@
+$ cd git-practice && git commit -a -m 'commit tracked change with -a' && echo '--- status after -a (untracked file NOT included) ---' && git status -s && echo '--- log ---' && git log --oneline && echo '--- staged-only flow: git add then git commit -m ---' && git add untracked.txt && git commit -m 'add untracked.txt explicitly with git add' && git log --oneline
+[main 199da77] commit tracked change with -a
+ 1 file changed, 1 insertion(+)
+--- status after -a (untracked file NOT included) ---
+?? untracked.txt
+--- log ---
+199da77 commit tracked change with -a
+e40d92e Initial commit with notes.txt
+--- staged-only flow: git add then git commit -m ---
+[main cf06486] add untracked.txt explicitly with git add
+ 1 file changed, 1 insertion(+)
+ create mode 100644 untracked.txt
+cf06486 add untracked.txt explicitly with git add
+199da77 commit tracked change with -a
+e40d92e Initial commit with notes.txt

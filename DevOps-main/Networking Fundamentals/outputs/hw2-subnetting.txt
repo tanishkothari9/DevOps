@@ -1,0 +1,38 @@
+$ docker exec hw-net bash -c 'exec 2>&1; PS4="\$ "; set -x; ipcalc -n -b 120.27.1.0/8; ipcalc -n -b 197.23.45.10/24; ipcalc -n -b 192.168.1.0/26; ipcalc -n -b 10.0.0.0/8 | grep -E "Network|Hosts"'
+$ ipcalc -n -b 120.27.1.0/8
+Address:   120.27.1.0           
+Netmask:   255.0.0.0 = 8        
+Wildcard:  0.255.255.255        
+=>
+Network:   120.0.0.0/8          
+HostMin:   120.0.0.1            
+HostMax:   120.255.255.254      
+Broadcast: 120.255.255.255      
+Hosts/Net: 16777214              Class A
+
+$ ipcalc -n -b 197.23.45.10/24
+Address:   197.23.45.10         
+Netmask:   255.255.255.0 = 24   
+Wildcard:  0.0.0.255            
+=>
+Network:   197.23.45.0/24       
+HostMin:   197.23.45.1          
+HostMax:   197.23.45.254        
+Broadcast: 197.23.45.255        
+Hosts/Net: 254                   Class C
+
+$ ipcalc -n -b 192.168.1.0/26
+Address:   192.168.1.0          
+Netmask:   255.255.255.192 = 26 
+Wildcard:  0.0.0.63             
+=>
+Network:   192.168.1.0/26       
+HostMin:   192.168.1.1          
+HostMax:   192.168.1.62         
+Broadcast: 192.168.1.63         
+Hosts/Net: 62                    Class C, Private Internet
+
+$ grep -E 'Network|Hosts'
+$ ipcalc -n -b 10.0.0.0/8
+Network:   10.0.0.0/8           
+Hosts/Net: 16777214              Class A, Private Internet

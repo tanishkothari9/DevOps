@@ -1,0 +1,22 @@
+$ docker exec hw-net bash -c 'exec 2>&1; (nc -lk -p 8080 >/dev/null &); sleep 1; PS4="\$ "; set -x; netstat -tulpn; ss -tln; ip neigh; ip -br addr'
+$ netstat -tulpn
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      2847/nc             
+$ ss -tln
+State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:8080      0.0.0.0:*          
+$ ip neigh
+172.17.0.1 dev eth0 lladdr 6e:77:25:fd:42:2f REACHABLE 
+$ ip -br addr
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+tunl0@NONE       DOWN           
+gre0@NONE        DOWN           
+gretap0@NONE     DOWN           
+erspan0@NONE     DOWN           
+ip_vti0@NONE     DOWN           
+ip6_vti0@NONE    DOWN           
+sit0@NONE        DOWN           
+ip6tnl0@NONE     DOWN           
+ip6gre0@NONE     DOWN           
+eth0@if4490      UP             172.17.0.3/16 

@@ -1,0 +1,18 @@
+$ echo '--- 1) from the Docker host (Docker Desktop Linux VM network namespace) on port 80 ---'; docker run --rm --network host alpine:3.20 wget -qO- http://localhost:80; echo '--- listening socket on port 80 in the host network namespace ---'; docker run --rm --network host alpine:3.20 netstat -tln | grep -E 'Proto|:80 '; echo; echo '--- 2) from my Mac (macOS) on port 80 ---'; curl -sS -m 5 http://localhost:80; echo "curl exit code: $?"
+--- 1) from the Docker host (Docker Desktop Linux VM network namespace) on port 80 ---
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>It works! Apache httpd</title>
+</head>
+<body>
+<p>It works!</p>
+</body>
+</html>
+--- listening socket on port 80 in the host network namespace ---
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       
+tcp        0      0 :::80                   :::*                    LISTEN      
+
+--- 2) from my Mac (macOS) on port 80 ---
+curl: (7) Failed to connect to localhost port 80 after 0 ms: Couldn't connect to server
+curl exit code: 7

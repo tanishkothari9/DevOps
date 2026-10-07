@@ -1,0 +1,14 @@
+$ cd git-practice && git log feature --oneline -n 3 && echo '--- the commit to pick ---' && git log feature --oneline --grep='IMPORTANT' && git show --stat ac69013 | head -8
+62efa8e Feature branch: add y.txt
+ac69013 Feature branch: IMPORTANT fix in fix.txt
+84e7f9c Feature branch: add x.txt
+--- the commit to pick ---
+ac69013 Feature branch: IMPORTANT fix in fix.txt
+commit ac690132cc04002e93dd3e7cbe8a4efd699b745d
+Author: Tanish Kothari <69642852+tanishkothari9@users.noreply.github.com>
+Date:   Wed Oct 7 22:16:55 2026 +0530
+
+    Feature branch: IMPORTANT fix in fix.txt
+
+ fix.txt | 1 +
+ 1 file changed, 1 insertion(+)

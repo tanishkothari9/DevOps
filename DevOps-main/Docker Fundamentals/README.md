@@ -92,3 +92,63 @@ For each application, include a capture of "Hello World" rendered in the browser
 - Apache: ![apache](screenshots/apache.png)
 - React: ![react](screenshots/react.png)
 - Nginx: ![nginx](screenshots/nginx.png)
+
+---
+
+## Build and run evidence (terminal output)
+
+The browser screenshots above show "Hello World" for each app. The section above also asks for the **terminal output of building and running**, so I rebuilt and ran all six apps from these exact folders and captured everything. The full text of each step is in [`outputs/`](outputs/).
+
+> The images were tagged `hw-<app>-app` for this run. Host ports `18030-18083` were used because port `8080` on my laptop is already taken by another project. The container ports are the same as in the table above.
+
+### 1. Build every image (`docker build`)
+
+| App | Build output | Final image size |
+|---|---|---|
+| nodejs-app | ![build nodejs](screenshots/hw2-build-nodejs.png) | 194MB |
+| python-app | ![build python](screenshots/hw2-build-python.png) | 223MB |
+| java-app | ![build java](screenshots/hw2-build-java.png) | 756MB (full JDK image) |
+| Apache-app | ![build apache](screenshots/hw2-build-apache.png) | 205MB |
+| React-app | ![build react](screenshots/hw2-build-react.png) | 93.7MB (multi-stage: Node build, then Nginx) |
+| nginx-app | ![build nginx](screenshots/hw2-build-nginx.png) | 93MB |
+
+### 2. Run all six containers (`docker run` + `docker ps`)
+
+```bash
+docker run -d --name hw-nodejs -p 18030:3000 hw-nodejs-app
+docker run -d --name hw-python -p 18050:5000 hw-python-app
+docker run -d --name hw-java   -p 18080:8080 hw-java-app
+docker run -d --name hw-apache -p 18081:80   hw-apache-app
+docker run -d --name hw-react  -p 18082:80   hw-react-app
+docker run -d --name hw-nginx  -p 18083:80   hw-nginx-app
+```
+
+![docker run + docker ps](screenshots/hw2-run-all.png)
+
+### 3. Verify "Hello World" on each web page (`curl`)
+
+```
+--- curl -s localhost:18030
+<h1>Hello World from Node.js!</h1>
+--- curl -s localhost:18050
+<h1>Hello World from Python (Flask)!</h1>
+--- curl -s localhost:18080
+<h1>Hello World from Java!</h1>
+--- curl -s localhost:18081
+<h1>Hello World from Apache HTTP Server!</h1>
+--- curl -s localhost:18083
+<h1>Hello World from Nginx!</h1>
+--- curl -s localhost:18082 (React: HTML shell + JS bundle)
+<div id="root"></div>
+bundle: /static/js/main.947e896d.js
+Hello World from React!
+```
+The React page is rendered in the browser by JavaScript, so `curl` only gets the empty `<div id="root">` shell. To confirm the text, I fetched the built JS bundle that the page loads; it contains `Hello World from React!`. The browser screenshot above shows it rendered.
+
+![curl all apps](screenshots/hw2-curl-all.png)
+
+### 4. Container logs and cleanup
+
+![docker logs](screenshots/hw2-logs.png)
+
+![cleanup](screenshots/hw2-cleanup.png)

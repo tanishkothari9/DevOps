@@ -1,0 +1,8 @@
+$ echo '<h1>Hello students - updated live without restarting the container!</h1>' > site/index.html && sleep 2 && echo '$ curl -s http://localhost:18095' && curl -s http://localhost:18095 && echo '--- inside the container ---' && docker exec hw-nginx-bind cat /usr/share/nginx/html/index.html && echo "StartedAt: $(docker inspect hw-nginx-bind --format '{{.State.StartedAt}}')  RestartCount: $(docker inspect hw-nginx-bind --format '{{.RestartCount}}')" && docker ps --filter name=hw-nginx-bind --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+$ curl -s http://localhost:18095
+<h1>Hello students - updated live without restarting the container!</h1>
+--- inside the container ---
+<h1>Hello students - updated live without restarting the container!</h1>
+StartedAt: 2026-10-07T17:47:33.73092184Z  RestartCount: 0
+NAMES           STATUS          PORTS
+hw-nginx-bind   Up 41 seconds   0.0.0.0:18095->80/tcp, [::]:18095->80/tcp

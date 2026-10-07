@@ -1,0 +1,9 @@
+$ docker pull httpd:2.4 | tail -2 && docker run -d --name hw-apache-host --network host httpd:2.4 && sleep 3 && docker ps --filter name=hw-apache-host --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}\t{{.Networks}}' && docker inspect hw-apache-host --format 'NetworkMode={{.HostConfig.NetworkMode}}  PortBindings={{.HostConfig.PortBindings}}' && docker logs hw-apache-host 2>&1 | tail -2
+Status: Image is up to date for httpd:2.4
+docker.io/library/httpd:2.4
+d91655e7d63ad53c993cc2745bbd95a787b4ab9b67b658f24bb0d84a1f7adeae
+NAMES            IMAGE       STATUS         PORTS     NETWORKS
+hw-apache-host   httpd:2.4   Up 3 seconds             host
+NetworkMode=host  PortBindings=map[]
+[Wed Oct 07 17:46:08.747124 2026] [mpm_event:notice] [pid 1:tid 1] AH00489: Apache/2.4.69 (Unix) configured -- resuming normal operations
+[Wed Oct 07 17:46:08.781420 2026] [core:notice] [pid 1:tid 1] AH00094: Command line: 'httpd -D FOREGROUND'

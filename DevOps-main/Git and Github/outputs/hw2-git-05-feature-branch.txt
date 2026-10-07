@@ -1,0 +1,10 @@
+$ cd git-practice && git checkout -b feature && echo 'x' > x.txt && git add x.txt && git commit -q -m 'Feature branch: add x.txt' && echo 'important fix' > fix.txt && git add fix.txt && git commit -q -m 'Feature branch: IMPORTANT fix in fix.txt' && echo 'y' > y.txt && git add y.txt && git commit -q -m 'Feature branch: add y.txt' && git log --oneline
+Switched to a new branch 'feature'
+62efa8e Feature branch: add y.txt
+ac69013 Feature branch: IMPORTANT fix in fix.txt
+84e7f9c Feature branch: add x.txt
+654fe04 Add feature B
+f140dbb Add feature A
+cf06486 add untracked.txt explicitly with git add
+199da77 commit tracked change with -a
+e40d92e Initial commit with notes.txt

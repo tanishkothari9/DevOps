@@ -1,0 +1,20 @@
+$ docker exec hw-net bash -c 'exec 2>&1; PS4="\$ "; set -x; dig +noall +answer google.com A; dig +short google.com MX; dig +short -x 8.8.8.8; dig +noall +answer +stats example.com'
+$ dig +noall +answer google.com A
+google.com.		27	IN	A	192.178.193.101
+google.com.		27	IN	A	192.178.193.113
+google.com.		27	IN	A	192.178.193.138
+google.com.		27	IN	A	192.178.193.102
+google.com.		27	IN	A	192.178.193.100
+google.com.		27	IN	A	192.178.193.139
+$ dig +short google.com MX
+10 smtp.google.com.
+$ dig +short -x 8.8.8.8
+dns.google.
+$ dig +noall +answer +stats example.com
+example.com.		133	IN	A	104.20.23.154
+example.com.		133	IN	A	172.66.147.243
+;; Query time: 7 msec
+;; SERVER: 192.168.65.7#53(192.168.65.7) (UDP)
+;; WHEN: Wed Oct 07 17:07:46 UTC 2026
+;; MSG SIZE  rcvd: 83
+

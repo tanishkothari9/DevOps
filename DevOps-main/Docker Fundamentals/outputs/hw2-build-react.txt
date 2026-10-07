@@ -1,0 +1,31 @@
+$ cd React-app && docker build --progress=plain -t hw-react-app . 2>&1 | grep -E '^#[0-9]+ \[(build|stage)|^#[0-9]+ (DONE|CACHED)|naming to|ERROR' | awk '!seen[$0]++' && docker image ls hw-react-app --format 'table {{.Repository}}:{{.Tag}}\t{{.ID}}\t{{.Size}}'
+#1 DONE 0.0s
+#1 DONE 4.3s
+#3 DONE 0.7s
+#2 DONE 4.0s
+#4 DONE 0.5s
+#5 [build 1/7] FROM docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+#6 DONE 0.0s
+#7 [stage-1 1/2] FROM docker.io/library/nginx:alpine@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2
+#7 DONE 0.7s
+#5 DONE 0.7s
+#6 DONE 0.2s
+#8 [build 2/7] WORKDIR /app
+#8 CACHED
+#9 [build 3/7] COPY package.json ./
+#9 CACHED
+#10 [build 4/7] RUN npm install
+#10 CACHED
+#11 [build 5/7] COPY public ./public
+#11 CACHED
+#12 [build 6/7] COPY src ./src
+#12 CACHED
+#13 [build 7/7] RUN npm run build
+#13 CACHED
+#14 [stage-1 2/2] COPY --from=build /app/build /usr/share/nginx/html
+#14 CACHED
+#15 naming to docker.io/library/hw-react-app:latest
+#15 naming to docker.io/library/hw-react-app:latest done
+#15 DONE 4.6s
+REPOSITORY:TAG        IMAGE ID       SIZE
+hw-react-app:latest   aedc9cdc3f20   93.7MB

@@ -1,0 +1,8 @@
+$ docker network create hw-frontend-net && docker network create hw-backend-net && docker network create hw-db-net && docker network ls --filter name=hw-
+79ad10bb0cb058377485376cbd7a004be6c87686f1c0702c5af4f64ea9187ab3
+40be2b759d79cd283353fc553b78d1f7c7282a6d8e79572bfefdd704d4bd7f58
+cf839c4012722b2f07831005885fa7eee287d921f48668b7af6c020f1b2c8d54
+NETWORK ID     NAME              DRIVER    SCOPE
+40be2b759d79   hw-backend-net    bridge    local
+cf839c401272   hw-db-net         bridge    local
+79ad10bb0cb0   hw-frontend-net   bridge    local

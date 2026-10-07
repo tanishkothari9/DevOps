@@ -1,0 +1,25 @@
+$ cd nodejs-app && docker build --no-cache --progress=plain -t hw-nodejs-app . 2>&1 | grep -E '^#[0-9]+ \[|^#[0-9]+ DONE|naming to|ERROR' | awk '!seen[$0]++' && docker image ls hw-nodejs-app --format 'table {{.Repository}}:{{.Tag}}\t{{.ID}}\t{{.Size}}'
+#1 [internal] load build definition from Dockerfile
+#1 DONE 0.3s
+#2 [internal] load metadata for docker.io/library/node:20-alpine
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+#2 DONE 2.7s
+#4 [internal] load .dockerignore
+#4 DONE 0.1s
+#5 [internal] load build context
+#5 DONE 0.2s
+#6 [1/5] FROM docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+#6 DONE 0.3s
+#7 [2/5] WORKDIR /app
+#8 [3/5] COPY package.json ./
+#8 DONE 0.9s
+#9 [4/5] RUN npm install
+#9 DONE 41.7s
+#10 [5/5] COPY app.js ./
+#10 DONE 2.2s
+#11 naming to docker.io/library/hw-nodejs-app:latest
+#11 naming to docker.io/library/hw-nodejs-app:latest 0.0s done
+#11 DONE 8.2s
+REPOSITORY:TAG         IMAGE ID       SIZE
+hw-nodejs-app:latest   665e005da85b   194MB

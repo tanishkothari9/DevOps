@@ -1,0 +1,29 @@
+$ docker run --rm --hostname hw2 -w /root ubuntu:24.04 bash -c 'exec 2>&1; PS4="\$ "; set -x; echo "Hello Linux" > original.txt; ln original.txt hardlink.txt; ln -s original.txt softlink.txt; ls -li; stat -c "%n inode=%i links=%h" original.txt hardlink.txt; rm hardlink.txt; unlink softlink.txt; ls -li; stat -c "%n links=%h" original.txt; ln -s /etc linked-etc-dir; ls -ld linked-etc-dir; ln /etc hard-etc; ln -s /no/such/file dangling; cat dangling; find . -xtype l'
+$ echo 'Hello Linux'
+$ ln original.txt hardlink.txt
+$ ln -s original.txt softlink.txt
+$ ls -li
+total 8
+933491 -rw-r--r-- 2 root root 12 Oct  7 16:59 hardlink.txt
+933491 -rw-r--r-- 2 root root 12 Oct  7 16:59 original.txt
+933501 lrwxrwxrwx 1 root root 12 Oct  7 16:59 softlink.txt -> original.txt
+$ stat -c '%n inode=%i links=%h' original.txt hardlink.txt
+original.txt inode=933491 links=2
+hardlink.txt inode=933491 links=2
+$ rm hardlink.txt
+$ unlink softlink.txt
+$ ls -li
+total 4
+933491 -rw-r--r-- 1 root root 12 Oct  7 16:59 original.txt
+$ stat -c '%n links=%h' original.txt
+original.txt links=1
+$ ln -s /etc linked-etc-dir
+$ ls -ld linked-etc-dir
+lrwxrwxrwx 1 root root 4 Oct  7 16:59 linked-etc-dir -> /etc
+$ ln /etc hard-etc
+ln: /etc: hard link not allowed for directory
+$ ln -s /no/such/file dangling
+$ cat dangling
+cat: dangling: No such file or directory
+$ find . -xtype l
+./dangling

@@ -1,0 +1,33 @@
+$ docker run --rm --hostname hw2 ubuntu:24.04 bash -c 'apt-get update -qq >/dev/null && apt-get install -y -qq adduser >/dev/null 2>&1; echo "### useradd (low-level, no flags)"; useradd user1; grep user1 /etc/passwd; ls -ld /home/user1 2>&1; echo; echo "### useradd with flags"; useradd -m -s /bin/bash user2; grep user2 /etc/passwd; ls -A /home/user2; echo; echo "### adduser (recommended on Ubuntu)"; adduser --disabled-password --gecos "" testuser; id testuser; grep testuser /etc/passwd; ls -A /home/testuser; echo; echo "### cleanup"; deluser testuser; rm -rf /home/testuser; userdel -r user2; userdel user1; for u in user1 user2 testuser; do id $u 2>&1; done'
+### useradd (low-level, no flags)
+user1:x:1001:1001::/home/user1:/bin/sh
+ls: cannot access '/home/user1': No such file or directory
+
+### useradd with flags
+user2:x:1002:1002::/home/user2:/bin/bash
+.bash_logout
+.bashrc
+.profile
+
+### adduser (recommended on Ubuntu)
+info: Adding user `testuser' ...
+info: Selecting UID/GID from range 1000 to 59999 ...
+info: Adding new group `testuser' (1003) ...
+info: Adding new user `testuser' (1003) with group `testuser (1003)' ...
+info: Creating home directory `/home/testuser' ...
+info: Copying files from `/etc/skel' ...
+info: Adding new user `testuser' to supplemental / extra groups `users' ...
+info: Adding user `testuser' to group `users' ...
+uid=1003(testuser) gid=1003(testuser) groups=1003(testuser),100(users)
+testuser:x:1003:1003:,,,:/home/testuser:/bin/bash
+.bash_logout
+.bashrc
+.profile
+
+### cleanup
+warn: `/usr/bin/crontab' not executed. Skipping crontab removal. Package `cron' required.
+info: Removing user `testuser' ...
+userdel: user2 mail spool (/var/mail/user2) not found
+id: 'user1': no such user
+id: 'user2': no such user
+id: 'testuser': no such user

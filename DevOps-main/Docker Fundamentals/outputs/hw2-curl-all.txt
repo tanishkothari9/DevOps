@@ -1,0 +1,15 @@
+$ for p in 18030 18050 18080 18081 18083; do echo "--- curl -s localhost:$p"; curl -s localhost:$p | grep -o '<h1>.*</h1>'; done; echo '--- curl -s localhost:18082 (React: HTML shell + JS bundle)'; curl -s localhost:18082 | grep -o '<div id="root"></div>'; js=$(curl -s localhost:18082 | grep -o '/static/js/main[^"]*\.js'); echo "bundle: $js"; curl -s localhost:18082$js | grep -o 'Hello World from React!'
+--- curl -s localhost:18030
+<h1>Hello World from Node.js!</h1>
+--- curl -s localhost:18050
+<h1>Hello World from Python (Flask)!</h1>
+--- curl -s localhost:18080
+<h1>Hello World from Java!</h1>
+--- curl -s localhost:18081
+<h1>Hello World from Apache HTTP Server!</h1>
+--- curl -s localhost:18083
+<h1>Hello World from Nginx!</h1>
+--- curl -s localhost:18082 (React: HTML shell + JS bundle)
+<div id="root"></div>
+bundle: /static/js/main.947e896d.js
+Hello World from React!

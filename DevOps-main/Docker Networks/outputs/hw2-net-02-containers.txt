@@ -1,0 +1,9 @@
+$ docker run -d --name hw-frontend --network hw-frontend-net nginx:alpine && docker run -d --name hw-backend --network hw-backend-net nginx:alpine && docker run -d --name hw-database --network hw-db-net -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_DATABASE=appdb mysql:8.0 && echo '--- add backend to 2 more networks ---' && docker network connect hw-frontend-net hw-backend && docker network connect hw-db-net hw-backend && docker ps --filter name=hw- --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Networks}}'
+feed3e9e36e4cd961747ce6fd0e28eaa064bdeb089d5960291a60d4ca06a0eb9
+01e9a2ddefe9d1663bfbfb5ec3acc0032ec634b080064ea3d2ccf59f0b264107
+cb458da6cbadcf58972d4eeb719aa0b341780795c985dcb3846335ba8ca9c913
+--- add backend to 2 more networks ---
+NAMES         IMAGE          STATUS          NETWORKS
+hw-database   mysql:8.0      Up 5 seconds    hw-db-net
+hw-backend    nginx:alpine   Up 9 seconds    hw-db-net,hw-frontend-net,hw-backend-net
+hw-frontend   nginx:alpine   Up 13 seconds   hw-frontend-net

@@ -1,0 +1,6 @@
+$ echo "Network drivers available: $(docker info --format '{{.Plugins.Network}}')"; echo "Swarm state: $(docker info --format '{{.Swarm.LocalNodeState}}')"; echo '$ docker network create -d overlay hw-overlay'; docker network create -d overlay hw-overlay; echo "exit code: $?"
+Network drivers available: [bridge host ipvlan macvlan null overlay]
+Swarm state: inactive
+$ docker network create -d overlay hw-overlay
+Error response from daemon: This node is not a swarm manager. Use "docker swarm init" or "docker swarm join" to connect this node to swarm and try again.
+exit code: 1

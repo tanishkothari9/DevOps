@@ -1,0 +1,18 @@
+$ cd nginx-app && docker build --no-cache --progress=plain -t hw-nginx-app . 2>&1 | grep -E '^#[0-9]+ \[|^#[0-9]+ DONE|naming to|ERROR' | awk '!seen[$0]++' && docker image ls hw-nginx-app --format 'table {{.Repository}}:{{.Tag}}\t{{.ID}}\t{{.Size}}'
+#1 [internal] load build definition from Dockerfile
+#1 DONE 2.7s
+#2 [internal] load metadata for docker.io/library/nginx:alpine
+#2 DONE 0.7s
+#3 [internal] load .dockerignore
+#3 DONE 0.2s
+#4 [internal] load build context
+#4 DONE 0.2s
+#5 [1/2] FROM docker.io/library/nginx:alpine@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2
+#5 DONE 0.5s
+#6 [2/2] COPY index.html /usr/share/nginx/html/
+#6 DONE 1.6s
+#7 naming to docker.io/library/hw-nginx-app:latest
+#7 naming to docker.io/library/hw-nginx-app:latest 0.1s done
+#7 DONE 5.0s
+REPOSITORY:TAG        IMAGE ID       SIZE
+hw-nginx-app:latest   8b0ab0cf34b9   93MB

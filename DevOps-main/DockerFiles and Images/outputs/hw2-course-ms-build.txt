@@ -1,0 +1,33 @@
+$ cd devops-heros && git remote get-url origin && git log --oneline -1 && cd session6-7-docker/multi-stage-dockerfile && ls && docker build --progress=plain -t hw-course-multistage . 2>&1 | grep -E '^#[0-9]+ \[(builder|production)|^#[0-9]+ (DONE|CACHED)|naming to|ERROR' | awk '!seen[$0]++' | grep -v '^#[0-9]* DONE 0\.[0-9]s$'; docker image ls hw-course-multistage --format 'table {{.Repository}}:{{.Tag}}\t{{.Size}}'
+https://github.com/Nency-Ravaliya/devops-heros.git
+8376590 replicas from 2 to 5
+Dockerfile
+package.json
+server.js
+#2 DONE 6.3s
+#4 DONE 2.7s
+#6 [builder 1/5] FROM docker.io/library/node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#5 DONE 1.7s
+#6 DONE 2.5s
+#6 DONE 33.0s
+#6 DONE 75.3s
+#6 DONE 77.3s
+#6 DONE 78.3s
+#7 [builder 2/5] WORKDIR /app
+#7 DONE 1.0s
+#8 [builder 3/5] COPY package*.json ./
+#8 DONE 1.2s
+#9 [builder 4/5] RUN npm install
+#9 DONE 107.9s
+#10 [builder 5/5] COPY . .
+#10 DONE 1.0s
+#11 [production 3/5] COPY --from=builder /app/package*.json ./
+#12 [production 4/5] RUN npm install --omit=dev
+#12 DONE 56.3s
+#13 [production 5/5] COPY --from=builder /app/server.js ./
+#13 DONE 1.7s
+#14 naming to docker.io/library/hw-course-multistage:latest
+#14 naming to docker.io/library/hw-course-multistage:latest 0.1s done
+#14 DONE 12.2s
+REPOSITORY:TAG                SIZE
+hw-course-multistage:latest   249MB

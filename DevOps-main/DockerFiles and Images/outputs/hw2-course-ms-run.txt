@@ -1,0 +1,11 @@
+$ docker run -d --name hw-course-multistage -p 18091:3000 hw-course-multistage && until curl -sf -o /dev/null http://localhost:18091; do sleep 1; done; docker logs hw-course-multistage && echo '$ curl -s http://localhost:18091' && curl -s http://localhost:18091 && echo && docker ps --filter name=hw-course-multistage --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'
+c0b434e9a0c61322d4eeeb2fb8bea6101a75ef1c11cfbf7fb293f0064c27f295
+
+> docker-hello-world@1.0.0 start
+> node server.js
+
+Server running on port 3000
+$ curl -s http://localhost:18091
+<h1>Hello World from Docker Multi-Stage Build!</h1>
+NAMES                  IMAGE                  STATUS          PORTS
+hw-course-multistage   hw-course-multistage   Up 12 seconds   0.0.0.0:18091->3000/tcp, [::]:18091->3000/tcp

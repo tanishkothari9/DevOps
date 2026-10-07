@@ -1,0 +1,18 @@
+$ docker exec hw-systemd bash -c 'echo "## journalctl -u ssh.service"; journalctl -u ssh.service --no-pager; echo; echo "## journalctl -u cron.service -n 10"; journalctl -u cron.service -n 10 --no-pager'
+## journalctl -u ssh.service
+Oct 07 16:56:49 hw2 systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+Oct 07 16:56:49 hw2 sshd[123]: Server listening on 0.0.0.0 port 22.
+Oct 07 16:56:49 hw2 sshd[123]: Server listening on :: port 22.
+Oct 07 16:56:49 hw2 systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+
+## journalctl -u cron.service -n 10
+Oct 07 16:56:32 hw2 (cron)[81]: cron.service: Referenced but unset environment variable evaluates to an empty string: EXTRA_OPTS
+Oct 07 16:56:32 hw2 cron[81]: (CRON) INFO (pidfile fd = 3)
+Oct 07 16:56:32 hw2 cron[81]: (CRON) INFO (Running @reboot jobs)
+Oct 07 16:56:49 hw2 systemd[1]: Stopping cron.service - Regular background program processing daemon...
+Oct 07 16:56:49 hw2 systemd[1]: cron.service: Deactivated successfully.
+Oct 07 16:56:49 hw2 systemd[1]: Stopped cron.service - Regular background program processing daemon.
+Oct 07 16:56:49 hw2 systemd[1]: Started cron.service - Regular background program processing daemon.
+Oct 07 16:56:49 hw2 (cron)[126]: cron.service: Referenced but unset environment variable evaluates to an empty string: EXTRA_OPTS
+Oct 07 16:56:49 hw2 cron[126]: (CRON) INFO (pidfile fd = 3)
+Oct 07 16:56:49 hw2 cron[126]: (CRON) INFO (Skipping @reboot jobs -- not system startup)
