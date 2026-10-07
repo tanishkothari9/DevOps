@@ -15,6 +15,9 @@ on:
     branches: [main]
     paths:
       - "DevOps-main/CICD-GitHub-Actions/**"
+      - "!DevOps-main/CICD-GitHub-Actions/**.md" # docs / evidence-only commits don't redeploy
+      - "!DevOps-main/CICD-GitHub-Actions/screenshots/**"
+      - "!DevOps-main/CICD-GitHub-Actions/outputs/**"
       - ".github/workflows/session16-cicd.yml"
   workflow_dispatch: # manual "Run workflow" button
     inputs:

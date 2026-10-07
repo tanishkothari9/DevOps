@@ -1,18 +1,18 @@
-$ minikube image ls | grep session16; kubectl apply -f k8s/namespace.yaml -f k8s/deployment.yaml -f k8s/service.yaml && kubectl rollout status deployment/session16-calculator -n cicd --timeout=180s && kubectl get deploy,pods,svc -n cicd -o wide
+$ minikube image ls | grep session16; kubectl apply -f k8s/namespace.yaml -f k8s/deployment.yaml -f k8s/service.yaml && kubectl rollout status deployment/session16-calculator -n cicd --timeout=240s && kubectl get deploy,pods,svc -n cicd -o wide
 docker.io/library/session16-calculator:local
-namespace/cicd created
+namespace/cicd unchanged
 deployment.apps/session16-calculator created
-service/session16-calculator created
+service/session16-calculator unchanged
 Waiting for deployment "session16-calculator" rollout to finish: 0 out of 2 new replicas have been updated...
 Waiting for deployment "session16-calculator" rollout to finish: 0 of 2 updated replicas are available...
 Waiting for deployment "session16-calculator" rollout to finish: 1 of 2 updated replicas are available...
 deployment "session16-calculator" successfully rolled out
-NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE    CONTAINERS   IMAGES                       SELECTOR
-deployment.apps/session16-calculator   2/2     2            2           119s   calculator   session16-calculator:local   app=session16-calculator
+NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                       SELECTOR
+deployment.apps/session16-calculator   2/2     2            2           66s   calculator   session16-calculator:local   app=session16-calculator
 
-NAME                                        READY   STATUS    RESTARTS      AGE    IP            NODE       NOMINATED NODE   READINESS GATES
-pod/session16-calculator-59b979d655-nr9tr   1/1     Running   1 (50s ago)   2m1s   10.244.0.19   minikube   <none>           <none>
-pod/session16-calculator-59b979d655-rj478   1/1     Running   1 (50s ago)   2m1s   10.244.0.18   minikube   <none>           <none>
+NAME                                       READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+pod/session16-calculator-78fcfcc8d-bzf2j   1/1     Running   0          65s   10.244.0.33   minikube   <none>           <none>
+pod/session16-calculator-78fcfcc8d-c75wn   1/1     Running   0          64s   10.244.0.34   minikube   <none>           <none>
 
-NAME                           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE    SELECTOR
-service/session16-calculator   ClusterIP   10.104.215.97   <none>        80/TCP    2m2s   app=session16-calculator
+NAME                           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE     SELECTOR
+service/session16-calculator   ClusterIP   10.104.215.97   <none>        80/TCP    4m49s   app=session16-calculator

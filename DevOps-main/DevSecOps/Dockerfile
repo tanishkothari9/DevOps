@@ -28,8 +28,10 @@ ENV PATH="/opt/venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     APP_VERSION=${APP_VERSION}
 
-# remove pip from the base image - nothing is installed at runtime
-RUN python -m pip uninstall -y pip \
+# patch OS packages to the latest fixed versions, remove pip (nothing is installed
+# at runtime) and create an unprivileged user
+RUN apk upgrade --no-cache \
+    && python -m pip uninstall -y pip \
     && addgroup -g 10001 -S app \
     && adduser -u 10001 -S -G app -H app
 

@@ -1,0 +1,12 @@
+$ (kubectl port-forward -n cicd service/session16-calculator 18080:80 >/dev/null 2>&1 &) ; sleep 4; echo "GET /health";  curl -s http://localhost:18080/health; echo "GET /api/multiply?a=6&b=7"; curl -s "http://localhost:18080/api/multiply?a=6&b=7"; pkill -f "port-forward -n cicd service/session16-calculator" ; echo; kubectl logs -n cicd deploy/session16-calculator --tail=5
+GET /health
+{"status":"ok","version":"local"}
+GET /api/multiply?a=6&b=7
+{"a":6.0,"b":7.0,"operation":"multiply","result":42.0}
+
+Found 2 pods, using pod/session16-calculator-78fcfcc8d-bzf2j
+[2026-10-07 17:12:32 +0000] [1] [INFO] Starting gunicorn 23.0.0
+[2026-10-07 17:12:32 +0000] [1] [INFO] Listening at: http://0.0.0.0:8000 (1)
+[2026-10-07 17:12:32 +0000] [1] [INFO] Using worker: sync
+[2026-10-07 17:12:32 +0000] [6] [INFO] Booting worker with pid: 6
+[2026-10-07 17:12:33 +0000] [7] [INFO] Booting worker with pid: 7

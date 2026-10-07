@@ -1,0 +1,5 @@
+$ python --version && pip install -q -r requirements.txt && echo "dependencies installed" && python -m compileall -q app && echo "byte-compile OK" && python -c "from app.app import app; print(\"routes:\", sorted(r.rule for r in app.url_map.iter_rules()))"
+Python 3.12.12
+dependencies installed
+byte-compile OK
+routes: ['/', '/api/add', '/api/calculate', '/api/greet/<name>', '/api/pipeline/run', '/api/status', '/health', '/static/<path:filename>']

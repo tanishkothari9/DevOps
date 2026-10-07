@@ -1,0 +1,54 @@
+$ echo "== Gate 1: image HIGH/CRITICAL (policy from trivy.yaml, exit-code 1) =="; trivy image -q session17-devsecops:local; echo "gate 1 exit code: $?"; echo; echo "== Gate 2: Dockerfile + Kubernetes misconfigurations =="; trivy config -q .; echo "gate 2 exit code: $?"
+== Gate 1: image HIGH/CRITICAL (policy from trivy.yaml, exit-code 1) ==
+
+Report Summary
+
+┌─────────────────────────────────────────────────────────────────────────────┬────────────┬─────────────────┬─────────┐
+│                                   Target                                    │    Type    │ Vulnerabilities │ Secrets │
+├─────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ session17-devsecops:local (alpine 3.24.2)                                   │   alpine   │        0        │    -    │
+├─────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ opt/venv/lib/python3.12/site-packages/blinker-1.9.0.dist-info/METADATA      │ python-pkg │        0        │    -    │
+├─────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ opt/venv/lib/python3.12/site-packages/click-8.5.0.dist-info/METADATA        │ python-pkg │        0        │    -    │
+├─────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ opt/venv/lib/python3.12/site-packages/flask-3.1.3.dist-info/METADATA        │ python-pkg │        0        │    -    │
+├─────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ opt/venv/lib/python3.12/site-packages/gunicorn-23.0.0.dist-info/METADATA    │ python-pkg │        0        │    -    │
+├─────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ opt/venv/lib/python3.12/site-packages/itsdangerous-2.2.0.dist-info/METADATA │ python-pkg │        0        │    -    │
+├─────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ opt/venv/lib/python3.12/site-packages/jinja2-3.1.6.dist-info/METADATA       │ python-pkg │        0        │    -    │
+├─────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ opt/venv/lib/python3.12/site-packages/markupsafe-3.0.4.dist-info/METADATA   │ python-pkg │        0        │    -    │
+├─────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ opt/venv/lib/python3.12/site-packages/packaging-26.3.dist-info/METADATA     │ python-pkg │        0        │    -    │
+├─────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+│ opt/venv/lib/python3.12/site-packages/werkzeug-3.1.9.dist-info/METADATA     │ python-pkg │        0        │    -    │
+└─────────────────────────────────────────────────────────────────────────────┴────────────┴─────────────────┴─────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+gate 1 exit code: 0
+
+== Gate 2: Dockerfile + Kubernetes misconfigurations ==
+
+Report Summary
+
+┌─────────────────────┬────────────┬───────────────────┐
+│       Target        │    Type    │ Misconfigurations │
+├─────────────────────┼────────────┼───────────────────┤
+│ Dockerfile          │ dockerfile │         0         │
+├─────────────────────┼────────────┼───────────────────┤
+│ k8s/deployment.yaml │ kubernetes │         0         │
+├─────────────────────┼────────────┼───────────────────┤
+│ k8s/namespace.yaml  │ kubernetes │         0         │
+├─────────────────────┼────────────┼───────────────────┤
+│ k8s/service.yaml    │ kubernetes │         0         │
+└─────────────────────┴────────────┴───────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+gate 2 exit code: 0

@@ -14,6 +14,9 @@ on:
     branches: [main]
     paths:
       - "DevOps-main/DevSecOps/**"
+      - "!DevOps-main/DevSecOps/**.md" # docs / evidence-only commits don't redeploy
+      - "!DevOps-main/DevSecOps/screenshots/**"
+      - "!DevOps-main/DevSecOps/outputs/**"
       - ".github/workflows/session17-devsecops.yml"
   workflow_dispatch:
     inputs:

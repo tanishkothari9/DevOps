@@ -1,0 +1,18 @@
+$ docker run -d --name s17-smoke -p 15001:5001 --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges session17-devsecops:local; until curl -sf -o /dev/null http://localhost:15001/health; do sleep 1; done; docker ps --filter name=s17-smoke --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"; echo; curl -s http://localhost:15001/health; echo; curl -s -X POST http://localhost:15001/api/calculate -H "Content-Type: application/json" -d "{\"a\": 6, \"b\": 7, \"operation\": \"multiply\"}"; echo; curl -sI http://localhost:15001/ | grep -iE "^HTTP|x-content|x-frame|referrer"; echo "user inside container:"; docker exec s17-smoke id; echo "pip in image?"; docker exec s17-smoke sh -c "python -m pip --version 2>&1 | tail -1"; docker rm -f s17-smoke
+6f2ad1735f1f84115a2f07a162b0a162db18aadd869fa722ab972f28c0c9af53
+NAMES       STATUS                             PORTS
+s17-smoke   Up 13 seconds (health: starting)   0.0.0.0:15001->5001/tcp, [::]:15001->5001/tcp
+
+{"status":"healthy","timestamp":"2026-10-07T17:21:54.173810Z","uptime_seconds":0.49}
+
+{"a":6.0,"b":7.0,"expression":"6.0 \u00d7 7.0 = 42.0","operation":"multiply","result":42.0,"symbol":"\u00d7"}
+
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: no-referrer
+user inside container:
+uid=10001(app) gid=10001(app) groups=10001(app)
+pip in image?
+/opt/venv/bin/python: No module named pip
+s17-smoke
