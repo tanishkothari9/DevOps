@@ -1,0 +1,6 @@
+$ helm upgrade rollback-demo ./app-chart -n s15-rollback --set image.tag=doesnotexist --rollback-on-failure --timeout 90s; echo "exit code: $?"
+level=WARN msg="upgrade failed" name=rollback-demo error="resource Deployment/s15-rollback/rollback-demo-app not ready. status: InProgress, message: Pending termination: 1\ncontext deadline exceeded"
+Error: UPGRADE FAILED: an error occurred while rolling back the release. original upgrade error: resource Deployment/s15-rollback/rollback-demo-app not ready. status: InProgress, message: Pending termination: 1
+context deadline exceeded: release rollback-demo failed: resource Deployment/s15-rollback/rollback-demo-app not ready. status: InProgress, message: Pending termination: 1
+context deadline exceeded
+exit code: 1

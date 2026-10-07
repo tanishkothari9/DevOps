@@ -1,0 +1,27 @@
+$ ./triage_all.sh
+namespace/s14-scenarios created
+==================================================
+      KUBERNETES INCIDENT TRIAGE GAUNTLET         
+==================================================
+Deploying 5 intentionally broken production workloads...
+
+pod/fail-1-crashloop-pod created
+pod/fail-2-imagepull-pod created
+pod/fail-3-pending-pod created
+pod/fail-4-dns-failure-pod created
+pod/fail-5-oomkilled-pod created
+
+Workloads deployed! Sleeping 5s to allow states to settle...
+
+=== CURRENT CLUSTER CARNAGE ===
+NAME                     READY   STATUS              RESTARTS   AGE
+fail-1-crashloop-pod     0/1     ContainerCreating   0          8s
+fail-2-imagepull-pod     0/1     ContainerCreating   0          7s
+fail-3-pending-pod       0/1     Pending             0          7s
+fail-4-dns-failure-pod   0/1     ContainerCreating   0          6s
+fail-5-oomkilled-pod     0/1     ContainerCreating   0          6s
+
+==================================================
+Your mission: Diagnose and fix each of the 5 pods!
+Follow the diagnostic guide in README.md!
+==================================================

@@ -1,0 +1,11 @@
+$ kubectl get pod fail-5-oomkilled-pod -n s14-scenarios; kubectl describe pod fail-5-oomkilled-pod -n s14-scenarios | grep -E -A4 "Last State|^    State:" | head -10; kubectl describe pod fail-5-oomkilled-pod -n s14-scenarios | grep -A2 "Limits:"
+NAME                   READY   STATUS      RESTARTS   AGE
+fail-5-oomkilled-pod   0/1     OOMKilled   0          93s
+    State:          Terminated
+      Reason:       OOMKilled
+      Exit Code:    137
+      Started:      Thu, 08 Oct 2026 00:59:48 +0530
+      Finished:     Thu, 08 Oct 2026 00:59:53 +0530
+    Limits:
+      memory:  20Mi
+    Requests:

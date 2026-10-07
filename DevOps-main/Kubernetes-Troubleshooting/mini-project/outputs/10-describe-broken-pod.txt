@@ -1,0 +1,14 @@
+$ kubectl get pod project-broken-pod -n s14-mini; kubectl describe pod project-broken-pod -n s14-mini | grep -E "Image:|Reason:"; kubectl describe pod project-broken-pod -n s14-mini | grep -A12 "^Events:"
+NAME                 READY   STATUS         RESTARTS   AGE
+project-broken-pod   0/1     ErrImagePull   0          46s
+    Image:          nginx:this-tag-does-not-exist
+      Reason:       ErrImagePull
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  47s                default-scheduler  Successfully assigned s14-mini/project-broken-pod to minikube
+  Normal   Pulling    24s (x2 over 43s)  kubelet            spec.containers{app}: Pulling image "nginx:this-tag-does-not-exist"
+  Warning  Failed     21s (x2 over 41s)  kubelet            spec.containers{app}: Failed to pull image "nginx:this-tag-does-not-exist": rpc error: code = NotFound desc = failed to pull and unpack image "docker.io/library/nginx:this-tag-does-not-exist": failed to resolve reference "docker.io/library/nginx:this-tag-does-not-exist": docker.io/library/nginx:this-tag-does-not-exist: not found
+  Warning  Failed     21s (x2 over 41s)  kubelet            spec.containers{app}: Error: ErrImagePull
+  Normal   BackOff    8s (x2 over 39s)   kubelet            spec.containers{app}: Back-off pulling image "nginx:this-tag-does-not-exist"
+  Warning  Failed     8s (x2 over 39s)   kubelet            spec.containers{app}: Error: ImagePullBackOff

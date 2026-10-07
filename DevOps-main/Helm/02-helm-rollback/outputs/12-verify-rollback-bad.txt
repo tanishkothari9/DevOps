@@ -1,0 +1,15 @@
+$ kubectl rollout status deployment/rollback-demo-app -n s15-rollback --timeout=300s; kubectl get deploy rollback-demo-app -n s15-rollback -o custom-columns=DEPLOYMENT:.metadata.name,REPLICAS:.spec.replicas,READY:.status.readyReplicas,IMAGE:.spec.template.spec.containers[0].image; kubectl get pods -n s15-rollback; helm history rollback-demo -n s15-rollback
+deployment "rollback-demo-app" successfully rolled out
+DEPLOYMENT          REPLICAS   READY   IMAGE
+rollback-demo-app   2          2       nginx:1.25
+NAME                                 READY   STATUS        RESTARTS   AGE
+rollback-demo-app-6d599696f7-wlfk2   0/1     Terminating   0          51s
+rollback-demo-app-fd544cb86-4cttc    1/1     Running       0          103s
+rollback-demo-app-fd544cb86-lq94k    1/1     Running       0          111s
+REVISION	UPDATED                 	STATUS    	CHART          	APP VERSION	DESCRIPTION     
+1       	Thu Oct  8 00:55:18 2026	superseded	app-chart-0.1.0	1.0        	Install complete
+2       	Thu Oct  8 00:56:14 2026	superseded	app-chart-0.1.0	1.0        	Upgrade complete
+3       	Thu Oct  8 00:56:55 2026	superseded	app-chart-0.1.0	1.0        	Upgrade complete
+4       	Thu Oct  8 00:57:27 2026	superseded	app-chart-0.1.0	1.0        	Rollback to 2   
+5       	Thu Oct  8 00:58:27 2026	superseded	app-chart-0.1.0	1.0        	Upgrade complete
+6       	Thu Oct  8 00:59:15 2026	deployed  	app-chart-0.1.0	1.0        	Rollback to 4   

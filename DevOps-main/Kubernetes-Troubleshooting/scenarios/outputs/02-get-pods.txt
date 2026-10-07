@@ -1,0 +1,7 @@
+$ kubectl get pods -n s14-scenarios -l tier=triage-gauntlet -o wide
+NAME                     READY   STATUS             RESTARTS      AGE    IP            NODE       NOMINATED NODE   READINESS GATES
+fail-1-crashloop-pod     0/1     Error              1 (87s ago)   2m9s   10.244.0.42   minikube   <none>           <none>
+fail-2-imagepull-pod     0/1     ErrImagePull       0             2m8s   10.244.0.45   minikube   <none>           <none>
+fail-3-pending-pod       0/1     Pending            0             2m8s   <none>        <none>     <none>           <none>
+fail-4-dns-failure-pod   1/1     Running            0             2m7s   10.244.0.43   minikube   <none>           <none>
+fail-5-oomkilled-pod     0/1     CrashLoopBackOff   1 (40s ago)   2m7s   10.244.0.44   minikube   <none>           <none>

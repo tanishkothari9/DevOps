@@ -1,0 +1,4 @@
+$ helm uninstall rollback-demo -n s15-rollback && helm list -n s15-rollback && kubectl delete namespace s15-rollback --wait=false
+release "rollback-demo" uninstalled
+NAME	NAMESPACE	REVISION	UPDATED	STATUS	CHART	APP VERSION
+namespace "s15-rollback" deleted

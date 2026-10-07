@@ -1,0 +1,3 @@
+$ POD=$(kubectl get pod -n s14-mini -l app=troubleshooting-app -o jsonpath="{.items[0].metadata.name}"); kubectl exec -i $POD -n s14-mini -- bash -c "hostname; curl -s localhost | grep -i title"
+troubleshooting-app-59d4957864-q57j8
+<title>Welcome to nginx!</title>

@@ -1,0 +1,10 @@
+$ kubectl apply -n s14-mini -f service.yaml && sleep 3 && kubectl get endpoints troubleshooting-service -n s14-mini && kubectl run curl-check -n s14-mini --image=curlimages/curl:8.6.0 --restart=Never --rm -i -- curl -s -o /dev/null -w "troubleshooting-service -> HTTP %{http_code}\n" http://troubleshooting-service
+service/troubleshooting-service configured
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME                      ENDPOINTS                         AGE
+troubleshooting-service   10.244.0.238:80,10.244.0.241:80   4m29s
+troubleshooting-service -> HTTP 200
+All commands and output from this session will be recorded in container logs, including credentials and sensitive information passed through the command prompt.
+If you don't see a command prompt, try pressing enter.
+warning: couldn't attach to pod/curl-check, falling back to streaming logs: unable to upgrade connection: container curl-check not found in pod curl-check_s14-mini
+pod "curl-check" deleted from s14-mini namespace

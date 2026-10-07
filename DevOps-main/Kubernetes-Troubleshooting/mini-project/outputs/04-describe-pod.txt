@@ -1,0 +1,17 @@
+$ POD=$(kubectl get pod -n s14-mini -l app=troubleshooting-app -o jsonpath="{.items[0].metadata.name}"); kubectl describe pod $POD -n s14-mini | grep -E "^Name:|^Status:|^IP:|Image:|Port:|State:|Ready:|Restart Count"; kubectl describe pod $POD -n s14-mini | grep -A8 "^Events:"
+Name:             troubleshooting-app-59d4957864-q57j8
+Status:           Running
+IP:               10.244.0.238
+    Image:          nginx:1.27
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+    Ready:          True
+    Restart Count:  0
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  2m27s  default-scheduler  Successfully assigned s14-mini/troubleshooting-app-59d4957864-q57j8 to minikube
+  Normal  Pulled     65s    kubelet            spec.containers{app}: Container image "nginx:1.27" already present on machine and can be accessed by the pod
+  Normal  Created    59s    kubelet            spec.containers{app}: Container created
+  Normal  Started    43s    kubelet            spec.containers{app}: Container started

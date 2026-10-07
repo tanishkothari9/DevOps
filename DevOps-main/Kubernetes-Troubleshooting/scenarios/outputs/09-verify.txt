@@ -1,0 +1,11 @@
+$ kubectl wait --for=condition=Ready pod/fail-1-crashloop-pod pod/fail-2-imagepull-pod pod/fail-3-pending-pod -n s14-scenarios --timeout=300s; kubectl get pods -n s14-scenarios -l tier=triage-gauntlet; kubectl logs fail-1-crashloop-pod -n s14-scenarios
+pod/fail-1-crashloop-pod condition met
+pod/fail-2-imagepull-pod condition met
+pod/fail-3-pending-pod condition met
+NAME                     READY   STATUS      RESTARTS     AGE
+fail-1-crashloop-pod     1/1     Running     0            64s
+fail-2-imagepull-pod     1/1     Running     0            4m36s
+fail-3-pending-pod       1/1     Running     0            64s
+fail-4-dns-failure-pod   1/1     Running     0            4m35s
+fail-5-oomkilled-pod     0/1     OOMKilled   4 (2m ago)   4m35s
+Application started successfully!

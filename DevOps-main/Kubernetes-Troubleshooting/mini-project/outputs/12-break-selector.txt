@@ -1,0 +1,11 @@
+$ diff service.yaml service-broken-selector.yaml; kubectl apply -n s14-mini -f service-broken-selector.yaml && kubectl get service -n s14-mini && kubectl get endpoints troubleshooting-service -n s14-mini
+9c9
+<     app: troubleshooting-app
+---
+>     app: wrong-app
+service/troubleshooting-service configured
+NAME                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+troubleshooting-service   ClusterIP   10.101.203.132   <none>        80/TCP    4m15s
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME                      ENDPOINTS   AGE
+troubleshooting-service   <none>      4m13s

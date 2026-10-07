@@ -1,0 +1,8 @@
+$ kubectl apply -f hpa.yml && kubectl rollout status deployment/yatri-backend -n s13-hpa-demo --timeout=300s
+namespace/s13-hpa-demo created
+deployment.apps/yatri-backend created
+service/yatri-backend-service created
+horizontalpodautoscaler.autoscaling/yatri-backend-hpa created
+Waiting for deployment "yatri-backend" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "yatri-backend" rollout to finish: 1 of 2 updated replicas are available...
+deployment "yatri-backend" successfully rolled out

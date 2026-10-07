@@ -118,6 +118,12 @@ The app now sees `APP_MODE=production`, `LOG_LEVEL=info` and a 22-character pass
 | Event | `couldn't find key mode in ConfigMap s14-config/app-config` | - |
 | App output | (never started) | `mode=production log=info password-length=22` |
 
+## Cleanup (this and the DNS / networking namespaces)
+```bash
+kubectl delete namespace s14-config s14-dns s14-dns-backend s14-net --wait=false
+```
+![cleanup](screenshots/07-cleanup.png)
+
 **Configuration checklist:** `describe pod` events -> `kubectl get cm/secret <name> -o yaml` and compare
 key names exactly -> check the namespace -> remember env vars are read only at container start (restart
 the Pods after changing a ConfigMap used via `env`).

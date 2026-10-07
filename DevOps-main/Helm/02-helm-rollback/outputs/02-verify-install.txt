@@ -1,0 +1,11 @@
+$ kubectl rollout status deployment/rollback-demo-app -n s15-rollback --timeout=300s; kubectl get deploy rollback-demo-app -n s15-rollback -o custom-columns=DEPLOYMENT:.metadata.name,REPLICAS:.spec.replicas,READY:.status.readyReplicas,IMAGE:.spec.template.spec.containers[0].image; kubectl get pods -n s15-rollback; helm history rollback-demo -n s15-rollback
+Waiting for deployment spec update to be observed...
+Waiting for deployment "rollback-demo-app" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "rollback-demo-app" rollout to finish: 0 of 1 updated replicas are available...
+deployment "rollback-demo-app" successfully rolled out
+DEPLOYMENT          REPLICAS   READY   IMAGE
+rollback-demo-app   1          1       nginx:1.24
+NAME                                 READY   STATUS    RESTARTS   AGE
+rollback-demo-app-5666bb45b5-jpq8v   1/1     Running   0          48s
+REVISION	UPDATED                 	STATUS  	CHART          	APP VERSION	DESCRIPTION     
+1       	Thu Oct  8 00:55:18 2026	deployed	app-chart-0.1.0	1.0        	Install complete

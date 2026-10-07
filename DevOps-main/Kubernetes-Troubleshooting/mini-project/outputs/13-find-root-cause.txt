@@ -1,0 +1,7 @@
+$ kubectl get pods -n s14-mini --show-labels; kubectl describe service troubleshooting-service -n s14-mini | grep -E "Selector|Endpoints"
+NAME                                   READY   STATUS    RESTARTS   AGE     LABELS
+project-broken-pod                     1/1     Running   0          78s     <none>
+troubleshooting-app-59d4957864-q57j8   1/1     Running   0          4m15s   app=troubleshooting-app,pod-template-hash=59d4957864
+troubleshooting-app-59d4957864-s56xd   1/1     Running   0          4m16s   app=troubleshooting-app,pod-template-hash=59d4957864
+Selector:                 app=wrong-app
+Endpoints:                

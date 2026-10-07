@@ -119,6 +119,35 @@ Warning   Unhealthy   Pod/liveness-fail-demo   Liveness probe failed: HTTP probe
 ```
 ![liveness events](screenshots/10-liveness-fail-events.png)
 
+`describe` shows *how* it was restarted: the last container ended `Terminated / Completed` - nginx
+did not crash, the **kubelet stopped it** because of the failing liveness probe:
+```bash
+kubectl get pod liveness-fail-demo -n s13-probes; kubectl describe pod liveness-fail-demo -n s13-probes | grep -E "Restart Count|Last State|Reason"
+```
+```text
+liveness-fail-demo   1/1     Running   1 (4m4s ago)   5m7s
+    Last State:     Terminated
+      Reason:       Completed
+    Restart Count:  1
+```
+![liveness describe](screenshots/14-liveness-fail-restarts-later.png)
+
+All probe Pods side by side a few minutes in - note `readiness-fail-demo` is `0/1` with 0 restarts while
+`liveness-fail-demo` is `1/1` but restarting:
+```bash
+kubectl get pods -n s13-probes -o wide
+```
+```text
+NAME                  READY   STATUS    RESTARTS        AGE
+liveness-demo         1/1     Running   0               7m17s
+liveness-fail-demo    1/1     Running   1 (3m31s ago)   4m34s
+readiness-demo        1/1     Running   0               7m16s
+readiness-fail-demo   0/1     Running   0               4m31s
+slow-startup-demo     1/1     Running   0               4m18s
+startup-demo          1/1     Running   1 (4m13s ago)   7m13s
+```
+![all probe pods](screenshots/13-all-probe-pods.png)
+
 The restart cycle never ends because the probe can never pass. An hour later it had restarted 19 times
 and was in `CrashLoopBackOff` (the back-off between restarts keeps growing):
 

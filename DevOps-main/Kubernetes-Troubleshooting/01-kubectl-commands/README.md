@@ -334,13 +334,41 @@ kubectl explain deployment.spec.strategy; kubectl explain service.spec --recursi
 
 ## 7. `kubectl top` - live CPU / memory (needs metrics-server)
 
+metrics-server was crash-looping on the overloaded node for most of the session (`error: Metrics API
+not available`), so this was captured later, once it was serving again (the `s14-commands` namespace was
+already deleted, so the Pod view uses `kube-system` and all namespaces):
 ```bash
-kubectl top nodes; kubectl top pods -n <namespace>
+kubectl top nodes
+kubectl top pods -n kube-system
+kubectl top pods -A --sort-by=cpu | head -8
+kubectl top pods -A --sort-by=memory | head -6
 ```
-See [`25-top` below](#top-output) - captured once metrics-server was serving again.
+```text
+NAME       CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)
+minikube   2963m        29%      4888Mi          62%
 
-<a id="top-output"></a>
+NAME                               CPU(cores)   MEMORY(bytes)
+coredns-559f6c778d-dfnhj           21m          28Mi
+etcd-minikube                      189m         89Mi
+kube-apiserver-minikube            772m         1161Mi
+metrics-server-768f9f6999-2ss5q    14m          19Mi
+...
+NAMESPACE          NAME                                                    CPU(cores)   MEMORY(bytes)
+kube-system        kube-apiserver-minikube                                 772m         1161Mi
+kube-system        etcd-minikube                                           189m         89Mi
+kube-system        kube-controller-manager-minikube                        174m         149Mi
+taskboard-gitops   stockpilot-postgres-0                                   131m         21Mi
+monitoring         prometheus-kps-kube-prometheus-stack-prometheus-0       102m         469Mi
+...
+NAMESPACE          NAME                                                    CPU(cores)   MEMORY(bytes)
+kube-system        kube-apiserver-minikube                                 772m         1161Mi
+monitoring         kps-grafana-78b57db8f-hql4q                             89m          802Mi
+monitoring         prometheus-kps-kube-prometheus-stack-prometheus-0       102m         469Mi
+```
 ![top](screenshots/25-top.png)
+
+`--sort-by=cpu|memory` is the quickest way to find the noisy neighbour: here the API server
+(772m CPU, 1.1Gi) and the monitoring stack were the heaviest consumers on the shared node.
 
 ---
 

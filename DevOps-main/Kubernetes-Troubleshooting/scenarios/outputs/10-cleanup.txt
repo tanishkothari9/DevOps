@@ -1,0 +1,2 @@
+$ kubectl delete namespace s14-scenarios --wait=false
+namespace "s14-scenarios" deleted

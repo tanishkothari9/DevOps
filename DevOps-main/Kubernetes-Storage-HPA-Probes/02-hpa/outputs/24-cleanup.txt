@@ -1,0 +1,2 @@
+$ kubectl delete namespace s13-hpa-demo --wait=false
+namespace "s13-hpa-demo" deleted

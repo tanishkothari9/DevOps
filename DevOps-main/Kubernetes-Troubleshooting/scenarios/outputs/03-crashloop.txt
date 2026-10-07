@@ -1,0 +1,4 @@
+$ kubectl get pod fail-1-crashloop-pod -n s14-scenarios; kubectl logs fail-1-crashloop-pod -n s14-scenarios --previous
+NAME                   READY   STATUS   RESTARTS      AGE
+fail-1-crashloop-pod   0/1     Error    1 (89s ago)   2m11s
+[FATAL ERROR]: DATABASE_URL environment variable is MISSING!

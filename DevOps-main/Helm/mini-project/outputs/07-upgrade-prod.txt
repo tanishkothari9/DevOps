@@ -1,0 +1,9 @@
+$ helm upgrade notes-dev notes-chart -n s15-notes -f notes-chart/values-prod.yaml
+Release "notes-dev" has been upgraded. Happy Helming!
+NAME: notes-dev
+LAST DEPLOYED: Thu Oct  8 01:05:35 2026
+NAMESPACE: s15-notes
+STATUS: deployed
+REVISION: 2
+DESCRIPTION: Upgrade complete
+TEST SUITE: None

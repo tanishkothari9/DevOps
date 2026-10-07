@@ -1,0 +1,2 @@
+$ kubectl delete namespace s15-helm --wait=false
+namespace "s15-helm" deleted

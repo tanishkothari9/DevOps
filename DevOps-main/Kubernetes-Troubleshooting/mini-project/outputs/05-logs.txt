@@ -1,0 +1,6 @@
+$ POD=$(kubectl get pod -n s14-mini -l app=troubleshooting-app -o jsonpath="{.items[0].metadata.name}"); kubectl logs $POD -n s14-mini | tail -5
+2026/10/07 19:25:31 [notice] 1#1: start worker process 33
+2026/10/07 19:25:31 [notice] 1#1: start worker process 34
+2026/10/07 19:25:31 [notice] 1#1: start worker process 35
+2026/10/07 19:25:31 [notice] 1#1: start worker process 36
+2026/10/07 19:25:31 [notice] 1#1: start worker process 37

@@ -1,0 +1,4 @@
+$ kubectl apply -n s14-mini -f broken-pod.yaml && sleep 30 && kubectl get pod project-broken-pod -n s14-mini
+pod/project-broken-pod created
+NAME                 READY   STATUS             RESTARTS   AGE
+project-broken-pod   0/1     ImagePullBackOff   0          30s

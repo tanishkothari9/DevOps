@@ -1,0 +1,6 @@
+$ kubectl delete pod fail-1-crashloop-pod fail-3-pending-pod -n s14-scenarios && kubectl apply -n s14-scenarios -f fixes/scenario-1-fixed.yaml -f fixes/scenario-3-fixed.yaml && kubectl set image pod/fail-2-imagepull-pod web-app=nginx:alpine -n s14-scenarios
+pod "fail-1-crashloop-pod" deleted from s14-scenarios namespace
+pod "fail-3-pending-pod" deleted from s14-scenarios namespace
+pod/fail-1-crashloop-pod created
+pod/fail-3-pending-pod created
+pod/fail-2-imagepull-pod image updated

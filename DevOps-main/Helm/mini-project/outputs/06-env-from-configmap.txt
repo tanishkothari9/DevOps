@@ -1,0 +1,3 @@
+$ POD=$(kubectl get pod -n s15-notes -l app=notes-dev -o jsonpath="{.items[0].metadata.name}"); kubectl exec $POD -n s15-notes -- sh -c "echo APP_NAME=\$APP_NAME ENVIRONMENT=\$ENVIRONMENT; nginx -v"
+APP_NAME=notes-app ENVIRONMENT=development
+nginx version: nginx/1.24.0

@@ -1,0 +1,4 @@
+$ kubectl describe service troubleshooting-service -n s14-mini | grep -E "Selector|TargetPort|Endpoints"
+Selector:                 app=troubleshooting-app
+TargetPort:               80/TCP
+Endpoints:                10.244.0.238:80,10.244.0.241:80

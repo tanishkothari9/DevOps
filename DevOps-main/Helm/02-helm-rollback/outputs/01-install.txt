@@ -1,0 +1,8 @@
+$ helm install rollback-demo ./app-chart -n s15-rollback --create-namespace
+NAME: rollback-demo
+LAST DEPLOYED: Thu Oct  8 00:55:18 2026
+NAMESPACE: s15-rollback
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None

@@ -1,0 +1,8 @@
+$ kubectl logs fail-4-dns-failure-pod -n s14-scenarios; kubectl exec fail-4-dns-failure-pod -n s14-scenarios -- nslookup postgres-db-wrong-name.production.svc.cluster.local 2>&1 | tail -4; kubectl get ns production 2>&1
+Attempting connection to internal database...
+Process sleeping...
+
+** server can't find postgres-db-wrong-name.production.svc.cluster.local: NXDOMAIN
+
+command terminated with exit code 1
+Error from server (NotFound): namespaces "production" not found

@@ -1,0 +1,30 @@
+$ kubectl top nodes; echo; kubectl top pods -n kube-system; echo; kubectl top pods -A --sort-by=cpu | head -8; echo; kubectl top pods -A --sort-by=memory | head -6
+NAME       CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+minikube   2963m        29%      4888Mi          62%         
+
+NAME                               CPU(cores)   MEMORY(bytes)   
+coredns-559f6c778d-dfnhj           21m          28Mi            
+etcd-minikube                      189m         89Mi            
+kindnet-5txqx                      10m          23Mi            
+kube-apiserver-minikube            772m         1161Mi          
+kube-controller-manager-minikube   174m         149Mi           
+kube-proxy-l74bq                   25m          29Mi            
+kube-scheduler-minikube            37m          47Mi            
+metrics-server-768f9f6999-2ss5q    14m          19Mi            
+storage-provisioner                14m          22Mi            
+
+NAMESPACE          NAME                                                    CPU(cores)   MEMORY(bytes)   
+kube-system        kube-apiserver-minikube                                 772m         1161Mi          
+kube-system        etcd-minikube                                           189m         89Mi            
+kube-system        kube-controller-manager-minikube                        174m         149Mi           
+taskboard-gitops   stockpilot-postgres-0                                   131m         21Mi            
+monitoring         prometheus-kps-kube-prometheus-stack-prometheus-0       102m         469Mi           
+s20-monitoring     s20-cpu-burner-57747c7cff-l6x5k                         100m         0Mi             
+argocd             argocd-application-controller-0                         91m          227Mi           
+
+NAMESPACE          NAME                                                    CPU(cores)   MEMORY(bytes)   
+kube-system        kube-apiserver-minikube                                 772m         1161Mi          
+monitoring         kps-grafana-78b57db8f-hql4q                             89m          802Mi           
+monitoring         prometheus-kps-kube-prometheus-stack-prometheus-0       102m         469Mi           
+argocd             argocd-application-controller-0                         91m          227Mi           
+kube-system        kube-controller-manager-minikube                        174m         149Mi           

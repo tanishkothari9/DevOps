@@ -1,0 +1,20 @@
+$ date +%T; kubectl get hpa -n s13-hpa-demo; echo; kubectl top pods -n s13-hpa-demo -l app=yatri-backend; echo; kubectl get pods -n s13-hpa-demo -l app=yatri-backend
+01:10:54
+NAME                REFERENCE                  TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+yatri-backend-hpa   Deployment/yatri-backend   cpu: 157%/50%   2         10        6          3m31s
+
+NAME                             CPU(cores)   MEMORY(bytes)   
+yatri-backend-68b645bcdb-gq666   220m         11Mi            
+yatri-backend-68b645bcdb-kl6b9   320m         12Mi            
+yatri-backend-68b645bcdb-kwfvt   214m         11Mi            
+yatri-backend-68b645bcdb-lb72p   310m         13Mi            
+yatri-backend-68b645bcdb-q2qm9   292m         11Mi            
+yatri-backend-68b645bcdb-vf2fz   273m         11Mi            
+
+NAME                             READY   STATUS    RESTARTS   AGE
+yatri-backend-68b645bcdb-gq666   1/1     Running   0          60s
+yatri-backend-68b645bcdb-kl6b9   1/1     Running   0          3m31s
+yatri-backend-68b645bcdb-kwfvt   1/1     Running   0          60s
+yatri-backend-68b645bcdb-lb72p   1/1     Running   0          3m31s
+yatri-backend-68b645bcdb-q2qm9   1/1     Running   0          75s
+yatri-backend-68b645bcdb-vf2fz   1/1     Running   0          75s

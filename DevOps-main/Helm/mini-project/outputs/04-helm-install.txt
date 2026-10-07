@@ -1,0 +1,8 @@
+$ helm install notes-dev notes-chart -n s15-notes --create-namespace
+NAME: notes-dev
+LAST DEPLOYED: Thu Oct  8 01:05:30 2026
+NAMESPACE: s15-notes
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None

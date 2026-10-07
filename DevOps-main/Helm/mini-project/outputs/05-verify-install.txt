@@ -1,0 +1,13 @@
+$ kubectl rollout status deployment/notes-dev-deploy -n s15-notes --timeout=300s; kubectl get pods,services,configmaps -n s15-notes; kubectl get deploy notes-dev-deploy -n s15-notes -o wide
+deployment "notes-dev-deploy" successfully rolled out
+NAME                                    READY   STATUS    RESTARTS   AGE
+pod/notes-dev-deploy-74956bd987-r4n58   1/1     Running   0          1s
+
+NAME                    TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/notes-dev-svc   NodePort   10.107.214.43   <none>        80:30090/TCP   1s
+
+NAME                         DATA   AGE
+configmap/kube-root-ca.crt   1      1s
+configmap/notes-dev-config   2      1s
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES       SELECTOR
+notes-dev-deploy   1/1     1            1           2s    notes        nginx:1.24   app=notes-dev

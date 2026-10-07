@@ -1,0 +1,5 @@
+$ ./load_generator.sh start 3
+Starting 3 load-generator workers against http://yatri-backend-service ...
+deployment.apps/load-generator created
+deployment.apps/load-generator scaled
+Load active. Watch it with: kubectl get hpa -n s13-hpa-demo -w

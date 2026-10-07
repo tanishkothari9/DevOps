@@ -1,0 +1,4 @@
+$ kubectl get endpoints troubleshooting-service -n s14-mini
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME                      ENDPOINTS                         AGE
+troubleshooting-service   10.244.0.238:80,10.244.0.241:80   2m55s

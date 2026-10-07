@@ -1,0 +1,4 @@
+$ kubectl set image pod/project-broken-pod app=nginx:1.27 -n s14-mini && sleep 20 && kubectl get pod project-broken-pod -n s14-mini
+pod/project-broken-pod image updated
+NAME                 READY   STATUS    RESTARTS   AGE
+project-broken-pod   1/1     Running   0          71s

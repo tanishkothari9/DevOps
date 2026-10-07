@@ -1,0 +1,4 @@
+$ helm repo remove bitnami && helm repo list
+"bitnami" has been removed from your repositories
+NAME                	URL                                               
+prometheus-community	https://prometheus-community.github.io/helm-charts

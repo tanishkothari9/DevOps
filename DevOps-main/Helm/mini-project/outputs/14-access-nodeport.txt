@@ -1,0 +1,6 @@
+$ kubectl get svc notes-dev-svc -n s15-notes; kubectl run curl-notes -n s15-notes --image=curlimages/curl:8.6.0 --restart=Never --rm -i -- curl -s -o /dev/null -w "notes-dev-svc -> HTTP %{http_code}\n" http://notes-dev-svc 2>/dev/null | grep HTTP; minikube ssh "curl -s -o /dev/null -w \"NodePort 30090 on the node -> HTTP %{http_code}\n\" http://localhost:30090"
+NAME            TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+notes-dev-svc   NodePort   10.107.214.43   <none>        80:30090/TCP   72s
+notes-dev-svc -> HTTP 200
+notes-dev-svc -> HTTP 200
+NodePort 30090 on the node -> HTTP 200

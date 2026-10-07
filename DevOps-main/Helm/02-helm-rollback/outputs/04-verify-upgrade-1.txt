@@ -1,0 +1,21 @@
+$ kubectl rollout status deployment/rollback-demo-app -n s15-rollback --timeout=300s; kubectl get deploy rollback-demo-app -n s15-rollback -o custom-columns=DEPLOYMENT:.metadata.name,REPLICAS:.spec.replicas,READY:.status.readyReplicas,IMAGE:.spec.template.spec.containers[0].image; kubectl get pods -n s15-rollback; helm get values rollback-demo -n s15-rollback; helm history rollback-demo -n s15-rollback
+Waiting for deployment "rollback-demo-app" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "rollback-demo-app" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "rollback-demo-app" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "rollback-demo-app" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "rollback-demo-app" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "rollback-demo-app" rollout to finish: 1 old replicas are pending termination...
+deployment "rollback-demo-app" successfully rolled out
+DEPLOYMENT          REPLICAS   READY   IMAGE
+rollback-demo-app   2          2       nginx:1.25
+NAME                                 READY   STATUS        RESTARTS   AGE
+rollback-demo-app-5666bb45b5-jpq8v   1/1     Terminating   0          89s
+rollback-demo-app-fd544cb86-m9zjd    1/1     Running       0          11s
+rollback-demo-app-fd544cb86-zg7z9    1/1     Running       0          36s
+USER-SUPPLIED VALUES:
+image:
+  tag: "1.25"
+replicaCount: 2
+REVISION	UPDATED                 	STATUS    	CHART          	APP VERSION	DESCRIPTION     
+1       	Thu Oct  8 00:55:18 2026	superseded	app-chart-0.1.0	1.0        	Install complete
+2       	Thu Oct  8 00:56:14 2026	deployed  	app-chart-0.1.0	1.0        	Upgrade complete

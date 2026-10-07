@@ -1,0 +1,42 @@
+$ find notes-chart -type f | sort; echo; cat notes-chart/Chart.yaml; echo "--- values.yaml"; cat notes-chart/values.yaml; echo "--- values-prod.yaml"; cat notes-chart/values-prod.yaml
+notes-chart/Chart.yaml
+notes-chart/templates/configmap.yaml
+notes-chart/templates/deployment.yaml
+notes-chart/templates/service.yaml
+notes-chart/values-prod.yaml
+notes-chart/values.yaml
+
+apiVersion: v2
+name: notes-chart
+description: A simple Notes application Helm chart
+type: application
+version: 0.1.0
+appVersion: "1.0"
+--- values.yaml
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: "1.24"
+
+service:
+  port: 80
+  nodePort: 30090
+
+app:
+  name: notes-app
+  environment: development
+--- values-prod.yaml
+replicaCount: 3
+
+image:
+  repository: nginx
+  tag: "1.25"
+
+service:
+  port: 80
+  nodePort: 30090
+
+app:
+  name: notes-app
+  environment: production

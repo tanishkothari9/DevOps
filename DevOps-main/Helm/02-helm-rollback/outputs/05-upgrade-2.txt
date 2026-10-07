@@ -1,0 +1,9 @@
+$ helm upgrade rollback-demo ./app-chart -n s15-rollback --set image.tag=1.27 --set replicaCount=3
+Release "rollback-demo" has been upgraded. Happy Helming!
+NAME: rollback-demo
+LAST DEPLOYED: Thu Oct  8 00:56:55 2026
+NAMESPACE: s15-rollback
+STATUS: deployed
+REVISION: 3
+DESCRIPTION: Upgrade complete
+TEST SUITE: None
