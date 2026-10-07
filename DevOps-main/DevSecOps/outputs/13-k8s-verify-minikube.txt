@@ -1,0 +1,22 @@
+$ (kubectl port-forward -n devsecops service/devsecops-dashboard 18081:80 >/dev/null 2>&1 &); until curl -sf -m 5 -o /dev/null http://localhost:18081/health; do sleep 1; done; echo "GET /health"; curl -s -m 10 http://localhost:18081/health; echo; echo "GET /api/status"; curl -s -m 10 http://localhost:18081/api/status; echo; echo "POST /api/calculate"; curl -s -m 10 -X POST http://localhost:18081/api/calculate -H "Content-Type: application/json" -d "{\"a\": 6, \"b\": 7, \"operation\": \"multiply\"}"; echo; echo "GET / (dashboard HTML)"; curl -s -m 10 http://localhost:18081/ | grep -o "<title>.*</title>"; pkill -f "port-forward -n devsecops service/devsecops-dashboard"; echo; echo "Pod security context in use:"; kubectl get pod -n devsecops -l app=devsecops-dashboard -o jsonpath="{.items[0].spec.containers[0].securityContext}"; echo; echo; echo "Pod Security Admission blocks a privileged pod (server-side dry run):"; kubectl run psa-test --image=nginx --privileged -n devsecops --dry-run=server 2>&1 | fold -w 140
+GET /health
+{"status":"healthy","timestamp":"2026-10-07T17:44:42.986742Z","uptime_seconds":93.88}
+
+GET /api/status
+{"app":"DevSecOps Dashboard","platform":"Linux","python_version":"3.12.15","status":"running","timestamp":"2026-10-07T17:44:43.119386Z","total_requests":18,"uptime":"00h 01m 34s","version":"local"}
+
+POST /api/calculate
+{"a":6.0,"b":7.0,"expression":"6.0 \u00d7 7.0 = 42.0","operation":"multiply","result":42.0,"symbol":"\u00d7"}
+
+GET / (dashboard HTML)
+<title>DevSecOps Dashboard | Session 17</title>
+
+Pod security context in use:
+{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true}
+
+Pod Security Admission blocks a privileged pod (server-side dry run):
+Error from server (Forbidden): pods "psa-test" is forbidden: violates PodSecurity "restricted:latest": privileged (container "psa-test" must
+ not set securityContext.privileged=true), allowPrivilegeEscalation != false (container "psa-test" must set securityContext.allowPrivilegeEs
+calation=false), unrestricted capabilities (container "psa-test" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (
+pod or container "psa-test" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "psa-test" must set securityContex
+t.seccompProfile.type to "RuntimeDefault" or "Localhost")

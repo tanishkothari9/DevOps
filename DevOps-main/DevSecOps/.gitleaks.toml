@@ -10,7 +10,7 @@ useDefault = true
 [[rules]]
 id = "devsecops-dashboard-api-key"
 description = "DevSecOps Dashboard internal API key"
-regex = '''dso_(live|test)_[0-9a-f]{32}'''
+regex = '''dso_(?:live|test)_[0-9a-f]{32}'''
 keywords = ["dso_live_", "dso_test_"]
 
 # Paths that can never contain real secrets (generated / binary output)

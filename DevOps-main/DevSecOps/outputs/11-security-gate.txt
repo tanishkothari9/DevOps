@@ -1,5 +1,5 @@
-$ echo "== Gate 1: image HIGH/CRITICAL (policy from trivy.yaml, exit-code 1) =="; trivy image -q session17-devsecops:local; echo "gate 1 exit code: $?"; echo; echo "== Gate 2: Dockerfile + Kubernetes misconfigurations =="; trivy config -q .; echo "gate 2 exit code: $?"
-== Gate 1: image HIGH/CRITICAL (policy from trivy.yaml, exit-code 1) ==
+$ echo "== Gate 1: image HIGH/CRITICAL (policy from trivy.yaml: severity HIGH,CRITICAL + exit-code 1) =="; trivy image -q --table-mode summary session17-devsecops:local; echo "gate 1 exit code: $?"; echo; echo "== Gate 2: Dockerfile + Kubernetes misconfigurations =="; trivy config -q .; echo "gate 2 exit code: $?"
+== Gate 1: image HIGH/CRITICAL (policy from trivy.yaml: severity HIGH,CRITICAL + exit-code 1) ==
 
 Report Summary
 

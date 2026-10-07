@@ -1,0 +1,28 @@
+$ gh run view 37659683349 -R tanishkothari9/DevOps | sed -n '1,3p;/JOBS/,/ANNOTATIONS/p' | grep -v ANNOTATIONS; gh run view 37659683349 -R tanishkothari9/DevOps --json url --jq .url
+
+X main Session 17 - DevSecOps Pipeline · 37659683349
+Triggered via workflow_dispatch about 17 minutes ago
+JOBS
+✓ 1. Build in 15s (ID 112923704950)
+✓ 2. Unit Test in 13s (ID 112923874291)
+X 3. SAST (Bandit + Semgrep) in 32s (ID 112923996299)
+  ✓ Set up job
+  ✓ Run actions/checkout@v6
+  ✓ Run actions/setup-python@v6
+  ✓ Install SAST tools
+  ✓ [demo] Inject vulnerable code (inject_issue=sast)
+  X Bandit
+  X Semgrep
+  ✓ Run actions/upload-artifact@v6
+  - Post Run actions/setup-python@v6
+  ✓ Post Run actions/checkout@v6
+  ✓ Complete job
+- 4. SCA (pip-audit + Trivy fs) (ID 112924259771)
+- 5. Secret Scan (Gitleaks) (ID 112924260319)
+- 6. Docker Build (ID 112924262030)
+- 7. Container Image Scan (Trivy) in 0s (ID 112924262850)
+- 8. Security Gate in 0s (ID 112924263537)
+- 9. Push Image (GHCR) in 0s (ID 112924264831)
+- 10. Deploy to Kubernetes in 0s (ID 112924266533)
+
+https://github.com/tanishkothari9/DevOps/actions/runs/37659683349

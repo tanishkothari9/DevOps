@@ -222,7 +222,7 @@ jobs:
         if: env.INJECT == 'secret'
         run: |
           # values are generated at runtime and never committed
-          AKID="AKIA$(openssl rand -hex 32 | tr 'a-f0-9' 'A-P' | head -c 16)"
+          AKID="AKIA$(openssl rand 10 | base32)"   # 16 chars of [A-Z2-7], same shape as a real key id
           API_KEY="dso_live_$(openssl rand -hex 16)"
           printf 'aws_access_key_id = "%s"\ndashboard_api_key = "%s"\n' "$AKID" "$API_KEY" > leaked_config.py
           echo "::warning::Wrote leaked_config.py with generated fake keys for the secret-scan gate demo"

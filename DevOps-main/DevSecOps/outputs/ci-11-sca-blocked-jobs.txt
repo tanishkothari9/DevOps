@@ -1,0 +1,27 @@
+$ gh run view 37659688505 -R tanishkothari9/DevOps | sed -n '1,3p;/JOBS/,/ANNOTATIONS/p' | grep -v ANNOTATIONS; gh run view 37659688505 -R tanishkothari9/DevOps --json url --jq .url
+
+X main Session 17 - DevSecOps Pipeline · 37659688505
+Triggered via workflow_dispatch about 18 minutes ago
+JOBS
+✓ 1. Build in 45s (ID 112923721286)
+✓ 2. Unit Test in 14s (ID 112924094003)
+✓ 3. SAST (Bandit + Semgrep) in 21s (ID 112924223385)
+X 4. SCA (pip-audit + Trivy fs) in 39s (ID 112924410044)
+  ✓ Set up job
+  ✓ Run actions/checkout@v6
+  ✓ Run actions/setup-python@v6
+  ✓ Install pip-audit
+  ✓ [demo] Add an outdated dependency (inject_issue=sca)
+  X pip-audit (PyPI advisory database / OSV)
+  X Trivy filesystem scan (dependencies, HIGH/CRITICAL)
+  - Post Run actions/setup-python@v6
+  ✓ Post Run actions/checkout@v6
+  ✓ Complete job
+- 5. Secret Scan (Gitleaks) (ID 112924731735)
+- 6. Docker Build in 0s (ID 112924733080)
+- 7. Container Image Scan (Trivy) in 0s (ID 112924733973)
+- 8. Security Gate in 0s (ID 112924734763)
+- 9. Push Image (GHCR) in 0s (ID 112924735565)
+- 10. Deploy to Kubernetes (ID 112924736547)
+
+https://github.com/tanishkothari9/DevOps/actions/runs/37659688505

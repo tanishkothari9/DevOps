@@ -1,0 +1,15 @@
+$ gh run view 37659683349 -R tanishkothari9/DevOps --log-failed | cut -f3- | cut -c30- | grep -E '>> Issue|Severity:|  Location:|❯❯❱|Findings:|exit code'
+>> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
+   Severity: Low   Confidence: High
+   Location: app/injected_unsafe.py:1:0
+>> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue.
+   Severity: High   Confidence: High
+   Location: app/injected_unsafe.py:5:11
+>> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval.
+   Severity: Medium   Confidence: High
+   Location: app/injected_unsafe.py:9:11
+##[error]Process completed with exit code 1.
+   ❯❯❱ semgrep.subprocess-shell-true
+   ❯❯❱ python.lang.security.audit.subprocess-shell-true.subprocess-shell-true
+ • Findings: 2 (2 blocking)
+##[error]Process completed with exit code 1.

@@ -1,0 +1,20 @@
+$ kubectl apply -f k8s/namespace.yaml -f k8s/deployment.yaml -f k8s/service.yaml && kubectl rollout status deployment/devsecops-dashboard -n devsecops --timeout=300s && kubectl get deploy,pods,svc -n devsecops -o wide && echo && kubectl get ns devsecops --show-labels
+namespace/devsecops created
+deployment.apps/devsecops-dashboard created
+service/devsecops-dashboard created
+Waiting for deployment "devsecops-dashboard" rollout to finish: 0 out of 2 new replicas have been updated...
+Waiting for deployment "devsecops-dashboard" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "devsecops-dashboard" rollout to finish: 1 of 2 updated replicas are available...
+deployment "devsecops-dashboard" successfully rolled out
+NAME                                  READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                      SELECTOR
+deployment.apps/devsecops-dashboard   2/2     2            2           31s   dashboard    session17-devsecops:local   app=devsecops-dashboard
+
+NAME                                       READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+pod/devsecops-dashboard-7c97d978d6-k6wpj   1/1     Running   0          28s   10.244.0.69   minikube   <none>           <none>
+pod/devsecops-dashboard-7c97d978d6-t79wp   1/1     Running   0          27s   10.244.0.70   minikube   <none>           <none>
+
+NAME                          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/devsecops-dashboard   ClusterIP   10.105.2.205   <none>        80/TCP    30s   app=devsecops-dashboard
+
+NAME        STATUS   AGE   LABELS
+devsecops   Active   35s   kubernetes.io/metadata.name=devsecops,pod-security.kubernetes.io/enforce-version=latest,pod-security.kubernetes.io/enforce=restricted,pod-security.kubernetes.io/warn=restricted

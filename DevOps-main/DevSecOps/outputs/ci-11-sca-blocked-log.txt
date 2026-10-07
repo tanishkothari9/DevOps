@@ -1,0 +1,26 @@
+$ gh run view 37659688505 -R tanishkothari9/DevOps --log-failed | cut -f3- | cut -c30- > /tmp/sca.log; echo '--- pip-audit (unique advisories) ---'; grep -E '^Found' /tmp/sca.log; grep -E '^(requests|urllib3|idna) ' /tmp/sca.log | awk '!s[$3]++ {printf "%-9s %-7s %-16s fix: %s\n", $1, $2, $3, $4}'; echo '--- trivy fs ---'; grep -E 'Total: [0-9]|requests +│ CVE' /tmp/sca.log | tr -s ' '; grep -c 'exit code 1' /tmp/sca.log | sed 's/^/failed steps: /'; rm /tmp/sca.log
+--- pip-audit (unique advisories) ---
+Found 37 known vulnerabilities in 3 packages
+requests  2.19.0  PYSEC-2018-28    fix: 2.20.0
+requests  2.19.0  PYSEC-2023-74    fix: 2.31.0
+requests  2.19.0  PYSEC-2026-1873  fix: 2.32.0
+requests  2.19.0  PYSEC-2026-1872  fix: 2.32.4
+requests  2.19.0  PYSEC-2026-2275  fix: 2.33.0
+idna      2.7     PYSEC-2024-60    fix: 3.7
+idna      2.7     PYSEC-2026-215   fix: 3.15
+urllib3   1.23    PYSEC-2019-133   fix: 1.24.2
+urllib3   1.23    PYSEC-2019-132   fix: 1.24.3
+urllib3   1.23    PYSEC-2020-148   fix: 1.25.9
+urllib3   1.23    PYSEC-2026-1995  fix: 1.26.19,2.2.2
+urllib3   1.23    PYSEC-2023-192   fix: 1.26.17,2.0.6
+urllib3   1.23    PYSEC-2023-207   fix: 1.24.2
+urllib3   1.23    PYSEC-2023-212   fix: 1.26.18,2.0.7
+urllib3   1.23    PYSEC-2026-1999  fix: 2.5.0
+urllib3   1.23    PYSEC-2026-1994  fix: 2.6.0
+urllib3   1.23    PYSEC-2026-1996  fix: 2.6.3
+urllib3   1.23    PYSEC-2026-141   fix: 2.7.0
+urllib3   1.23    PYSEC-2026-4177  fix: 2.8.0
+--- trivy fs ---
+Total: 1 (HIGH: 1, CRITICAL: 0)
+│ requests │ CVE-2018-18074 │ HIGH │ fixed │ 2.19.0 │ 2.20.0 │ python-requests: Redirect from HTTPS to HTTP does not remove │
+failed steps: 2
