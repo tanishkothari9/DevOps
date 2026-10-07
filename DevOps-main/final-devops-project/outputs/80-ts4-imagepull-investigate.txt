@@ -1,0 +1,10 @@
+$ kubectl get pods -n taskboard-troubleshoot -l app=stockpilot-frontend; kubectl get deploy stockpilot-frontend -n taskboard-troubleshoot -o jsonpath='image: {.spec.template.spec.containers[0].image}  pullPolicy: {.spec.template.spec.containers[0].imagePullPolicy}{"\n"}'; kubectl get events -n taskboard-troubleshoot --field-selector reason=Failed -o jsonpath='{.items[0].message}' | fold -w 150; echo; echo 'images present on the node:'; minikube image ls | grep stockpilot-frontend
+NAME                                   READY   STATUS             RESTARTS   AGE
+stockpilot-frontend-764d49d459-zkxtg   0/1     ImagePullBackOff   0          3m48s
+image: stockpilot-frontend:lcoal  pullPolicy: IfNotPresent
+Failed to pull image "stockpilot-frontend:lcoal": failed to pull and unpack image "docker.io/library/stockpilot-frontend:lcoal": failed to resolve ref
+erence "docker.io/library/stockpilot-frontend:lcoal": pull access denied, repository does not exist or may require authorization: server message: insu
+fficient_scope: authorization failed
+images present on the node:
+ghcr.io/tanishkothari9/stockpilot-frontend:68adae859364a8653de35a9ab25473ae19baf14c
+docker.io/library/stockpilot-frontend:local

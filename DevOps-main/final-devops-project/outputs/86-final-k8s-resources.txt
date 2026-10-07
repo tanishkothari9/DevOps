@@ -1,0 +1,73 @@
+$ kubectl get all,ing,hpa,pvc,cm,secret -n taskboard; echo; helm list -n taskboard; echo; kubectl get all -n taskboard-gitops; kubectl get applications.argoproj.io -n argocd stockpilot-gitops
+NAME                                       READY   STATUS    RESTARTS   AGE
+pod/stockpilot-backend-5466465799-6mxg6    1/1     Running   0          6m1s
+pod/stockpilot-backend-5466465799-bsxg8    1/1     Running   0          51m
+pod/stockpilot-frontend-574dfff6c6-dglxb   1/1     Running   0          45m
+pod/stockpilot-postgres-0                  1/1     Running   0          45m
+
+NAME                          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/stockpilot-backend    ClusterIP   10.103.148.106   <none>        8000/TCP   115m
+service/stockpilot-frontend   ClusterIP   10.108.96.24     <none>        80/TCP     115m
+service/stockpilot-postgres   ClusterIP   10.111.169.22    <none>        5432/TCP   115m
+
+NAME                                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/stockpilot-backend    2/2     2            2           115m
+deployment.apps/stockpilot-frontend   1/1     1            1           115m
+
+NAME                                             DESIRED   CURRENT   READY   AGE
+replicaset.apps/stockpilot-backend-5466465799    2         2         2       51m
+replicaset.apps/stockpilot-backend-586ddb8bb5    0         0         0       115m
+replicaset.apps/stockpilot-frontend-574dfff6c6   1         1         1       51m
+replicaset.apps/stockpilot-frontend-6b44d5c648   0         0         0       115m
+
+NAME                                   READY   AGE
+statefulset.apps/stockpilot-postgres   1/1     115m
+
+NAME                                                     REFERENCE                       TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/stockpilot-backend   Deployment/stockpilot-backend   cpu: 66%/60%   1         3         2          115m
+
+NAME                                   CLASS   HOSTS              ADDRESS        PORTS   AGE
+ingress.networking.k8s.io/stockpilot   nginx   stockpilot.local   192.168.49.2   80      115m
+
+NAME                                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/stockpilot-postgres-data   Bound    pvc-7d1a6e89-7232-4d71-87e6-159b89315e97   1Gi        RWO            standard       <unset>                 115m
+
+NAME                                     DATA   AGE
+configmap/kube-root-ca.crt               1      122m
+configmap/stockpilot-config              5      115m
+configmap/stockpilot-grafana-dashboard   1      115m
+
+NAME                                      TYPE                 DATA   AGE
+secret/sh.helm.release.v1.stockpilot.v1   helm.sh/release.v1   1      115m
+secret/sh.helm.release.v1.stockpilot.v2   helm.sh/release.v1   1      73m
+secret/sh.helm.release.v1.stockpilot.v3   helm.sh/release.v1   1      51m
+secret/sh.helm.release.v1.stockpilot.v4   helm.sh/release.v1   1      29m
+secret/stockpilot-db                      Opaque               2      115m
+
+NAME      	NAMESPACE	REVISION	UPDATED                             	STATUS  	CHART           	APP VERSION
+stockpilot	taskboard	4       	2026-10-08 00:55:26.008527 +0530 IST	deployed	stockpilot-1.0.0	1.0.0      
+
+NAME                                      READY   STATUS    RESTARTS   AGE
+pod/stockpilot-backend-66db97d7c8-qs89k   1/1     Running   0          103s
+pod/stockpilot-frontend-968c6d58c-tkrqr   1/1     Running   0          3m
+pod/stockpilot-postgres-0                 1/1     Running   0          18m
+
+NAME                          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/stockpilot-backend    ClusterIP   10.103.153.61    <none>        8000/TCP   18m
+service/stockpilot-frontend   ClusterIP   10.110.158.104   <none>        80/TCP     18m
+service/stockpilot-postgres   ClusterIP   10.101.196.162   <none>        5432/TCP   18m
+
+NAME                                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/stockpilot-backend    1/1     1            1           18m
+deployment.apps/stockpilot-frontend   1/1     1            1           18m
+
+NAME                                            DESIRED   CURRENT   READY   AGE
+replicaset.apps/stockpilot-backend-64dc6879d    0         0         0       18m
+replicaset.apps/stockpilot-backend-66db97d7c8   1         1         1       3m
+replicaset.apps/stockpilot-frontend-876f87cff   0         0         0       18m
+replicaset.apps/stockpilot-frontend-968c6d58c   1         1         1       3m
+
+NAME                                   READY   AGE
+statefulset.apps/stockpilot-postgres   1/1     18m
+NAME                SYNC STATUS   HEALTH STATUS
+stockpilot-gitops   Synced        Healthy

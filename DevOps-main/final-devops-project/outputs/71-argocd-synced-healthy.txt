@@ -1,0 +1,21 @@
+$ kubectl get applications.argoproj.io -n argocd stockpilot-gitops -o wide; kubectl get applications.argoproj.io -n argocd stockpilot-gitops -o jsonpath='{range .status.history[*]}deployed {.deployedAt}  revision {.revision}{"\n"}{end}'; kubectl get applications.argoproj.io -n argocd stockpilot-gitops -o json | jq -r '.status.resources[] | "\(.kind)/\(.name)  \(.status)  \(.health.status // "-")"'; kubectl get pods -n taskboard-gitops -o custom-columns=POD:.metadata.name,STATUS:.status.phase,IMAGE:.spec.containers[0].image; curl -s -H 'Host: stockpilot-gitops.local' localhost:8082/api/info; echo
+NAME                SYNC STATUS   HEALTH STATUS   REVISION                                   PROJECT
+stockpilot-gitops   Synced        Healthy         6d3fc4cff7fa23c795a522541ddc2bb71f21bafd   default
+deployed 2026-10-07T19:36:11Z  revision 4b043bb7f64676d5bcd766ec2a41c5f0cb75911f
+deployed 2026-10-07T19:51:44Z  revision 6d3fc4cff7fa23c795a522541ddc2bb71f21bafd
+ConfigMap/stockpilot-config  Synced  -
+PersistentVolumeClaim/stockpilot-postgres-data  Synced  -
+Secret/stockpilot-db  Synced  -
+Service/stockpilot-backend  Synced  -
+Service/stockpilot-frontend  Synced  -
+Service/stockpilot-postgres  Synced  -
+Deployment/stockpilot-backend  Synced  -
+Deployment/stockpilot-frontend  Synced  -
+StatefulSet/stockpilot-postgres  Synced  -
+ServiceMonitor/stockpilot-backend  Synced  -
+Ingress/stockpilot  Synced  -
+POD                                   STATUS    IMAGE
+stockpilot-backend-66db97d7c8-nbm7h   Running   ghcr.io/tanishkothari9/stockpilot-backend:7023eebb370acc95fe8f06ee1a54553ac6607237
+stockpilot-frontend-968c6d58c-tkrqr   Running   ghcr.io/tanishkothari9/stockpilot-frontend:7023eebb370acc95fe8f06ee1a54553ac6607237
+stockpilot-postgres-0                 Running   postgres:16-alpine
+{"service":"StockPilot API","version":"1.0.0","environment":"gitops-argocd"}

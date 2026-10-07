@@ -1,0 +1,13 @@
+$ kubectl create namespace taskboard-troubleshoot && kubectl apply -k troubleshooting/broken
+namespace/taskboard-troubleshoot created
+configmap/stockpilot-config created
+secret/stockpilot-db created
+secret/stockpilot-db-rotated created
+service/stockpilot-backend created
+service/stockpilot-frontend created
+service/stockpilot-postgres created
+persistentvolumeclaim/stockpilot-postgres-data created
+deployment.apps/stockpilot-backend created
+deployment.apps/stockpilot-frontend created
+statefulset.apps/stockpilot-postgres created
+ingress.networking.k8s.io/stockpilot created

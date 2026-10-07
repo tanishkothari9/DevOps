@@ -1,0 +1,19 @@
+$ kubectl describe hpa stockpilot-backend -n taskboard | sed -n '/Conditions:/,$p' | cut -c1-200; kubectl get hpa stockpilot-backend -n taskboard
+Conditions:
+  Type            Status  Reason                   Message
+  ----            ------  ------                   -------
+  AbleToScale     True    SucceededGetScale        the HPA controller was able to get the target's current scale
+  ScaledToZero    False   NotScaledToZero          the HPA controller did not scale the workload to zero
+  ScalingActive   False   FailedGetResourceMetric  the HPA was unable to compute the replica count: failed to get cpu utilization: unable to get metrics for resource cpu: no metrics returned from reso
+  ScalingLimited  True    TooManyReplicas          the desired replica count is more than the maximum replica count
+Events:
+  Type     Reason                        Age                   From                       Message
+  ----     ------                        ----                  ----                       -------
+  Warning  FailedGetResourceMetric       16m (x304 over 108m)  horizontal-pod-autoscaler  failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource m
+  Normal   SuccessfulRescale             10m                   horizontal-pod-autoscaler  New size: 1; reason: All metrics below target
+  Normal   SuccessfulRescale             2m5s                  horizontal-pod-autoscaler  New size: 2; reason: cpu resource utilization (percentage of request) above target
+  Normal   SuccessfulRescale             65s                   horizontal-pod-autoscaler  New size: 3; reason: cpu resource utilization (percentage of request) above target
+  Warning  FailedGetResourceMetric       2s (x7 over 111m)     horizontal-pod-autoscaler  failed to get cpu utilization: unable to get metrics for resource cpu: no metrics returned from resource metri
+  Warning  FailedComputeMetricsReplicas  2s (x7 over 111m)     horizontal-pod-autoscaler  invalid metrics (1 invalid out of 1), first error is: failed to get cpu resource metric value: failed to get c
+NAME                 REFERENCE                       TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+stockpilot-backend   Deployment/stockpilot-backend   cpu: <unknown>/60%   1         3         3          111m

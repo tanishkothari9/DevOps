@@ -1,0 +1,11 @@
+$ gh run view -R tanishkothari9/DevOps --log --job 112981780253 | cut -f3 | sed -E 's/^[0-9T:.Z-]+ //; s/\^\[\[[0-9;]*m//g; s/\x1b\[[0-9;]*m//g' | grep -E '^arm64$|^Report Summary|│ ghcr|│ [0-9a-f]{6}|Legend|Clean' | head -24
+arm64
+Report Summary
+│ ghcr.io/tanishkothari9/stockpilot-backend:7023eebb370acc95fe8f06ee1a54553ac6607- │   debian   │        0        │    -    │
+Legend:
+- '0': Clean (no security findings detected)
+Report Summary
+│ ghcr.io/tanishkothari9/stockpilot-frontend:7023eebb370acc95fe8f06ee1a54553ac660- │ alpine │        0        │    -    │
+Legend:
+- '0': Clean (no security findings detected)
+﻿2026-10-07T19:44:49.3927227Z Cleaning up orphan processes

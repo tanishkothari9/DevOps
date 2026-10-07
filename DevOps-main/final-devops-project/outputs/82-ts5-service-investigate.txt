@@ -1,0 +1,12 @@
+$ kubectl get pods -n taskboard-troubleshoot; curl -s -w '\nGET /api/info via ingress -> HTTP %{http_code}\n' -H 'Host: stockpilot-troubleshoot.local' localhost:8082/api/info | tail -2; kubectl get endpoints stockpilot-backend -n taskboard-troubleshoot 2>/dev/null; kubectl get svc stockpilot-backend -n taskboard-troubleshoot -o jsonpath='service selector: {.spec.selector}{"\n"}'; kubectl get pods -n taskboard-troubleshoot -l app=stockpilot-backend --show-labels | awk '{print $1, $NF}'
+NAME                                  READY   STATUS    RESTARTS   AGE
+stockpilot-backend-7c7784cd67-72mh7   1/1     Running   0          73s
+stockpilot-frontend-cc644f4b7-q8nbz   1/1     Running   0          9s
+stockpilot-postgres-0                 1/1     Running   0          3m36s
+
+GET /api/info via ingress -> HTTP 503
+NAME                 ENDPOINTS   AGE
+stockpilot-backend   <none>      4m
+service selector: {"app":"stockpilot-backnd"}
+NAME LABELS
+stockpilot-backend-7c7784cd67-72mh7 app=stockpilot-backend,pod-template-hash=7c7784cd67

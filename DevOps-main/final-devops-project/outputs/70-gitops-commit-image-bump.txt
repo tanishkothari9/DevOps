@@ -1,0 +1,22 @@
+$ git --no-pager diff -- gitops/values-gitops.yaml && $GITPUSH 'feat(final): promote multi-arch build 7023eeb to the GitOps environment' DevOps-main/final-devops-project/gitops/values-gitops.yaml
+diff --git a/DevOps-main/final-devops-project/gitops/values-gitops.yaml b/DevOps-main/final-devops-project/gitops/values-gitops.yaml
+index fe75939..4a91410 100644
+--- a/DevOps-main/final-devops-project/gitops/values-gitops.yaml
++++ b/DevOps-main/final-devops-project/gitops/values-gitops.yaml
+@@ -9,13 +9,13 @@ global:
+ backend:
+   image:
+     repository: stockpilot-backend
+-    tag: "68adae859364a8653de35a9ab25473ae19baf14c"
++    tag: "7023eebb370acc95fe8f06ee1a54553ac6607237"
+   replicaCount: 1
+ 
+ frontend:
+   image:
+     repository: stockpilot-frontend
+-    tag: "68adae859364a8653de35a9ab25473ae19baf14c"
++    tag: "7023eebb370acc95fe8f06ee1a54553ac6607237"
+   replicaCount: 1
+ 
+ postgres:
+6d3fc4c feat(final): promote multi-arch build 7023eeb to the GitOps environment

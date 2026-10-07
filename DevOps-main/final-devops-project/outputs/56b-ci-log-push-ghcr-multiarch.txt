@@ -1,0 +1,24 @@
+$ gh run view -R tanishkothari9/DevOps --log --job 112982403807 | cut -f3 | sed -E 's/^[0-9T:.Z-]+ //; s/\^\[\[[0-9;]*m//g; s/\x1b\[[0-9;]*m//g' | grep -E 'Loaded image|: digest:|== ghcr|^Name:|^MediaType:|Platform:|\{"name"' | grep -v 'set ' | head -30
+Name:          builder-6ceaa6d5-95ad-4024-801c-b0c1074b6cc4
+Name:                  builder-6ceaa6d5-95ad-4024-801c-b0c1074b6cc40
+Loaded image: ghcr.io/tanishkothari9/stockpilot-backend:7023eebb370acc95fe8f06ee1a54553ac6607237-amd64
+Loaded image: ghcr.io/tanishkothari9/stockpilot-frontend:7023eebb370acc95fe8f06ee1a54553ac6607237-amd64
+7023eebb370acc95fe8f06ee1a54553ac6607237-amd64: digest: sha256:422e0869e5e9a87e77a468889b2ee53577f12f0a8d447b7f10a31d96d499d46c size: 2408
+7023eebb370acc95fe8f06ee1a54553ac6607237-amd64: digest: sha256:889cd86a17d1bc55e7510cfb4ebd041daf923a67eccc11c98b5897851ca9ebd1 size: 2613
+Loaded image: ghcr.io/tanishkothari9/stockpilot-backend:7023eebb370acc95fe8f06ee1a54553ac6607237-arm64
+Loaded image: ghcr.io/tanishkothari9/stockpilot-frontend:7023eebb370acc95fe8f06ee1a54553ac6607237-arm64
+7023eebb370acc95fe8f06ee1a54553ac6607237-arm64: digest: sha256:b48b82d55138177247ae059117a1943dfd21c84588cd012deb688af6717f1845 size: 2408
+7023eebb370acc95fe8f06ee1a54553ac6607237-arm64: digest: sha256:f0d8785304195e6e7b49626c43414cb51ef21160bfd94f3fa6a5314cc76f432a size: 2613
+  docker buildx imagetools inspect "$ref" | grep -E '^(Name|MediaType|Digest):|Platform:'
+== ghcr.io/tanishkothari9/stockpilot-backend:7023eebb370acc95fe8f06ee1a54553ac6607237
+Name:      ghcr.io/tanishkothari9/stockpilot-backend:7023eebb370acc95fe8f06ee1a54553ac6607237
+MediaType: application/vnd.docker.distribution.manifest.list.v2+json
+  Platform:  linux/amd64
+  Platform:  linux/arm64
+{"name":"tanishkothari9/stockpilot-backend","tags":8,"latest_tags":["0466ebd16bf488411ad8644540e6e6a6de9a36af","4b043bb7f64676d5bcd766ec2a41c5f0cb75911f","7023eebb370acc95fe8f06ee1a54553ac6607237-amd64","7023eebb370acc95fe8f06ee1a54553ac6607237-arm64","7023eebb370acc95fe8f06ee1a54553ac6607237"]}
+== ghcr.io/tanishkothari9/stockpilot-frontend:7023eebb370acc95fe8f06ee1a54553ac6607237
+Name:      ghcr.io/tanishkothari9/stockpilot-frontend:7023eebb370acc95fe8f06ee1a54553ac6607237
+MediaType: application/vnd.docker.distribution.manifest.list.v2+json
+  Platform:  linux/amd64
+  Platform:  linux/arm64
+{"name":"tanishkothari9/stockpilot-frontend","tags":8,"latest_tags":["0466ebd16bf488411ad8644540e6e6a6de9a36af","4b043bb7f64676d5bcd766ec2a41c5f0cb75911f","7023eebb370acc95fe8f06ee1a54553ac6607237-amd64","7023eebb370acc95fe8f06ee1a54553ac6607237-arm64","7023eebb370acc95fe8f06ee1a54553ac6607237"]}

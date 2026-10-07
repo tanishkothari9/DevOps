@@ -1,0 +1,19 @@
+$ kubectl get pod stockpilot-postgres-0 -n taskboard-troubleshoot; kubectl describe pod stockpilot-postgres-0 -n taskboard-troubleshoot | sed -n '/Limits:/,/Environment:/p;/^Events:/,$p'; echo "node allocatable memory: $(kubectl get node minikube -o jsonpath='{.status.allocatable.memory}')"; kubectl logs -n taskboard-troubleshoot deploy/stockpilot-backend -c wait-for-postgres --tail=3
+NAME                    READY   STATUS    RESTARTS   AGE
+stockpilot-postgres-0   0/1     Pending   0          16s
+    Limits:
+      memory:  64Gi
+    Requests:
+      cpu:      50m
+      memory:   64Gi
+    Liveness:   exec [sh -c pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"] delay=30s timeout=5s period=20s successThreshold=1 failureThreshold=6
+    Readiness:  exec [sh -c pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"] delay=5s timeout=5s period=10s successThreshold=1 failureThreshold=3
+    Environment:
+Events:
+  Type     Reason            Age   From               Message
+  ----     ------            ----  ----               -------
+  Warning  FailedScheduling  16s   default-scheduler  0/1 nodes are available: 1 Insufficient memory. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+node allocatable memory: 8024788Ki
+waiting for stockpilot-postgres:5432
+stockpilot-postgres:5432 - no response
+waiting for stockpilot-postgres:5432

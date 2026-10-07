@@ -1,0 +1,10 @@
+$ kubectl patch statefulset stockpilot-postgres -n taskboard-troubleshoot --type=json -p '[{"op":"replace","path":"/spec/template/spec/containers/0/resources","value":{"requests":{"cpu":"50m","memory":"128Mi"},"limits":{"cpu":"500m","memory":"384Mi"}}}]' && kubectl delete pod stockpilot-postgres-0 -n taskboard-troubleshoot && sleep 5 && kubectl wait --for=condition=Ready pod/stockpilot-postgres-0 -n taskboard-troubleshoot --timeout=180s && kubectl get pods -n taskboard-troubleshoot && kubectl get pvc -n taskboard-troubleshoot
+statefulset.apps/stockpilot-postgres patched
+pod "stockpilot-postgres-0" deleted from taskboard-troubleshoot namespace
+pod/stockpilot-postgres-0 condition met
+NAME                                   READY   STATUS         RESTARTS   AGE
+stockpilot-backend-57bdffbc8c-4zwsj    0/1     Init:0/1       0          36s
+stockpilot-frontend-764d49d459-zkxtg   0/1     ErrImagePull   0          36s
+stockpilot-postgres-0                  1/1     Running        0          12s
+NAME                       STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+stockpilot-postgres-data   Bound    pvc-cafbcf86-4db8-40e1-8fd8-1a30caaf3df4   1Gi        RWO            standard       <unset>                 36s

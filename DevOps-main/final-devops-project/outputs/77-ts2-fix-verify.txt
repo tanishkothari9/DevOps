@@ -1,0 +1,11 @@
+$ kubectl get deploy stockpilot-backend -n taskboard-troubleshoot -o jsonpath='{.spec.template.spec.containers[0].envFrom}' | jq -c .; kubectl get pods -n taskboard-troubleshoot -l app=stockpilot-backend; NEW=$(kubectl get pods -n taskboard-troubleshoot -l app=stockpilot-backend --sort-by=.metadata.creationTimestamp -o name | tail -1); echo "logs of $NEW:"; kubectl logs -n taskboard-troubleshoot $NEW -c backend | grep -E 'Running upgrade|Uvicorn running|startup complete|GET /readyz' | tail -5
+[{"configMapRef":{"name":"stockpilot-config"}},{"secretRef":{"name":"stockpilot-db"}}]
+NAME                                  READY   STATUS             RESTARTS      AGE
+stockpilot-backend-57bdffbc8c-4zwsj   0/1     CrashLoopBackOff   3 (21s ago)   2m11s
+stockpilot-backend-7654b6db99-wq66n   0/1     Running            0             69s
+logs of pod/stockpilot-backend-7654b6db99-wq66n:
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     10.244.0.1:39424 - "GET /readyz HTTP/1.1" 404 Not Found
+INFO:     10.244.0.1:42840 - "GET /readyz HTTP/1.1" 404 Not Found
+INFO:     10.244.0.1:60826 - "GET /readyz HTTP/1.1" 404 Not Found
+INFO:     10.244.0.1:56490 - "GET /readyz HTTP/1.1" 404 Not Found

@@ -1,0 +1,9 @@
+$ for img in stockpilot-backend stockpilot-frontend; do docker buildx imagetools inspect ghcr.io/tanishkothari9/$img:7023eebb370acc95fe8f06ee1a54553ac6607237 | grep -E '^(Name|MediaType):|Platform:'; done
+Name:      ghcr.io/tanishkothari9/stockpilot-backend:7023eebb370acc95fe8f06ee1a54553ac6607237
+MediaType: application/vnd.docker.distribution.manifest.list.v2+json
+  Platform:  linux/amd64
+  Platform:  linux/arm64
+Name:      ghcr.io/tanishkothari9/stockpilot-frontend:7023eebb370acc95fe8f06ee1a54553ac6607237
+MediaType: application/vnd.docker.distribution.manifest.list.v2+json
+  Platform:  linux/amd64
+  Platform:  linux/arm64

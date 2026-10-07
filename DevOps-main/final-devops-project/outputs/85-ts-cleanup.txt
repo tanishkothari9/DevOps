@@ -1,0 +1,3 @@
+$ kubectl delete namespace taskboard-troubleshoot --wait=true && kubectl get namespace taskboard-troubleshoot
+namespace "taskboard-troubleshoot" deleted
+Error from server (NotFound): namespaces "taskboard-troubleshoot" not found

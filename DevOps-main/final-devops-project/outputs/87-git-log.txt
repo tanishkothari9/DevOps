@@ -1,0 +1,15 @@
+$ git log --oneline --format='%h %ad %s' --date=format:'%H:%M' -- . ../../.github/workflows/final-devops-project.yml
+6d3fc4c 01:21 feat(final): promote multi-arch build 7023eeb to the GitOps environment
+7023eeb 01:12 ci(final): build and scan amd64 + arm64 images natively and publish one multi-arch SHA tag
+4b043bb 00:55 docs: publish session 9 README and refresh in-progress evidence for sessions 10-15, 20, 21
+0466ebd 00:34 fix(final): run Postgres as UID 70 with read-only FS, private EKS endpoint, busy-node probe timeouts
+41b72b3 00:23 feat(final): add Argo CD GitOps application, monitoring manifests and broken troubleshooting overlay
+8064706 00:15 feat(final): add Terraform for VPC, subnets, NAT, SGs, S3, ECR, EKS/k3s with LocalStack toggle
+68adae8 23:46 fix(final): pass explicit test glob to node --test so Node 22 in CI finds the frontend tests
+8a464c4 23:43 docs: publish session 9-17, 20, 21 evidence and interim READMEs
+97aea6b 23:43 ci(final): add CI/CD + DevSecOps pipeline (pytest, SAST, SCA, gitleaks, Trivy gate, GHCR push, kind deploy)
+1ca5d47 23:34 feat(final): add StockPilot Helm chart with HPA, ServiceMonitor, alert rules, Grafana dashboard and helm test
+f50ff57 23:28 feat(final): add Kubernetes manifests (ConfigMap, Secret, Postgres PVC, probes, Ingress, HPA) via kustomize
+581a687 23:14 feat(final): add docker compose stack, harden backend image (drop pip) and polish mobile layout
+0cd50d5 22:35 feat(final): add responsive React/Vite inventory dashboard served by unprivileged nginx
+ddd7bbc 22:34 feat(final): add StockPilot FastAPI inventory API with Alembic migrations and pytest suite

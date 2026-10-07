@@ -1,0 +1,7 @@
+$ kubectl patch service stockpilot-backend -n taskboard-troubleshoot -p '{"spec":{"selector":{"app":"stockpilot-backend"}}}' && kubectl get service stockpilot-backend -n taskboard-troubleshoot -o jsonpath='service selector: {.spec.selector}{"\n"}' && kubectl get endpoints stockpilot-backend -n taskboard-troubleshoot 2>/dev/null && for i in 1 2 3 4 5 6 7 8 9 10; do code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: stockpilot-troubleshoot.local' localhost:8082/api/info); echo "attempt $i: GET /api/info via ingress -> HTTP $code"; [ "$code" = 200 ] && break; sleep 3; done; curl -s -H 'Host: stockpilot-troubleshoot.local' localhost:8082/api/info; echo
+service/stockpilot-backend patched (no change)
+service selector: {"app":"stockpilot-backend"}
+NAME                 ENDPOINTS           AGE
+stockpilot-backend   10.244.0.101:8000   4m18s
+attempt 1: GET /api/info via ingress -> HTTP 200
+{"service":"StockPilot API","version":"1.0.0","environment":"kubernetes-manifests"}

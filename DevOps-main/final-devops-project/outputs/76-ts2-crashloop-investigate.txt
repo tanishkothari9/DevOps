@@ -1,0 +1,6 @@
+$ kubectl get pods -n taskboard-troubleshoot -l app=stockpilot-backend; kubectl logs -n taskboard-troubleshoot deploy/stockpilot-backend -c backend --previous --tail=40 | grep -E 'OperationalError|FATAL|password' | head -3 | cut -c1-200; kubectl get deploy stockpilot-backend -n taskboard-troubleshoot -o jsonpath='{.spec.template.spec.containers[0].envFrom}' | jq -c .; kubectl get statefulset stockpilot-postgres -n taskboard-troubleshoot -o jsonpath='{.spec.template.spec.containers[0].env[2]}' | jq -c .
+NAME                                  READY   STATUS             RESTARTS     AGE
+stockpilot-backend-57bdffbc8c-4zwsj   0/1     CrashLoopBackOff   1 (3s ago)   55s
+sqlalchemy.exc.OperationalError: (psycopg.OperationalError) connection failed: connection to server at "10.111.30.218", port 5432 failed: FATAL:  password authentication failed for user "stockpilot"
+[{"configMapRef":{"name":"stockpilot-config"}},{"secretRef":{"name":"stockpilot-db-rotated"}}]
+{"name":"POSTGRES_PASSWORD","valueFrom":{"secretKeyRef":{"key":"DB_PASSWORD","name":"stockpilot-db"}}}

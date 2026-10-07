@@ -1,0 +1,14 @@
+$ kubectl get pods -n taskboard-troubleshoot -o wide; echo; kubectl get endpoints -n taskboard-troubleshoot; echo; curl -s -o /dev/null -w 'GET /api/info via ingress -> HTTP %{http_code}\n' -H 'Host: stockpilot-troubleshoot.local' localhost:8082/api/info; curl -s -o /dev/null -w 'GET / via ingress -> HTTP %{http_code}\n' -H 'Host: stockpilot-troubleshoot.local' localhost:8082/
+NAME                                   READY   STATUS         RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+stockpilot-backend-57bdffbc8c-4zwsj    0/1     Init:0/1       0          8s    10.244.0.98   minikube   <none>           <none>
+stockpilot-frontend-764d49d459-zkxtg   0/1     ErrImagePull   0          8s    10.244.0.97   minikube   <none>           <none>
+stockpilot-postgres-0                  0/1     Pending        0          8s    <none>        <none>     <none>           <none>
+
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME                  ENDPOINTS   AGE
+stockpilot-backend    <none>      8s
+stockpilot-frontend               8s
+stockpilot-postgres   <none>      8s
+
+GET /api/info via ingress -> HTTP 503
+GET / via ingress -> HTTP 503

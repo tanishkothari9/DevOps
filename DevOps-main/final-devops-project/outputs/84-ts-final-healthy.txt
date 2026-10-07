@@ -1,0 +1,24 @@
+$ kubectl get pods,svc,endpoints,pvc,ing -n taskboard-troubleshoot 2>/dev/null; BASE_URL=http://localhost:8082 HOST_HEADER=stockpilot-troubleshoot.local ./scripts/seed.sh && curl -s -H 'Host: stockpilot-troubleshoot.local' localhost:8082/api/stats | jq -c . && curl -s -o /dev/null -w 'GET / (frontend) via ingress -> HTTP %{http_code}\n' -H 'Host: stockpilot-troubleshoot.local' localhost:8082/
+NAME                                      READY   STATUS    RESTARTS   AGE
+pod/stockpilot-backend-7c7784cd67-72mh7   1/1     Running   0          100s
+pod/stockpilot-frontend-cc644f4b7-q8nbz   1/1     Running   0          36s
+pod/stockpilot-postgres-0                 1/1     Running   0          4m3s
+
+NAME                          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/stockpilot-backend    ClusterIP   10.103.36.93    <none>        8000/TCP   4m27s
+service/stockpilot-frontend   ClusterIP   10.97.14.236    <none>        80/TCP     4m27s
+service/stockpilot-postgres   ClusterIP   10.111.30.218   <none>        5432/TCP   4m27s
+
+NAME                            ENDPOINTS           AGE
+endpoints/stockpilot-backend    10.244.0.101:8000   4m27s
+endpoints/stockpilot-frontend   10.244.0.102:8080   4m27s
+endpoints/stockpilot-postgres   10.244.0.99:5432    4m27s
+
+NAME                                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/stockpilot-postgres-data   Bound    pvc-cafbcf86-4db8-40e1-8fd8-1a30caaf3df4   1Gi        RWO            standard       <unset>                 4m27s
+
+NAME                                   CLASS   HOSTS                           ADDRESS        PORTS   AGE
+ingress.networking.k8s.io/stockpilot   nginx   stockpilot-troubleshoot.local   192.168.49.2   80      4m27s
+seeded 7 items into http://localhost:8082
+{"total_skus":7,"total_units":287,"inventory_value":766213.0,"low_stock":2,"out_of_stock":1,"categories":{"Displays":1,"Audio":1,"Peripherals":3,"Storage":1,"Cables":1}}
+GET / (frontend) via ingress -> HTTP 200

@@ -1,0 +1,13 @@
+$ NEW=$(kubectl get pods -n taskboard-troubleshoot -l app=stockpilot-backend --sort-by=.metadata.creationTimestamp -o name | tail -1); kubectl describe -n taskboard-troubleshoot $NEW | grep -E 'Readiness:|Ready:|Unhealthy' | cut -c1-200 | tail -5; kubectl rollout status deploy/stockpilot-backend -n taskboard-troubleshoot --timeout=10s; kubectl exec -n taskboard-troubleshoot $NEW -c backend -- python -c "import urllib.request as u
+for p in ('/readyz','/ready'):
+    try: r=u.urlopen('http://127.0.0.1:8000'+p); print(p, r.status, r.read().decode())
+    except Exception as e: print(p, e)"
+    Ready:          True
+    Ready:          False
+    Readiness:  http-get http://:http/readyz delay=0s timeout=3s period=10s successThreshold=1 failureThreshold=3
+  Warning  Unhealthy  51s (x9 over 75s)  kubelet            spec.containers{backend}: Startup probe failed: Get "http://10.244.0.100:8000/health": dial tcp 10.244.0.100:8000: connect: connection refus
+  Warning  Unhealthy  7s (x5 over 47s)   kubelet            spec.containers{backend}: Readiness probe failed: HTTP probe failed with statuscode: 404
+Waiting for deployment "stockpilot-backend" rollout to finish: 1 old replicas are pending termination...
+error: timed out waiting for the condition
+/readyz HTTP Error 404: Not Found
+/ready 200 {"status":"READY"}

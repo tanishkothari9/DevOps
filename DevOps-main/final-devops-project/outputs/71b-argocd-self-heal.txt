@@ -1,0 +1,9 @@
+$ kubectl scale deployment stockpilot-backend -n taskboard-gitops --replicas=0 && kubectl get deploy stockpilot-backend -n taskboard-gitops && for i in $(seq 1 12); do sleep 5; r=$(kubectl get deploy stockpilot-backend -n taskboard-gitops -o jsonpath='{.spec.replicas}'); echo "[$(date +%T)] spec.replicas=$r  app=$(kubectl get applications.argoproj.io stockpilot-gitops -n argocd -o jsonpath='{.status.sync.status}/{.status.health.status}')"; [ "$r" = 1 ] && break; done; kubectl rollout status deploy/stockpilot-backend -n taskboard-gitops --timeout=180s; kubectl get applications.argoproj.io stockpilot-gitops -n argocd
+deployment.apps/stockpilot-backend scaled
+NAME                 READY   UP-TO-DATE   AVAILABLE   AGE
+stockpilot-backend   1/0     1            1           16m
+[01:23:05] spec.replicas=1  app=Synced/Progressing
+Waiting for deployment "stockpilot-backend" rollout to finish: 0 of 1 updated replicas are available...
+deployment "stockpilot-backend" successfully rolled out
+NAME                SYNC STATUS   HEALTH STATUS
+stockpilot-gitops   Synced        Progressing
