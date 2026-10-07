@@ -140,8 +140,10 @@ export function App() {
                     <tr key={item.id} className={selected?.id === item.id ? 'selected' : ''}>
                       <td data-label="SKU"><code>{item.sku}</code></td>
                       <td data-label="Item">
-                        <button className="link" onClick={() => setSelected(item)}>{item.name}</button>
-                        <small>{item.category}</small>
+                        <div className="cell-stack">
+                          <button className="link" onClick={() => setSelected(item)}>{item.name}</button>
+                          <small>{item.category}</small>
+                        </div>
                       </td>
                       <td data-label="Location">{item.location}</td>
                       <td data-label="Stock">
@@ -155,11 +157,13 @@ export function App() {
                       <td data-label="Value">{formatCurrency(item.quantity * item.unit_price)}</td>
                       <td data-label="Status"><span className={`badge ${status.tone}`}>{status.label}</span></td>
                       <td className="actions">
-                        <button title="Ship one unit" onClick={() => adjust(item, -1)} disabled={item.quantity === 0}>−1</button>
-                        <button title="Receive one unit" onClick={() => adjust(item, 1)}>+1</button>
-                        <button title="Receive ten units" onClick={() => adjust(item, 10)}>+10</button>
-                        <button onClick={() => setEditing(item)}>Edit</button>
-                        <button className="danger" onClick={() => remove(item)}>Delete</button>
+                        <div className="actions-row">
+                          <button title="Ship one unit" onClick={() => adjust(item, -1)} disabled={item.quantity === 0}>−1</button>
+                          <button title="Receive one unit" onClick={() => adjust(item, 1)}>+1</button>
+                          <button title="Receive ten units" onClick={() => adjust(item, 10)}>+10</button>
+                          <button onClick={() => setEditing(item)}>Edit</button>
+                          <button className="danger" onClick={() => remove(item)}>Delete</button>
+                        </div>
                       </td>
                     </tr>
                   );
