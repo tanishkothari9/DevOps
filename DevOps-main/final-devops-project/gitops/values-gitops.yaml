@@ -9,13 +9,13 @@ global:
 backend:
   image:
     repository: stockpilot-backend
-    tag: "68adae859364a8653de35a9ab25473ae19baf14c"
+    tag: "7023eebb370acc95fe8f06ee1a54553ac6607237"
   replicaCount: 1
 
 frontend:
   image:
     repository: stockpilot-frontend
-    tag: "68adae859364a8653de35a9ab25473ae19baf14c"
+    tag: "7023eebb370acc95fe8f06ee1a54553ac6607237"
   replicaCount: 1
 
 postgres:
