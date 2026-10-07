@@ -1,0 +1,71 @@
+# FastAPI backend: ConfigMap + Secret via envFrom, startup/readiness/liveness probes, CPU requests for the HPA.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stockpilot-backend
+  labels: {app: stockpilot-backend}
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: {maxSurge: 1, maxUnavailable: 0}
+  selector:
+    matchLabels: {app: stockpilot-backend}
+  template:
+    metadata:
+      labels: {app: stockpilot-backend}
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        - name: wait-for-postgres
+          image: postgres:16-alpine
+          command: ["sh", "-c", "until pg_isready -h \"$DB_HOST\" -p \"$DB_PORT\" -U probe -t 2; do echo waiting for $DB_HOST:$DB_PORT; sleep 2; done"]
+          envFrom:
+            - configMapRef: {name: stockpilot-config}
+          securityContext: {allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: {drop: ["ALL"]}}
+          resources:
+            requests: {cpu: 10m, memory: 16Mi}
+            limits: {cpu: 100m, memory: 64Mi}
+      containers:
+        - name: backend
+          image: stockpilot-backend:local
+          imagePullPolicy: IfNotPresent
+          ports: [{name: http, containerPort: 8000}]
+          envFrom:
+            - configMapRef: {name: stockpilot-config}
+            - secretRef: {name: stockpilot-db}
+          startupProbe:
+            httpGet: {path: /health, port: http}
+            periodSeconds: 3
+            failureThreshold: 20
+          readinessProbe:
+            httpGet: {path: /ready, port: http}
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet: {path: /health, port: http}
+            periodSeconds: 15
+            timeoutSeconds: 3
+          resources:
+            requests: {cpu: 50m, memory: 96Mi}
+            limits: {cpu: 250m, memory: 256Mi}
+          securityContext: {allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: {drop: ["ALL"]}}
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - {name: tmp, emptyDir: {}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stockpilot-backend
+  labels: {app: stockpilot-backend}
+spec:
+  type: ClusterIP
+  selector: {app: stockpilot-backend}
+  ports:
+    - {name: http, port: 8000, targetPort: http}

@@ -1,7 +1,7 @@
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy import engine_from_config, pool
+from sqlalchemy import engine_from_config, pool, text
 
 from app import models  # noqa: F401  (registers tables on Base.metadata)
 from app.config import settings
@@ -30,6 +30,10 @@ def run_migrations_online() -> None:
         config.get_section(config.config_ini_section) or {}, prefix="sqlalchemy.", poolclass=pool.NullPool
     )
     with connectable.connect() as connection:
+        if connection.dialect.name == "postgresql":
+            # Several backend replicas start at once: serialise their migrations with a session-level lock.
+            connection.execute(text("SELECT pg_advisory_lock(727274)"))
+            connection.commit()
         context.configure(connection=connection, target_metadata=target_metadata)
         with context.begin_transaction():
             context.run_migrations()

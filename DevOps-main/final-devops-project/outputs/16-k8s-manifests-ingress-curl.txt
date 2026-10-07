@@ -1,0 +1,5 @@
+$ BASE_URL=http://localhost:8082 HOST_HEADER=stockpilot.local ./scripts/seed.sh && curl -s -H 'Host: stockpilot.local' localhost:8082/api/info && echo && curl -s -H 'Host: stockpilot.local' localhost:8082/api/stats | jq -c . && curl -s -o /dev/null -w 'GET / (frontend via ingress) -> %{http_code}\n' -H 'Host: stockpilot.local' localhost:8082/
+seeded 7 items into http://localhost:8082
+{"service":"StockPilot API","version":"1.0.0","environment":"kubernetes-manifests"}
+{"total_skus":7,"total_units":287,"inventory_value":766213.0,"low_stock":2,"out_of_stock":1,"categories":{"Displays":1,"Audio":1,"Peripherals":3,"Storage":1,"Cables":1}}
+GET / (frontend via ingress) -> 200

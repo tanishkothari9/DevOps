@@ -1,0 +1,40 @@
+$ kubectl get all,ing,hpa,pvc,cm,secret -n taskboard
+NAME                                       READY   STATUS    RESTARTS   AGE
+pod/stockpilot-backend-b9fbc4468-cnntc     1/1     Running   0          113s
+pod/stockpilot-backend-b9fbc4468-fc45v     1/1     Running   0          44s
+pod/stockpilot-frontend-6bd6c664c9-5xpf9   1/1     Running   0          6m25s
+pod/stockpilot-frontend-6bd6c664c9-hc2c4   1/1     Running   0          6m25s
+pod/stockpilot-postgres-0                  1/1     Running   0          6m25s
+
+NAME                          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/stockpilot-backend    ClusterIP   10.102.19.163    <none>        8000/TCP   6m25s
+service/stockpilot-frontend   ClusterIP   10.108.110.178   <none>        80/TCP     6m25s
+service/stockpilot-postgres   ClusterIP   10.103.202.9     <none>        5432/TCP   6m25s
+
+NAME                                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/stockpilot-backend    2/2     2            2           6m25s
+deployment.apps/stockpilot-frontend   2/2     2            2           6m25s
+
+NAME                                             DESIRED   CURRENT   READY   AGE
+replicaset.apps/stockpilot-backend-789bd4d94d    0         0         0       6m25s
+replicaset.apps/stockpilot-backend-b9fbc4468     2         2         2       114s
+replicaset.apps/stockpilot-frontend-6bd6c664c9   2         2         2       6m25s
+
+NAME                                   READY   AGE
+statefulset.apps/stockpilot-postgres   1/1     6m25s
+
+NAME                                                     REFERENCE                       TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/stockpilot-backend   Deployment/stockpilot-backend   cpu: <unknown>/60%   2         5         2          6m25s
+
+NAME                                   CLASS   HOSTS              ADDRESS        PORTS   AGE
+ingress.networking.k8s.io/stockpilot   nginx   stockpilot.local   192.168.49.2   80      6m25s
+
+NAME                                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/stockpilot-postgres-data   Bound    pvc-af8aedad-30ef-4a75-811e-b3927afbef96   1Gi        RWO            standard       <unset>                 6m25s
+
+NAME                          DATA   AGE
+configmap/kube-root-ca.crt    1      6m26s
+configmap/stockpilot-config   5      6m26s
+
+NAME                   TYPE     DATA   AGE
+secret/stockpilot-db   Opaque   2      6m26s

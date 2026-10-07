@@ -1,0 +1,21 @@
+$ BASE_URL=http://localhost:3000 ./scripts/seed.sh && curl -s localhost:8010/health && echo && curl -s localhost:8010/ready && echo && curl -s localhost:3000/api/info && echo && curl -s localhost:3000/api/stats | jq . && curl -s 'localhost:3000/api/items?low_stock=true' | jq -c '.[] | {sku,name,quantity,reorder_level,low_stock}'
+seeded 7 items into http://localhost:3000
+{"status":"UP"}
+{"status":"READY"}
+{"service":"StockPilot API","version":"1.0.0","environment":"docker-compose"}
+{
+  "total_skus": 7,
+  "total_units": 287,
+  "inventory_value": 766213.0,
+  "low_stock": 2,
+  "out_of_stock": 1,
+  "categories": {
+    "Displays": 1,
+    "Audio": 1,
+    "Peripherals": 3,
+    "Storage": 1,
+    "Cables": 1
+  }
+}
+{"sku":"HD-0520","name":"Noise-cancelling headset","quantity":0,"reorder_level":5,"low_stock":true}
+{"sku":"MS-2210","name":"Wireless mouse","quantity":5,"reorder_level":12,"low_stock":true}

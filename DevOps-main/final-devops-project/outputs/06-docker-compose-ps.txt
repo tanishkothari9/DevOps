@@ -1,0 +1,13 @@
+$ cd docker && docker compose ps && docker compose logs backend --tail 8
+NAME                    IMAGE                       COMMAND                  SERVICE    CREATED              STATUS                             PORTS
+stockpilot-backend-1    stockpilot-backend:local    "sh -c 'alembic upgr…"   backend    About a minute ago   Up About a minute (healthy)        0.0.0.0:8010->8000/tcp, [::]:8010->8000/tcp
+stockpilot-frontend-1   stockpilot-frontend:local   "/docker-entrypoint.…"   frontend   About a minute ago   Up 15 seconds (health: starting)   0.0.0.0:3000->8080/tcp, [::]:3000->8080/tcp
+stockpilot-postgres-1   postgres:16-alpine          "docker-entrypoint.s…"   postgres   14 minutes ago       Up 14 minutes (healthy)            5432/tcp
+backend-1  | INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+backend-1  | INFO  [alembic.runtime.migration] Will assume transactional DDL.
+backend-1  | INFO:     Started server process [1]
+backend-1  | INFO:     Waiting for application startup.
+backend-1  | INFO:     Application startup complete.
+backend-1  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+backend-1  | INFO:     127.0.0.1:59262 - "GET /health HTTP/1.1" 200 OK
+backend-1  | INFO:     127.0.0.1:48528 - "GET /health HTTP/1.1" 200 OK

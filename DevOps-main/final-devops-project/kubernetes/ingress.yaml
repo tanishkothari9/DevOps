@@ -1,0 +1,18 @@
+# One host, two routes: /api -> FastAPI, everything else -> React/nginx.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: stockpilot
+  labels: {app.kubernetes.io/part-of: stockpilot}
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: stockpilot.local
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend: {service: {name: stockpilot-backend, port: {number: 8000}}}
+          - path: /
+            pathType: Prefix
+            backend: {service: {name: stockpilot-frontend, port: {number: 80}}}

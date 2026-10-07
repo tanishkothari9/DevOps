@@ -1,0 +1,4 @@
+$ minikube image load stockpilot-backend:local && minikube image load stockpilot-frontend:local && minikube image ls | grep -E 'stockpilot|postgres:16'
+docker.io/library/stockpilot-frontend:local
+docker.io/library/stockpilot-backend:local
+docker.io/library/postgres:16-alpine

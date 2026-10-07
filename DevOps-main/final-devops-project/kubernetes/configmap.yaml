@@ -1,0 +1,12 @@
+# Non-secret runtime configuration, injected into the backend with envFrom.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stockpilot-config
+  labels: {app.kubernetes.io/part-of: stockpilot}
+data:
+  APP_ENV: kubernetes-manifests
+  LOG_LEVEL: INFO
+  DB_HOST: stockpilot-postgres
+  DB_PORT: "5432"
+  DB_NAME: stockpilot

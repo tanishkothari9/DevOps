@@ -1,0 +1,16 @@
+$ API=localhost:8010/api; curl -s -X POST $API/items -H 'Content-Type: application/json' -d '{"sku":"TMP-001","name":"Demo item","quantity":3,"reorder_level":1,"unit_price":10}' | jq -c '{id,sku,quantity}'; ID=$(curl -s $API/items?q=TMP | jq '.[0].id'); curl -s $API/items/$ID | jq -c '{id,sku,name,location}'; curl -s -X PUT $API/items/$ID -H 'Content-Type: application/json' -d '{"location":"Z-99"}' | jq -c '{id,location}'; curl -s -X POST $API/items/$ID/adjust -H 'Content-Type: application/json' -d '{"delta":-5}' ; echo; curl -s $API/items/$ID/movements | jq -c .; curl -s -o /dev/null -w 'DELETE -> %{http_code}\n' -X DELETE $API/items/$ID; curl -s -o /dev/null -w 'GET after delete -> %{http_code}\n' $API/items/$ID; curl -s localhost:8010/metrics | grep -E '^(http_requests_total|stockpilot_stock_movements_total)' | head -8
+{"id":8,"sku":"TMP-001","quantity":3}
+{"id":8,"sku":"TMP-001","name":"Demo item","location":"Unassigned"}
+{"id":8,"location":"Z-99"}
+{"detail":"Insufficient stock: 3 on hand, tried to remove 5"}
+[]
+DELETE -> 204
+GET after delete -> 404
+stockpilot_stock_movements_total{direction="out"} 2.0
+stockpilot_stock_movements_total{direction="in"} 1.0
+http_requests_total{handler="/health",method="GET",status="2xx"} 6.0
+http_requests_total{handler="/api/items",method="POST",status="2xx"} 8.0
+http_requests_total{handler="/api/items/{item_id}/adjust",method="POST",status="2xx"} 3.0
+http_requests_total{handler="/api/items",method="GET",status="2xx"} 3.0
+http_requests_total{handler="/ready",method="GET",status="2xx"} 1.0
+http_requests_total{handler="/api/info",method="GET",status="2xx"} 1.0

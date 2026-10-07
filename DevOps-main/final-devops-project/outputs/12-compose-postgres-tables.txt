@@ -1,0 +1,26 @@
+$ cd docker && docker compose exec -T postgres psql -U stockpilot -d stockpilot -c '\dt' -c 'select * from alembic_version;' -c 'select sku, name, quantity, reorder_level from items order by sku;' && docker compose exec -T backend id
+               List of relations
+ Schema |      Name       | Type  |   Owner    
+--------+-----------------+-------+------------
+ public | alembic_version | table | stockpilot
+ public | items           | table | stockpilot
+ public | stock_movements | table | stockpilot
+(3 rows)
+
+      version_num      
+-----------------------
+ 0001_create_inventory
+(1 row)
+
+   sku   |           name            | quantity | reorder_level 
+---------+---------------------------+----------+---------------
+ CB-0100 | USB-C to USB-C cable 1m   |      200 |            40
+ DK-3300 | Thunderbolt dock          |       14 |             6
+ HD-0520 | Noise-cancelling headset  |        0 |             5
+ KB-1042 | Mechanical keyboard (TKL) |       37 |            10
+ MN-2701 | 27-inch 4K monitor        |        6 |             4
+ MS-2210 | Wireless mouse            |        5 |            12
+ SSD-1TB | NVMe SSD 1TB              |       25 |            10
+(7 rows)
+
+uid=10001(appuser) gid=10001(appuser) groups=10001(appuser)

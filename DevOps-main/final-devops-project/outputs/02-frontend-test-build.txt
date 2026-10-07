@@ -1,0 +1,36 @@
+$ cd application/frontend && npm ci --no-audit --no-fund && npm test && npm run build
+
+added 20 packages in 5s
+npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   fsevents@2.3.3 (install: (install scripts present))
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+
+> stockpilot-frontend@1.0.0 test
+> node --test src/
+
+✔ stockStatus flags out-of-stock, reorder and healthy items (1.180625ms)
+✔ stockFill is capped at 100 percent (0.28025ms)
+✔ normaliseSku upper-cases and dashes whitespace (0.3505ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 432.296333
+
+> stockpilot-frontend@1.0.0 build
+> vite build
+
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 18 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.74 kB │ gzip:  0.46 kB
+dist/assets/index-BJTGVHvd.css    5.94 kB │ gzip:  1.77 kB
+dist/assets/index-IVKyI1mI.js   228.78 kB │ gzip: 71.51 kB
+
+✓ built in 1.08s
