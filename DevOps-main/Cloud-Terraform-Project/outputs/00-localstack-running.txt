@@ -1,0 +1,14 @@
+$ docker ps --filter name=^localstack$ --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"; echo; curl -s http://localhost:4566/_localstack/health | jq "{edition, version, services: (.services | with_entries(select(.value != \"disabled\")))}"
+NAMES        IMAGE                       STATUS                      PORTS
+localstack   localstack/localstack:3.8   Up 38 minutes (unhealthy)   0.0.0.0:4566->4566/tcp, [::]:4566->4566/tcp
+
+{
+  "edition": "community",
+  "version": "3.8.1",
+  "services": {
+    "ec2": "running",
+    "iam": "available",
+    "s3": "running",
+    "sts": "available"
+  }
+}

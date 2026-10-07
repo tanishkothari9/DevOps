@@ -1,0 +1,41 @@
+$ export AWS_ENDPOINT_URL=http://localhost:4566; B=$(terraform output -raw bucket_name)
+echo "## aws s3 ls"; aws s3 ls
+echo "## versioning";          aws s3api get-bucket-versioning   --bucket $B --output text
+echo "## default encryption";  aws s3api get-bucket-encryption   --bucket $B --query "ServerSideEncryptionConfiguration.Rules[0].ApplyServerSideEncryptionByDefault" --output text
+echo "## public access block"; aws s3api get-public-access-block --bucket $B --output table
+echo "## tags";                aws s3api get-bucket-tagging      --bucket $B --output table
+echo "## upload an object and list it"
+echo "hello from terraform" | aws s3 cp - s3://$B/hello.txt
+aws s3 ls s3://$B/
+## aws s3 ls
+2026-10-07 22:20:48 tanish-terraform-s3-demo-2026
+## versioning
+Enabled
+## default encryption
+AES256
+## public access block
+-------------------------------------
+|       GetPublicAccessBlock        |
++-----------------------------------+
+|| PublicAccessBlockConfiguration  ||
+|+-------------------------+-------+|
+||  BlockPublicAcls        |  True ||
+||  BlockPublicPolicy      |  True ||
+||  IgnorePublicAcls       |  True ||
+||  RestrictPublicBuckets  |  True ||
+|+-------------------------+-------+|
+## tags
+----------------------------------------------------
+|                 GetBucketTagging                 |
++--------------------------------------------------+
+||                     TagSet                     ||
+|+--------------+---------------------------------+|
+||      Key     |              Value              ||
+|+--------------+---------------------------------+|
+||  Environment |  dev                            ||
+||  Name        |  tanish-terraform-s3-demo-2026  ||
+||  ManagedBy   |  Terraform                      ||
+||  Project     |  Session18-terraform-s3-demo    ||
+|+--------------+---------------------------------+|
+## upload an object and list it
+2026-10-07 22:23:23         21 hello.txt

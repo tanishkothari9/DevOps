@@ -1,0 +1,2 @@
+$ AWS_ENDPOINT_URL=http://localhost:4566 aws ec2 describe-instances --instance-ids $(terraform output -raw instance_id) --query "Reservations[0].Instances[0].MetadataOptions"
+null

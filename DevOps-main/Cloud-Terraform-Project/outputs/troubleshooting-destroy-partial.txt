@@ -1,0 +1,324 @@
+$ terraform destroy -no-color -auto-approve
+aws_vpc.main: Refreshing state... [id=vpc-84af6040]
+aws_s3_bucket.artifacts: Refreshing state... [id=tanish-cloud-tf-artifacts-2026]
+aws_security_group.web: Refreshing state... [id=sg-adbfe36fdf35c693c]
+aws_subnet.public: Refreshing state... [id=subnet-a0e68414]
+aws_internet_gateway.main: Refreshing state... [id=igw-1776af39]
+aws_s3_bucket_versioning.artifacts: Refreshing state... [id=tanish-cloud-tf-artifacts-2026]
+aws_s3_bucket_public_access_block.artifacts: Refreshing state... [id=tanish-cloud-tf-artifacts-2026]
+aws_route_table.public: Refreshing state... [id=rtb-c22d2b09]
+aws_route_table_association.public: Refreshing state... [id=rtbassoc-15b16416]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_internet_gateway.main will be destroyed
+  - resource "aws_internet_gateway" "main" {
+      - arn      = "arn:aws:ec2:us-east-1:000000000000:internet-gateway/igw-1776af39" -> null
+      - id       = "igw-1776af39" -> null
+      - owner_id = "000000000000" -> null
+      - region   = "us-east-1" -> null
+      - tags     = {
+          - "Name" = "cloud-tf-igw"
+        } -> null
+      - tags_all = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "cloud-tf-igw"
+          - "Project"     = "cloud-tf"
+          - "Session"     = "19"
+        } -> null
+      - vpc_id   = "vpc-84af6040" -> null
+    }
+
+  # aws_route_table.public will be destroyed
+  - resource "aws_route_table" "public" {
+      - arn              = "arn:aws:ec2:us-east-1:000000000000:route-table/rtb-c22d2b09" -> null
+      - id               = "rtb-c22d2b09" -> null
+      - owner_id         = "000000000000" -> null
+      - propagating_vgws = [] -> null
+      - region           = "us-east-1" -> null
+      - route            = [
+          - {
+              - cidr_block                 = "0.0.0.0/0"
+              - gateway_id                 = "igw-1776af39"
+                # (12 unchanged attributes hidden)
+            },
+        ] -> null
+      - tags             = {
+          - "Name" = "cloud-tf-public-rt"
+        } -> null
+      - tags_all         = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "cloud-tf-public-rt"
+          - "Project"     = "cloud-tf"
+          - "Session"     = "19"
+        } -> null
+      - vpc_id           = "vpc-84af6040" -> null
+    }
+
+  # aws_route_table_association.public will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-15b16416" -> null
+      - region         = "us-east-1" -> null
+      - route_table_id = "rtb-c22d2b09" -> null
+      - subnet_id      = "subnet-a0e68414" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_s3_bucket.artifacts will be destroyed
+  - resource "aws_s3_bucket" "artifacts" {
+      - arn                         = "arn:aws:s3:::tanish-cloud-tf-artifacts-2026" -> null
+      - bucket                      = "tanish-cloud-tf-artifacts-2026" -> null
+      - bucket_domain_name          = "tanish-cloud-tf-artifacts-2026.s3.amazonaws.com" -> null
+      - bucket_namespace            = "global" -> null
+      - bucket_region               = "us-east-1" -> null
+      - bucket_regional_domain_name = "tanish-cloud-tf-artifacts-2026.s3.us-east-1.amazonaws.com" -> null
+      - force_destroy               = true -> null
+      - hosted_zone_id              = "Z3AQBSTGFYJSTF" -> null
+      - id                          = "tanish-cloud-tf-artifacts-2026" -> null
+      - object_lock_enabled         = false -> null
+      - region                      = "us-east-1" -> null
+      - request_payer               = "BucketOwner" -> null
+      - tags                        = {
+          - "Name" = "tanish-cloud-tf-artifacts-2026"
+        } -> null
+      - tags_all                    = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "tanish-cloud-tf-artifacts-2026"
+          - "Project"     = "cloud-tf"
+          - "Session"     = "19"
+        } -> null
+        # (3 unchanged attributes hidden)
+
+      - grant {
+          - id          = "75aa57f09aa0c8caeab4f8c24e99d10f8e7faeebf76c078efc7c6caea54ba06a" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      - versioning {
+          - enabled    = true -> null
+          - mfa_delete = false -> null
+        }
+    }
+
+  # aws_s3_bucket_public_access_block.artifacts will be destroyed
+  - resource "aws_s3_bucket_public_access_block" "artifacts" {
+      - block_public_acls       = true -> null
+      - block_public_policy     = true -> null
+      - bucket                  = "tanish-cloud-tf-artifacts-2026" -> null
+      - id                      = "tanish-cloud-tf-artifacts-2026" -> null
+      - ignore_public_acls      = true -> null
+      - region                  = "us-east-1" -> null
+      - restrict_public_buckets = true -> null
+    }
+
+  # aws_s3_bucket_versioning.artifacts will be destroyed
+  - resource "aws_s3_bucket_versioning" "artifacts" {
+      - bucket                = "tanish-cloud-tf-artifacts-2026" -> null
+      - id                    = "tanish-cloud-tf-artifacts-2026" -> null
+      - region                = "us-east-1" -> null
+        # (1 unchanged attribute hidden)
+
+      - versioning_configuration {
+          - mfa_delete = "Disabled" -> null
+          - status     = "Enabled" -> null
+        }
+    }
+
+  # aws_security_group.web will be destroyed
+  - resource "aws_security_group" "web" {
+      - arn                    = "arn:aws:ec2:us-east-1:000000000000:security-group/sg-adbfe36fdf35c693c" -> null
+      - description            = "Allow HTTP/HTTPS from anywhere and SSH from one trusted CIDR" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "All outbound traffic"
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+            },
+        ] -> null
+      - id                     = "sg-adbfe36fdf35c693c" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "HTTP"
+              - from_port        = 80
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 80
+            },
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "HTTPS"
+              - from_port        = 443
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 443
+            },
+          - {
+              - cidr_blocks      = [
+                  - "203.0.113.25/32",
+                ]
+              - description      = "SSH from trusted CIDR only"
+              - from_port        = 22
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 22
+            },
+        ] -> null
+      - name                   = "cloud-tf-web-sg" -> null
+      - owner_id               = "000000000000" -> null
+      - region                 = "us-east-1" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Name" = "cloud-tf-web-sg"
+        } -> null
+      - tags_all               = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "cloud-tf-web-sg"
+          - "Project"     = "cloud-tf"
+          - "Session"     = "19"
+        } -> null
+      - vpc_id                 = "vpc-84af6040" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_subnet.public will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:us-east-1:000000000000:subnet/subnet-a0e68414" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "us-east-1a" -> null
+      - availability_zone_id                           = "use1-az6" -> null
+      - cidr_block                                     = "10.0.1.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-a0e68414" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "000000000000" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "us-east-1" -> null
+      - tags                                           = {
+          - "Name" = "cloud-tf-public-subnet"
+          - "Tier" = "public"
+        } -> null
+      - tags_all                                       = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "cloud-tf-public-subnet"
+          - "Project"     = "cloud-tf"
+          - "Session"     = "19"
+          - "Tier"        = "public"
+        } -> null
+      - vpc_id                                         = "vpc-84af6040" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # aws_vpc.main will be destroyed
+  - resource "aws_vpc" "main" {
+      - arn                                  = "arn:aws:ec2:us-east-1:000000000000:vpc/vpc-84af6040" -> null
+      - assign_generated_ipv6_cidr_block     = false -> null
+      - cidr_block                           = "10.0.0.0/16" -> null
+      - default_network_acl_id               = "acl-b302e4f3" -> null
+      - default_route_table_id               = "rtb-f30d1e08" -> null
+      - default_security_group_id            = "sg-a521af1e0aab2768b" -> null
+      - dhcp_options_id                      = "default" -> null
+      - enable_dns_hostnames                 = true -> null
+      - enable_dns_support                   = true -> null
+      - enable_network_address_usage_metrics = false -> null
+      - id                                   = "vpc-84af6040" -> null
+      - instance_tenancy                     = "default" -> null
+      - ipv6_netmask_length                  = 0 -> null
+      - main_route_table_id                  = "rtb-f30d1e08" -> null
+      - owner_id                             = "000000000000" -> null
+      - region                               = "us-east-1" -> null
+      - tags                                 = {
+          - "Name" = "cloud-tf-vpc"
+        } -> null
+      - tags_all                             = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "cloud-tf-vpc"
+          - "Project"     = "cloud-tf"
+          - "Session"     = "19"
+        } -> null
+        # (4 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 0 to change, 9 to destroy.
+
+Changes to Outputs:
+  - deployment_info_object = "s3://tanish-cloud-tf-artifacts-2026/deployment/info.json" -> null
+  - internet_gateway_id    = "igw-1776af39" -> null
+  - public_subnet_id       = "subnet-a0e68414" -> null
+  - route_table_id         = "rtb-c22d2b09" -> null
+  - s3_bucket_arn          = "arn:aws:s3:::tanish-cloud-tf-artifacts-2026" -> null
+  - s3_bucket_name         = "tanish-cloud-tf-artifacts-2026" -> null
+  - security_group_id      = "sg-adbfe36fdf35c693c" -> null
+  - vpc_cidr               = "10.0.0.0/16" -> null
+  - vpc_id                 = "vpc-84af6040" -> null
+aws_s3_bucket_versioning.artifacts: Destroying... [id=tanish-cloud-tf-artifacts-2026]
+aws_security_group.web: Destroying... [id=sg-adbfe36fdf35c693c]
+aws_route_table_association.public: Destroying... [id=rtbassoc-15b16416]
+aws_s3_bucket_public_access_block.artifacts: Destroying... [id=tanish-cloud-tf-artifacts-2026]
+aws_s3_bucket_versioning.artifacts: Destruction complete after 1s
+aws_s3_bucket_public_access_block.artifacts: Destruction complete after 1s
+aws_route_table_association.public: Destruction complete after 1s
+aws_subnet.public: Destroying... [id=subnet-a0e68414]
+aws_route_table.public: Destroying... [id=rtb-c22d2b09]
+aws_s3_bucket.artifacts: Destroying... [id=tanish-cloud-tf-artifacts-2026]
+aws_security_group.web: Destruction complete after 2s
+aws_subnet.public: Destruction complete after 1s
+aws_s3_bucket.artifacts: Destruction complete after 1s
+aws_route_table.public: Destruction complete after 1s
+aws_internet_gateway.main: Destroying... [id=igw-1776af39]
+aws_internet_gateway.main: Destruction complete after 0s
+aws_vpc.main: Destroying... [id=vpc-84af6040]
+aws_vpc.main: Destruction complete after 1s
+
+Destroy complete! Resources: 9 destroyed.

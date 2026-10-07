@@ -1,0 +1,13 @@
+$ terraform show -no-color tfplan.tfplan | grep -E "^  # |^Plan:"
+  # aws_instance.web will be created
+  # aws_internet_gateway.main will be created
+  # aws_route_table.public will be created
+  # aws_route_table_association.public will be created
+  # aws_s3_bucket.artifacts will be created
+  # aws_s3_bucket_public_access_block.artifacts will be created
+  # aws_s3_bucket_versioning.artifacts will be created
+  # aws_s3_object.deployment_info will be created
+  # aws_security_group.web will be created
+  # aws_subnet.public will be created
+  # aws_vpc.main will be created
+Plan: 11 to add, 0 to change, 0 to destroy.

@@ -1,0 +1,43 @@
+$ terraform apply -no-color -auto-approve tfplan.tfplan
+aws_vpc.main: Creating...
+aws_s3_bucket.artifacts: Creating...
+aws_vpc.main: Creation complete after 1s [id=vpc-dccd99bd]
+aws_internet_gateway.main: Creating...
+aws_subnet.public: Creating...
+aws_security_group.web: Creating...
+aws_s3_bucket.artifacts: Creation complete after 1s [id=tanish-cloud-tf-artifacts-2026]
+aws_s3_bucket_versioning.artifacts: Creating...
+aws_s3_bucket_public_access_block.artifacts: Creating...
+aws_internet_gateway.main: Creation complete after 0s [id=igw-cf29f85f]
+aws_route_table.public: Creating...
+aws_s3_bucket_public_access_block.artifacts: Creation complete after 0s [id=tanish-cloud-tf-artifacts-2026]
+aws_security_group.web: Creation complete after 0s [id=sg-407dc24a7cd90a598]
+aws_route_table.public: Creation complete after 0s [id=rtb-ecf00897]
+aws_s3_bucket_versioning.artifacts: Creation complete after 1s [id=tanish-cloud-tf-artifacts-2026]
+aws_subnet.public: Still creating... [00m10s elapsed]
+aws_subnet.public: Creation complete after 16s [id=subnet-9bfcf7b8]
+aws_route_table_association.public: Creating...
+aws_route_table_association.public: Creation complete after 0s [id=rtbassoc-7a71ed05]
+aws_instance.web: Creating...
+aws_instance.web: Still creating... [00m10s elapsed]
+aws_instance.web: Creation complete after 14s [id=i-cbcf74dc7adec72bf]
+aws_s3_object.deployment_info: Creating...
+aws_s3_object.deployment_info: Creation complete after 1s [id=tanish-cloud-tf-artifacts-2026/deployment/info.json]
+
+Apply complete! Resources: 11 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+deployment_info_object = "s3://tanish-cloud-tf-artifacts-2026/deployment/info.json"
+instance_id = "i-cbcf74dc7adec72bf"
+instance_private_ip = "10.0.1.4"
+instance_public_ip = "54.214.244.194"
+internet_gateway_id = "igw-cf29f85f"
+public_subnet_id = "subnet-9bfcf7b8"
+route_table_id = "rtb-ecf00897"
+s3_bucket_arn = "arn:aws:s3:::tanish-cloud-tf-artifacts-2026"
+s3_bucket_name = "tanish-cloud-tf-artifacts-2026"
+security_group_id = "sg-407dc24a7cd90a598"
+vpc_cidr = "10.0.0.0/16"
+vpc_id = "vpc-dccd99bd"
+web_url = "http://54.214.244.194"

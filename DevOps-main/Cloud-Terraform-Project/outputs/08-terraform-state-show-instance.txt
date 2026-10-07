@@ -1,0 +1,105 @@
+$ terraform state show -no-color aws_instance.web
+# aws_instance.web:
+resource "aws_instance" "web" {
+    ami                                  = "ami-760aaa0f"
+    arn                                  = "arn:aws:ec2:us-east-1::instance/i-cbcf74dc7adec72bf"
+    associate_public_ip_address          = true
+    availability_zone                    = "us-east-1a"
+    disable_api_stop                     = false
+    disable_api_termination              = false
+    ebs_optimized                        = false
+    force_destroy                        = false
+    get_password_data                    = false
+    hibernation                          = false
+    host_id                              = null
+    iam_instance_profile                 = null
+    id                                   = "i-cbcf74dc7adec72bf"
+    instance_initiated_shutdown_behavior = "stop"
+    instance_lifecycle                   = null
+    instance_state                       = "running"
+    instance_type                        = "t3.micro"
+    ipv6_address_count                   = 0
+    ipv6_addresses                       = []
+    key_name                             = null
+    monitoring                           = false
+    outpost_arn                          = null
+    password_data                        = null
+    placement_group                      = null
+    placement_group_id                   = null
+    placement_partition_number           = 0
+    primary_network_interface_id         = "eni-88d984a1"
+    private_dns                          = "ip-10-0-1-4.ec2.internal"
+    private_ip                           = "10.0.1.4"
+    public_dns                           = "ec2-54-214-244-194.compute-1.amazonaws.com"
+    public_ip                            = "54.214.244.194"
+    region                               = "us-east-1"
+    secondary_private_ips                = []
+    security_groups                      = []
+    source_dest_check                    = true
+    spot_instance_request_id             = null
+    subnet_id                            = "subnet-9bfcf7b8"
+    tags                                 = {
+        "Name" = "cloud-tf-web"
+    }
+    tags_all                             = {
+        "Environment" = "dev"
+        "ManagedBy"   = "Terraform"
+        "Name"        = "cloud-tf-web"
+        "Project"     = "cloud-tf"
+        "Session"     = "19"
+    }
+    tenancy                              = "default"
+    user_data                            = <<-EOT
+        #!/bin/bash
+        dnf install -y nginx
+        echo "<h1>cloud-tf web server</h1><p>Artifacts bucket: tanish-cloud-tf-artifacts-2026</p>" > /usr/share/nginx/html/index.html
+        systemctl enable --now nginx
+    EOT
+    user_data_replace_on_change          = false
+    vpc_security_group_ids               = [
+        "sg-407dc24a7cd90a598",
+    ]
+
+    ebs_block_device {
+        delete_on_termination = true
+        device_name           = "/dev/xvda"
+        encrypted             = true
+        iops                  = 3000
+        kms_key_id            = "arn:aws:kms:us-east-1:000000000000:key/e9360931-a156-454c-b16c-ab703a8da9a0"
+        snapshot_id           = null
+        tags                  = {
+            "Environment" = "dev"
+            "ManagedBy"   = "Terraform"
+            "Project"     = "cloud-tf"
+            "Session"     = "19"
+        }
+        tags_all              = {
+            "Environment" = "dev"
+            "ManagedBy"   = "Terraform"
+            "Project"     = "cloud-tf"
+            "Session"     = "19"
+        }
+        throughput            = 0
+        volume_id             = "vol-bf66d268"
+        volume_size           = 8
+        volume_type           = "gp3"
+    }
+
+    primary_network_interface {
+        delete_on_termination = true
+        network_interface_id  = "eni-88d984a1"
+    }
+
+    root_block_device {
+        delete_on_termination = true
+        device_name           = null
+        encrypted             = true
+        iops                  = 0
+        kms_key_id            = null
+        tags_all              = {}
+        throughput            = 0
+        volume_id             = null
+        volume_size           = 8
+        volume_type           = "gp3"
+    }
+}

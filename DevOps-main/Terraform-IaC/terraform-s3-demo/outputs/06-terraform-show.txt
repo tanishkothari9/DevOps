@@ -1,0 +1,105 @@
+$ terraform show -no-color
+# aws_s3_bucket.demo:
+resource "aws_s3_bucket" "demo" {
+    acceleration_status         = null
+    arn                         = "arn:aws:s3:::tanish-terraform-s3-demo-2026"
+    bucket                      = "tanish-terraform-s3-demo-2026"
+    bucket_domain_name          = "tanish-terraform-s3-demo-2026.s3.amazonaws.com"
+    bucket_namespace            = "global"
+    bucket_prefix               = null
+    bucket_region               = "us-east-1"
+    bucket_regional_domain_name = "tanish-terraform-s3-demo-2026.s3.us-east-1.amazonaws.com"
+    force_destroy               = true
+    hosted_zone_id              = "Z3AQBSTGFYJSTF"
+    id                          = "tanish-terraform-s3-demo-2026"
+    object_lock_enabled         = false
+    policy                      = null
+    region                      = "us-east-1"
+    request_payer               = "BucketOwner"
+    tags                        = {
+        "Environment" = "dev"
+        "Name"        = "tanish-terraform-s3-demo-2026"
+    }
+    tags_all                    = {
+        "Environment" = "dev"
+        "ManagedBy"   = "Terraform"
+        "Name"        = "tanish-terraform-s3-demo-2026"
+        "Project"     = "Session18-terraform-s3-demo"
+    }
+
+    grant {
+        id          = "75aa57f09aa0c8caeab4f8c24e99d10f8e7faeebf76c078efc7c6caea54ba06a"
+        permissions = [
+            "FULL_CONTROL",
+        ]
+        type        = "CanonicalUser"
+        uri         = null
+    }
+
+    server_side_encryption_configuration {
+        rule {
+            bucket_key_enabled = false
+
+            apply_server_side_encryption_by_default {
+                kms_master_key_id = null
+                sse_algorithm     = "AES256"
+            }
+        }
+    }
+
+    versioning {
+        enabled    = false
+        mfa_delete = false
+    }
+}
+
+# aws_s3_bucket_public_access_block.demo:
+resource "aws_s3_bucket_public_access_block" "demo" {
+    block_public_acls       = true
+    block_public_policy     = true
+    bucket                  = "tanish-terraform-s3-demo-2026"
+    id                      = "tanish-terraform-s3-demo-2026"
+    ignore_public_acls      = true
+    region                  = "us-east-1"
+    restrict_public_buckets = true
+}
+
+# aws_s3_bucket_server_side_encryption_configuration.demo:
+resource "aws_s3_bucket_server_side_encryption_configuration" "demo" {
+    bucket                = "tanish-terraform-s3-demo-2026"
+    expected_bucket_owner = null
+    id                    = "tanish-terraform-s3-demo-2026"
+    region                = "us-east-1"
+
+    rule {
+        blocked_encryption_types = []
+        bucket_key_enabled       = false
+
+        apply_server_side_encryption_by_default {
+            kms_master_key_id = null
+            sse_algorithm     = "AES256"
+        }
+    }
+}
+
+# aws_s3_bucket_versioning.demo:
+resource "aws_s3_bucket_versioning" "demo" {
+    bucket                = "tanish-terraform-s3-demo-2026"
+    expected_bucket_owner = null
+    id                    = "tanish-terraform-s3-demo-2026"
+    region                = "us-east-1"
+
+    versioning_configuration {
+        mfa_delete = "Disabled"
+        status     = "Enabled"
+    }
+}
+
+
+Outputs:
+
+bucket_arn = "arn:aws:s3:::tanish-terraform-s3-demo-2026"
+bucket_domain_name = "tanish-terraform-s3-demo-2026.s3.amazonaws.com"
+bucket_name = "tanish-terraform-s3-demo-2026"
+bucket_region = "us-east-1"
+versioning_status = "Enabled"

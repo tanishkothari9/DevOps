@@ -1,0 +1,36 @@
+$ terraform apply -no-color -auto-approve tfplan.tfplan
+aws_s3_bucket.artifacts: Creating...
+aws_vpc.main: Creating...
+aws_s3_bucket.artifacts: Creation complete after 3s [id=tanish-cloud-tf-artifacts-2026]
+aws_s3_bucket_versioning.artifacts: Creating...
+aws_s3_bucket_public_access_block.artifacts: Creating...
+aws_s3_bucket_public_access_block.artifacts: Creation complete after 2s [id=tanish-cloud-tf-artifacts-2026]
+aws_s3_bucket_versioning.artifacts: Creation complete after 5s [id=tanish-cloud-tf-artifacts-2026]
+aws_vpc.main: Still creating... [00m10s elapsed]
+aws_vpc.main: Still creating... [00m20s elapsed]
+aws_vpc.main: Still creating... [00m30s elapsed]
+aws_vpc.main: Still creating... [00m40s elapsed]
+aws_vpc.main: Still creating... [00m50s elapsed]
+aws_vpc.main: Still creating... [01m00s elapsed]
+aws_vpc.main: Still creating... [01m10s elapsed]
+aws_vpc.main: Still creating... [01m20s elapsed]
+aws_vpc.main: Creation complete after 1m30s [id=vpc-84af6040]
+aws_internet_gateway.main: Creating...
+aws_subnet.public: Creating...
+aws_security_group.web: Creating...
+aws_internet_gateway.main: Creation complete after 5s [id=igw-1776af39]
+aws_route_table.public: Creating...
+aws_security_group.web: Creation complete after 9s [id=sg-adbfe36fdf35c693c]
+aws_route_table.public: Creation complete after 5s [id=rtb-c22d2b09]
+aws_subnet.public: Still creating... [00m10s elapsed]
+aws_subnet.public: Creation complete after 16s [id=subnet-a0e68414]
+aws_route_table_association.public: Creating...
+aws_route_table_association.public: Creation complete after 1s [id=rtbassoc-15b16416]
+aws_instance.web: Creating...
+
+Error: collecting instance settings: couldn't find resource
+
+  with aws_instance.web,
+  on compute.tf line 2, in resource "aws_instance" "web":
+   2: resource "aws_instance" "web" {
+

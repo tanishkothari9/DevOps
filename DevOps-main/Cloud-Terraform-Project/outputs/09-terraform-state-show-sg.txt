@@ -1,0 +1,79 @@
+$ terraform state show -no-color aws_security_group.web
+# aws_security_group.web:
+resource "aws_security_group" "web" {
+    arn                    = "arn:aws:ec2:us-east-1:000000000000:security-group/sg-407dc24a7cd90a598"
+    description            = "Allow HTTP/HTTPS from anywhere and SSH from one trusted CIDR"
+    egress                 = [
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = "All outbound traffic"
+            from_port        = 0
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "-1"
+            security_groups  = []
+            self             = false
+            to_port          = 0
+        },
+    ]
+    id                     = "sg-407dc24a7cd90a598"
+    ingress                = [
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = "HTTP"
+            from_port        = 80
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 80
+        },
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = "HTTPS"
+            from_port        = 443
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 443
+        },
+        {
+            cidr_blocks      = [
+                "203.0.113.25/32",
+            ]
+            description      = "SSH from trusted CIDR only"
+            from_port        = 22
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 22
+        },
+    ]
+    name                   = "cloud-tf-web-sg"
+    name_prefix            = null
+    owner_id               = "000000000000"
+    region                 = "us-east-1"
+    revoke_rules_on_delete = false
+    tags                   = {
+        "Name" = "cloud-tf-web-sg"
+    }
+    tags_all               = {
+        "Environment" = "dev"
+        "ManagedBy"   = "Terraform"
+        "Name"        = "cloud-tf-web-sg"
+        "Project"     = "cloud-tf"
+        "Session"     = "19"
+    }
+    vpc_id                 = "vpc-dccd99bd"
+}

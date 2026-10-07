@@ -1,0 +1,124 @@
+$ terraform destroy -no-color -auto-approve
+aws_s3_bucket.demo: Refreshing state... [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket_server_side_encryption_configuration.demo: Refreshing state... [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket_public_access_block.demo: Refreshing state... [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket_versioning.demo: Refreshing state... [id=tanish-terraform-s3-demo-2026]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_s3_bucket.demo will be destroyed
+  - resource "aws_s3_bucket" "demo" {
+      - arn                         = "arn:aws:s3:::tanish-terraform-s3-demo-2026" -> null
+      - bucket                      = "tanish-terraform-s3-demo-2026" -> null
+      - bucket_domain_name          = "tanish-terraform-s3-demo-2026.s3.amazonaws.com" -> null
+      - bucket_namespace            = "global" -> null
+      - bucket_region               = "us-east-1" -> null
+      - bucket_regional_domain_name = "tanish-terraform-s3-demo-2026.s3.us-east-1.amazonaws.com" -> null
+      - force_destroy               = true -> null
+      - hosted_zone_id              = "Z3AQBSTGFYJSTF" -> null
+      - id                          = "tanish-terraform-s3-demo-2026" -> null
+      - object_lock_enabled         = false -> null
+      - region                      = "us-east-1" -> null
+      - request_payer               = "BucketOwner" -> null
+      - tags                        = {
+          - "Environment" = "dev"
+          - "Name"        = "tanish-terraform-s3-demo-2026"
+        } -> null
+      - tags_all                    = {
+          - "Environment" = "dev"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "tanish-terraform-s3-demo-2026"
+          - "Project"     = "Session18-terraform-s3-demo"
+        } -> null
+        # (3 unchanged attributes hidden)
+
+      - grant {
+          - id          = "75aa57f09aa0c8caeab4f8c24e99d10f8e7faeebf76c078efc7c6caea54ba06a" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      - versioning {
+          - enabled    = true -> null
+          - mfa_delete = false -> null
+        }
+    }
+
+  # aws_s3_bucket_public_access_block.demo will be destroyed
+  - resource "aws_s3_bucket_public_access_block" "demo" {
+      - block_public_acls       = true -> null
+      - block_public_policy     = true -> null
+      - bucket                  = "tanish-terraform-s3-demo-2026" -> null
+      - id                      = "tanish-terraform-s3-demo-2026" -> null
+      - ignore_public_acls      = true -> null
+      - region                  = "us-east-1" -> null
+      - restrict_public_buckets = true -> null
+    }
+
+  # aws_s3_bucket_server_side_encryption_configuration.demo will be destroyed
+  - resource "aws_s3_bucket_server_side_encryption_configuration" "demo" {
+      - bucket                = "tanish-terraform-s3-demo-2026" -> null
+      - id                    = "tanish-terraform-s3-demo-2026" -> null
+      - region                = "us-east-1" -> null
+        # (1 unchanged attribute hidden)
+
+      - rule {
+          - blocked_encryption_types = [] -> null
+          - bucket_key_enabled       = false -> null
+
+          - apply_server_side_encryption_by_default {
+              - sse_algorithm     = "AES256" -> null
+                # (1 unchanged attribute hidden)
+            }
+        }
+    }
+
+  # aws_s3_bucket_versioning.demo will be destroyed
+  - resource "aws_s3_bucket_versioning" "demo" {
+      - bucket                = "tanish-terraform-s3-demo-2026" -> null
+      - id                    = "tanish-terraform-s3-demo-2026" -> null
+      - region                = "us-east-1" -> null
+        # (1 unchanged attribute hidden)
+
+      - versioning_configuration {
+          - mfa_delete = "Disabled" -> null
+          - status     = "Enabled" -> null
+        }
+    }
+
+Plan: 0 to add, 0 to change, 4 to destroy.
+
+Changes to Outputs:
+  - bucket_arn         = "arn:aws:s3:::tanish-terraform-s3-demo-2026" -> null
+  - bucket_domain_name = "tanish-terraform-s3-demo-2026.s3.amazonaws.com" -> null
+  - bucket_name        = "tanish-terraform-s3-demo-2026" -> null
+  - bucket_region      = "us-east-1" -> null
+  - versioning_status  = "Enabled" -> null
+aws_s3_bucket_server_side_encryption_configuration.demo: Destroying... [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket_versioning.demo: Destroying... [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket_public_access_block.demo: Destroying... [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket_versioning.demo: Destruction complete after 0s
+aws_s3_bucket_server_side_encryption_configuration.demo: Destruction complete after 0s
+aws_s3_bucket_public_access_block.demo: Destruction complete after 0s
+aws_s3_bucket.demo: Destroying... [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket.demo: Destruction complete after 0s
+
+Destroy complete! Resources: 4 destroyed.

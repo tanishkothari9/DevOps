@@ -1,0 +1,36 @@
+$ export AWS_ENDPOINT_URL=http://localhost:4566; F="Name=tag:Project,Values=cloud-tf"
+echo "## VPC";      aws ec2 describe-vpcs    --filters $F --query "Vpcs[].[VpcId,CidrBlock,State,Tags[?Key==\`Name\`]|[0].Value]" --output table
+echo "## Subnet";   aws ec2 describe-subnets --filters $F --query "Subnets[].[SubnetId,CidrBlock,AvailabilityZone,MapPublicIpOnLaunch,VpcId]" --output table
+echo "## Internet Gateway"; aws ec2 describe-internet-gateways --filters $F --query "InternetGateways[].[InternetGatewayId,Attachments[0].VpcId,Attachments[0].State]" --output table
+echo "## Route table"; aws ec2 describe-route-tables --filters $F --query "RouteTables[].Routes[].[DestinationCidrBlock,GatewayId,State]" --output table
+aws ec2 describe-route-tables --filters $F --query "RouteTables[].Associations[].[RouteTableAssociationId,SubnetId]" --output table
+## VPC
+--------------------------------------------------------------
+|                        DescribeVpcs                        |
++--------------+---------------+------------+----------------+
+|  vpc-dccd99bd|  10.0.0.0/16  |  available |  cloud-tf-vpc  |
++--------------+---------------+------------+----------------+
+## Subnet
+--------------------------------------------------------------------------
+|                             DescribeSubnets                            |
++------------------+--------------+-------------+-------+----------------+
+|  subnet-9bfcf7b8 |  10.0.1.0/24 |  us-east-1a |  True |  vpc-dccd99bd  |
++------------------+--------------+-------------+-------+----------------+
+## Internet Gateway
+-----------------------------------------------
+|          DescribeInternetGateways           |
++--------------+----------------+-------------+
+|  igw-cf29f85f|  vpc-dccd99bd  |  available  |
++--------------+----------------+-------------+
+## Route table
+-------------------------------------------
+|           DescribeRouteTables           |
++--------------+----------------+---------+
+|  10.0.0.0/16 |  local         |  active |
+|  0.0.0.0/0   |  igw-cf29f85f  |  active |
++--------------+----------------+---------+
+------------------------------------------
+|           DescribeRouteTables          |
++--------------------+-------------------+
+|  rtbassoc-7a71ed05 |  subnet-9bfcf7b8  |
++--------------------+-------------------+

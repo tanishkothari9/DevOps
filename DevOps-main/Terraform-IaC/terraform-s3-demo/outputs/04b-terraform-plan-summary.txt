@@ -1,0 +1,6 @@
+$ terraform show -no-color tfplan.tfplan | grep -E "^  # |^Plan:"
+  # aws_s3_bucket.demo will be created
+  # aws_s3_bucket_public_access_block.demo will be created
+  # aws_s3_bucket_server_side_encryption_configuration.demo will be created
+  # aws_s3_bucket_versioning.demo will be created
+Plan: 4 to add, 0 to change, 0 to destroy.

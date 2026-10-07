@@ -1,0 +1,24 @@
+$ export AWS_ENDPOINT_URL=http://localhost:4566; F="Name=tag:Project,Values=cloud-tf"
+echo "## Security group rules"; aws ec2 describe-security-groups --filters $F --query "SecurityGroups[].IpPermissions[].[IpProtocol,FromPort,ToPort,IpRanges[0].CidrIp,IpRanges[0].Description]" --output table
+echo "## EC2 instance"; aws ec2 describe-instances --filters $F --query "Reservations[].Instances[].{ID:InstanceId,Type:InstanceType,State:State.Name,AMI:ImageId,Subnet:SubnetId,PrivateIP:PrivateIpAddress,PublicIP:PublicIpAddress,SG:SecurityGroups[0].GroupId}" --output table
+## Security group rules
+------------------------------------------------------------------------
+|                        DescribeSecurityGroups                        |
++-----+------+------+-------------------+------------------------------+
+|  tcp|  80  |  80  |  0.0.0.0/0        |  HTTP                        |
+|  tcp|  22  |  22  |  203.0.113.25/32  |  SSH from trusted CIDR only  |
+|  tcp|  443 |  443 |  0.0.0.0/0        |  HTTPS                       |
++-----+------+------+-------------------+------------------------------+
+## EC2 instance
+---------------------------------------
+|          DescribeInstances          |
++------------+------------------------+
+|  AMI       |  ami-760aaa0f          |
+|  ID        |  i-cbcf74dc7adec72bf   |
+|  PrivateIP |  10.0.1.4              |
+|  PublicIP  |  54.214.244.194        |
+|  SG        |  sg-407dc24a7cd90a598  |
+|  State     |  running               |
+|  Subnet    |  subnet-9bfcf7b8       |
+|  Type      |  t3.micro              |
++------------+------------------------+

@@ -1,0 +1,23 @@
+$ ls -l terraform.tfstate; echo; jq "{version, terraform_version, serial, lineage, resource_count: (.resources|length), resources: [.resources[] | .type + \".\" + .name]}" terraform.tfstate
+-rw-r--r--@ 1 tanishkothari  staff  26806 Oct  7 22:37 terraform.tfstate
+
+{
+  "version": 4,
+  "terraform_version": "1.16.4",
+  "serial": 33,
+  "lineage": "d6800a1a-1dba-33c5-e576-2ba46d31f559",
+  "resource_count": 11,
+  "resources": [
+    "aws_instance.web",
+    "aws_internet_gateway.main",
+    "aws_route_table.public",
+    "aws_route_table_association.public",
+    "aws_s3_bucket.artifacts",
+    "aws_s3_bucket_public_access_block.artifacts",
+    "aws_s3_bucket_versioning.artifacts",
+    "aws_s3_object.deployment_info",
+    "aws_security_group.web",
+    "aws_subnet.public",
+    "aws_vpc.main"
+  ]
+}

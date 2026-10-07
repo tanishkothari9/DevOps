@@ -1,0 +1,13 @@
+$ export AWS_ENDPOINT_URL=http://localhost:4566; B=$(terraform output -raw s3_bucket_name)
+echo "## aws s3 ls"; aws s3 ls
+echo "## objects in bucket"; aws s3 ls s3://$B --recursive
+echo "## versioning"; aws s3api get-bucket-versioning --bucket $B --output text
+echo "## deployment/info.json (written by Terraform)"; aws s3 cp s3://$B/deployment/info.json - ; echo
+## aws s3 ls
+2026-10-07 22:36:52 tanish-cloud-tf-artifacts-2026
+## objects in bucket
+2026-10-07 22:37:23        132 deployment/info.json
+## versioning
+Enabled
+## deployment/info.json (written by Terraform)
+{"environment":"dev","instance_id":"i-cbcf74dc7adec72bf","project":"cloud-tf","subnet_id":"subnet-9bfcf7b8","vpc_id":"vpc-dccd99bd"}

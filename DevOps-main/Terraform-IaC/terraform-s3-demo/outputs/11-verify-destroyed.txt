@@ -1,0 +1,11 @@
+$ export AWS_ENDPOINT_URL=http://localhost:4566
+echo "## aws s3 ls (bucket list after destroy)"; aws s3 ls; echo "(empty)"
+echo "## terraform state list"; terraform state list; echo "(empty - nothing managed any more)"
+echo "## head-bucket"; aws s3api head-bucket --bucket tanish-terraform-s3-demo-2026
+## aws s3 ls (bucket list after destroy)
+(empty)
+## terraform state list
+(empty - nothing managed any more)
+## head-bucket
+
+aws: [ERROR]: An error occurred (404) when calling the HeadBucket operation: Not Found

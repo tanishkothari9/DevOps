@@ -1,0 +1,24 @@
+$ grep -E "Destroying|Destruction complete|Destroy complete" outputs/17-terraform-destroy.txt
+aws_s3_bucket_public_access_block.artifacts: Destroying... [id=tanish-cloud-tf-artifacts-2026]
+aws_s3_bucket_versioning.artifacts: Destroying... [id=tanish-cloud-tf-artifacts-2026]
+aws_s3_object.deployment_info: Destroying... [id=tanish-cloud-tf-artifacts-2026/deployment/info.json]
+aws_s3_bucket_versioning.artifacts: Destruction complete after 1s
+aws_s3_bucket_public_access_block.artifacts: Destruction complete after 1s
+aws_s3_object.deployment_info: Destruction complete after 1s
+aws_instance.web: Destroying... [id=i-cbcf74dc7adec72bf]
+aws_instance.web: Destruction complete after 13s
+aws_route_table_association.public: Destroying... [id=rtbassoc-7a71ed05]
+aws_security_group.web: Destroying... [id=sg-407dc24a7cd90a598]
+aws_s3_bucket.artifacts: Destroying... [id=tanish-cloud-tf-artifacts-2026]
+aws_route_table_association.public: Destruction complete after 0s
+aws_route_table.public: Destroying... [id=rtb-ecf00897]
+aws_subnet.public: Destroying... [id=subnet-9bfcf7b8]
+aws_s3_bucket.artifacts: Destruction complete after 0s
+aws_security_group.web: Destruction complete after 0s
+aws_subnet.public: Destruction complete after 0s
+aws_route_table.public: Destruction complete after 0s
+aws_internet_gateway.main: Destroying... [id=igw-cf29f85f]
+aws_internet_gateway.main: Destruction complete after 1s
+aws_vpc.main: Destroying... [id=vpc-dccd99bd]
+aws_vpc.main: Destruction complete after 0s
+Destroy complete! Resources: 11 destroyed.

@@ -1,0 +1,34 @@
+$ terraform state show -no-color aws_vpc.main
+# aws_vpc.main:
+resource "aws_vpc" "main" {
+    arn                                  = "arn:aws:ec2:us-east-1:000000000000:vpc/vpc-dccd99bd"
+    assign_generated_ipv6_cidr_block     = false
+    cidr_block                           = "10.0.0.0/16"
+    default_network_acl_id               = "acl-1caee964"
+    default_route_table_id               = "rtb-3fc0a67e"
+    default_security_group_id            = "sg-d68b3692a1bf3d4e4"
+    dhcp_options_id                      = "default"
+    enable_dns_hostnames                 = true
+    enable_dns_support                   = true
+    enable_network_address_usage_metrics = false
+    id                                   = "vpc-dccd99bd"
+    instance_tenancy                     = "default"
+    ipv6_association_id                  = null
+    ipv6_cidr_block                      = null
+    ipv6_cidr_block_network_border_group = null
+    ipv6_ipam_pool_id                    = null
+    ipv6_netmask_length                  = 0
+    main_route_table_id                  = "rtb-3fc0a67e"
+    owner_id                             = "000000000000"
+    region                               = "us-east-1"
+    tags                                 = {
+        "Name" = "cloud-tf-vpc"
+    }
+    tags_all                             = {
+        "Environment" = "dev"
+        "ManagedBy"   = "Terraform"
+        "Name"        = "cloud-tf-vpc"
+        "Project"     = "cloud-tf"
+        "Session"     = "19"
+    }
+}

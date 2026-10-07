@@ -1,0 +1,27 @@
+flowchart TB
+    dev["Developer laptop - Terraform CLI<br/>init / plan / apply / destroy<br/>creates every resource in the AWS box via the AWS API"]
+    state[("terraform.tfstate<br/>local backend")]
+    user(["Internet users"])
+
+    subgraph aws["AWS region us-east-1 (LocalStack emulator for this run)"]
+        direction TB
+        subgraph vpc["VPC cloud-tf-vpc 10.0.0.0/16"]
+            direction TB
+            igw["Internet Gateway<br/>cloud-tf-igw"]
+            rt["Route table cloud-tf-public-rt<br/>10.0.0.0/16 to local<br/>0.0.0.0/0 to IGW"]
+            subgraph subnet["Public subnet 10.0.1.0/24 (us-east-1a)"]
+                subgraph sg["Security group cloud-tf-web-sg"]
+                    ec2["EC2 t3.micro cloud-tf-web<br/>nginx via user_data<br/>public IP + private IP 10.0.1.x"]
+                end
+            end
+            rules["SG rules<br/>in: 80, 443 from 0.0.0.0/0<br/>in: 22 from trusted /32<br/>out: all"]
+        end
+        s3[("S3 bucket tanish-cloud-tf-artifacts-2026<br/>versioning on, public access blocked<br/>object: deployment/info.json")]
+    end
+
+    dev -- "reads / writes state" --> state
+    user -- "HTTP / HTTPS" --> igw
+    igw --> rt
+    rt -- "associated with" --> subnet
+    rules -.- sg
+    ec2 -. "IDs written to info.json" .-> s3

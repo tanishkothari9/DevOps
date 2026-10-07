@@ -1,0 +1,43 @@
+$ terraform plan -no-color -detailed-exitcode; echo "exit code: $?"
+aws_vpc.main: Refreshing state... [id=vpc-dccd99bd]
+aws_s3_bucket.artifacts: Refreshing state... [id=tanish-cloud-tf-artifacts-2026]
+aws_subnet.public: Refreshing state... [id=subnet-9bfcf7b8]
+aws_internet_gateway.main: Refreshing state... [id=igw-cf29f85f]
+aws_security_group.web: Refreshing state... [id=sg-407dc24a7cd90a598]
+aws_route_table.public: Refreshing state... [id=rtb-ecf00897]
+aws_route_table_association.public: Refreshing state... [id=rtbassoc-7a71ed05]
+aws_s3_bucket_versioning.artifacts: Refreshing state... [id=tanish-cloud-tf-artifacts-2026]
+aws_s3_bucket_public_access_block.artifacts: Refreshing state... [id=tanish-cloud-tf-artifacts-2026]
+aws_instance.web: Refreshing state... [id=i-cbcf74dc7adec72bf]
+aws_s3_object.deployment_info: Refreshing state... [id=tanish-cloud-tf-artifacts-2026/deployment/info.json]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # aws_instance.web will be updated in-place
+  ~ resource "aws_instance" "web" {
+        id                                   = "i-cbcf74dc7adec72bf"
+        tags                                 = {
+            "Name" = "cloud-tf-web"
+        }
+        # (41 unchanged attributes hidden)
+
+      + metadata_options {
+          + http_endpoint      = "enabled"
+          + http_protocol_ipv6 = "disabled"
+          + http_tokens        = "required"
+        }
+
+        # (3 unchanged blocks hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
+exit code: 2

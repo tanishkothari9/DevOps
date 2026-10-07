@@ -1,0 +1,7 @@
+$ terraform fmt -check -no-color; echo "fmt -check exit code: $?  (3 = files need formatting)"; echo "--- running terraform fmt ---"; terraform fmt -no-color; echo "--- re-check ---"; terraform fmt -check -no-color && echo "all files are canonically formatted"
+compute.tf
+fmt -check exit code: 3  (3 = files need formatting)
+--- running terraform fmt ---
+compute.tf
+--- re-check ---
+all files are canonically formatted

@@ -1,0 +1,13 @@
+$ export AWS_ENDPOINT_URL=http://localhost:4566; F="Name=tag:Project,Values=cloud-tf"
+echo "## terraform state list"; terraform state list; echo "(no resources in state)"
+echo "## VPCs tagged Project=cloud-tf";      aws ec2 describe-vpcs --filters $F --query "Vpcs[].VpcId" --output text; echo "(none)"
+echo "## Instances tagged Project=cloud-tf"; aws ec2 describe-instances --filters $F --query "Reservations[].Instances[].[InstanceId,State.Name]" --output text
+echo "## S3 buckets"; aws s3 ls; echo "(none)"
+## terraform state list
+(no resources in state)
+## VPCs tagged Project=cloud-tf
+(none)
+## Instances tagged Project=cloud-tf
+i-cbcf74dc7adec72bf	terminated
+## S3 buckets
+(none)

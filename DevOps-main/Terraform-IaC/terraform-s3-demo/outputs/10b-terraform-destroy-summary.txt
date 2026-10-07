@@ -1,0 +1,11 @@
+$ tail -n 10 outputs/10-terraform-destroy.txt
+aws_s3_bucket_server_side_encryption_configuration.demo: Destroying... [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket_versioning.demo: Destroying... [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket_public_access_block.demo: Destroying... [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket_versioning.demo: Destruction complete after 0s
+aws_s3_bucket_server_side_encryption_configuration.demo: Destruction complete after 0s
+aws_s3_bucket_public_access_block.demo: Destruction complete after 0s
+aws_s3_bucket.demo: Destroying... [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket.demo: Destruction complete after 0s
+
+Destroy complete! Resources: 4 destroyed.

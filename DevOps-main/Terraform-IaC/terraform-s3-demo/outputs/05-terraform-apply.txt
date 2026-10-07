@@ -1,0 +1,19 @@
+$ terraform apply -no-color -auto-approve tfplan.tfplan
+aws_s3_bucket.demo: Creating...
+aws_s3_bucket.demo: Creation complete after 5s [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket_public_access_block.demo: Creating...
+aws_s3_bucket_versioning.demo: Creating...
+aws_s3_bucket_server_side_encryption_configuration.demo: Creating...
+aws_s3_bucket_public_access_block.demo: Creation complete after 0s [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket_server_side_encryption_configuration.demo: Creation complete after 0s [id=tanish-terraform-s3-demo-2026]
+aws_s3_bucket_versioning.demo: Creation complete after 1s [id=tanish-terraform-s3-demo-2026]
+
+Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+bucket_arn = "arn:aws:s3:::tanish-terraform-s3-demo-2026"
+bucket_domain_name = "tanish-terraform-s3-demo-2026.s3.amazonaws.com"
+bucket_name = "tanish-terraform-s3-demo-2026"
+bucket_region = "us-east-1"
+versioning_status = "Enabled"

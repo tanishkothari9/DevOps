@@ -1,0 +1,3 @@
+$ terraform fmt -recursive -diff -no-color; echo "exit code: $?"; terraform fmt -check -no-color && echo "fmt check passed - all files are canonically formatted"
+exit code: 0
+fmt check passed - all files are canonically formatted

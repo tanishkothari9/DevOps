@@ -1,0 +1,36 @@
+$ terraform output -no-color; echo; terraform output -raw bucket_arn; echo; echo; terraform output -json
+bucket_arn = "arn:aws:s3:::tanish-terraform-s3-demo-2026"
+bucket_domain_name = "tanish-terraform-s3-demo-2026.s3.amazonaws.com"
+bucket_name = "tanish-terraform-s3-demo-2026"
+bucket_region = "us-east-1"
+versioning_status = "Enabled"
+
+arn:aws:s3:::tanish-terraform-s3-demo-2026
+
+{
+  "bucket_arn": {
+    "sensitive": false,
+    "type": "string",
+    "value": "arn:aws:s3:::tanish-terraform-s3-demo-2026"
+  },
+  "bucket_domain_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "tanish-terraform-s3-demo-2026.s3.amazonaws.com"
+  },
+  "bucket_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "tanish-terraform-s3-demo-2026"
+  },
+  "bucket_region": {
+    "sensitive": false,
+    "type": "string",
+    "value": "us-east-1"
+  },
+  "versioning_status": {
+    "sensitive": false,
+    "type": "string",
+    "value": "Enabled"
+  }
+}

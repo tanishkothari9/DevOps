@@ -1,0 +1,14 @@
+$ export AWS_ENDPOINT_URL=http://localhost:4566
+echo "## original AMI id"; aws ec2 describe-images --image-ids ami-df5de72bdb3b --output text
+echo "## Amazon Linux AMIs that LocalStack ships"; aws ec2 describe-images --filters "Name=name,Values=amzn-ami-hvm*" --query "Images[].[ImageId,Name,RootDeviceName]" --output table
+## original AMI id
+
+aws: [ERROR]: An error occurred (InvalidAMIID.NotFound) when calling the DescribeImages operation: The image id '[['ami-df5de72bdb3b']]' does not exist
+## Amazon Linux AMIs that LocalStack ships
+----------------------------------------------------------------------------------------
+|                                    DescribeImages                                    |
++------------------------+------------------------------------------------+------------+
+|  ami-760aaa0f          |  amzn-ami-hvm-2017.09.1.20171103-x86_64-gp2    |  /dev/xvda |
+|  ami-01f446d4eeaed8a3c |  amzn-ami-hvm-2018.03.0.20231218.0-x86_64-gp2  |  /dev/xvda |
+|  ami-0d33050d9d05e2b67 |  amzn-ami-hvm-2018.03.0.20231218.0-x86_64-ebs  |  /dev/xvda |
++------------------------+------------------------------------------------+------------+
