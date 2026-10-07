@@ -1,0 +1,4 @@
+$ trivy image --quiet --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --format json --output security/reports/trivy-backend.json stockpilot-backend:local; echo "security gate exit code: $? (0 = PASS)"; jq -r '[.Results[] | (.Vulnerabilities // []) | length] | add | "HIGH/CRITICAL fixable findings: \(.)"' security/reports/trivy-backend.json; trivy image --quiet --severity HIGH,CRITICAL --format json stockpilot-backend:local | jq -r '[.Results[] | (.Vulnerabilities // [])[] | select(.Status != "fixed")] | "unfixed (no patch available yet) HIGH/CRITICAL in base OS: \(length)"'
+security gate exit code: 0 (0 = PASS)
+HIGH/CRITICAL fixable findings: 0
+unfixed (no patch available yet) HIGH/CRITICAL in base OS: 44

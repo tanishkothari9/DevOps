@@ -1,0 +1,29 @@
+$ cd application/backend && bandit -c ../../security/bandit.yaml -r app alembic -f json -o ../../security/reports/bandit.json --exit-zero -q; bandit -c ../../security/bandit.yaml -r app alembic --severity-level medium --confidence-level medium
+[main]	INFO	profile include tests: None
+[main]	INFO	profile exclude tests: None
+[main]	INFO	cli include tests: None
+[main]	INFO	cli exclude tests: None
+[main]	INFO	using config: ../../security/bandit.yaml
+[main]	INFO	running on Python 3.12.12
+Run started:2026-10-07 18:05:22.576868+00:00
+
+Test results:
+	No issues identified.
+
+Code scanned:
+	Total lines of code: 278
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 0
+		Medium: 0
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 0
+		High: 0
+Files skipped (0):

@@ -1,0 +1,14 @@
+$ trivy image --quiet --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --format json --output security/reports/trivy-frontend.json stockpilot-frontend:local; echo "security gate exit code: $? (0 = PASS)"; trivy image --quiet --severity HIGH,CRITICAL --ignore-unfixed stockpilot-frontend:local
+security gate exit code: 0 (0 = PASS)
+
+Report Summary
+
+┌───────────────────────────────────────────┬────────┬─────────────────┬─────────┐
+│                  Target                   │  Type  │ Vulnerabilities │ Secrets │
+├───────────────────────────────────────────┼────────┼─────────────────┼─────────┤
+│ stockpilot-frontend:local (alpine 3.24.2) │ alpine │        0        │    -    │
+└───────────────────────────────────────────┴────────┴─────────────────┴─────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+

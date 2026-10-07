@@ -1,0 +1,374 @@
+# StockPilot - Final DevOps Project CI/CD + DevSecOps pipeline
+#
+#   build-test ─┬─ sast ──────────┐
+#               ├─ sca ───────────┤
+#               ├─ secret-scan ───┼─ security-gate ─ push-ghcr ─ deploy-kind
+#               └─ docker-build-scan ┘
+#
+# Portability: everything lives under PROJECT_DIR. In the standalone repository set
+# PROJECT_DIR to "." and drop the "DevOps-main/final-devops-project/" prefix from `paths:`.
+name: Final Project - StockPilot CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "DevOps-main/final-devops-project/**"
+      - ".github/workflows/final-devops-project.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "DevOps-main/final-devops-project/**"
+      - ".github/workflows/final-devops-project.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: final-devops-project-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PROJECT_DIR: DevOps-main/final-devops-project
+  PYTHON_VERSION: "3.12"
+  NODE_VERSION: "22"
+  REGISTRY: ghcr.io
+  BACKEND_IMAGE: ghcr.io/${{ github.repository_owner }}/stockpilot-backend
+  FRONTEND_IMAGE: ghcr.io/${{ github.repository_owner }}/stockpilot-frontend
+  # Trivy runs from its official image pinned to a known-good release. The trivy-action /
+  # setup-trivy actions are deliberately not used (March 2026 supply-chain compromise).
+  TRIVY_IMAGE: aquasec/trivy:0.75.0
+  GITLEAKS_IMAGE: zricethezav/gitleaks:v8.30.1
+
+jobs:
+  # ---------------------------------------------------------------- 1. build & test
+  build-test:
+    name: "1. Build & test (pytest + frontend build)"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_DIR }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: ${{ env.PROJECT_DIR }}/application/backend/requirements*.txt
+      - name: Install backend dependencies
+        working-directory: ${{ env.PROJECT_DIR }}/application/backend
+        run: pip install -r requirements-dev.txt
+      - name: Run pytest (SQLite test DB, coverage)
+        working-directory: ${{ env.PROJECT_DIR }}/application/backend
+        run: pytest -v --cov-report=xml:coverage.xml --junitxml=pytest-report.xml
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.PROJECT_DIR }}/application/frontend/package-lock.json
+      - name: Frontend unit tests + production build
+        working-directory: ${{ env.PROJECT_DIR }}/application/frontend
+        run: |
+          npm ci --no-audit --no-fund
+          npm test
+          npm run build
+      - name: Helm lint
+        run: helm lint helm/stockpilot -f helm/stockpilot/values-ci.yaml
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: test-reports
+          path: |
+            ${{ env.PROJECT_DIR }}/application/backend/coverage.xml
+            ${{ env.PROJECT_DIR }}/application/backend/pytest-report.xml
+
+  # ---------------------------------------------------------------- 2. SAST
+  sast:
+    name: "2. SAST (Bandit + Semgrep)"
+    needs: build-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_DIR }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install SAST tools
+        run: pip install bandit==1.9.4 semgrep==1.179.0
+      - name: Bandit (fail on MEDIUM+ severity and confidence)
+        working-directory: ${{ env.PROJECT_DIR }}/application/backend
+        run: |
+          mkdir -p ../../security/reports
+          bandit -c ../../security/bandit.yaml -r app alembic -f json -o ../../security/reports/bandit.json --exit-zero -q
+          bandit -c ../../security/bandit.yaml -r app alembic --severity-level medium --confidence-level medium
+      - name: Semgrep (python, javascript, react, dockerfile rulesets)
+        run: |
+          semgrep scan --metrics=off --error \
+            --config p/python --config p/javascript --config p/react --config p/dockerfile \
+            --json-output=security/reports/semgrep.json \
+            application/backend/app application/backend/alembic application/frontend/src \
+            application/backend/Dockerfile application/frontend/Dockerfile
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: sast-reports
+          path: ${{ env.PROJECT_DIR }}/security/reports/
+
+  # ---------------------------------------------------------------- 3. SCA
+  sca:
+    name: "3. SCA (pip-audit + npm audit + Trivy fs/config)"
+    needs: build-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_DIR }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: pip-audit (Python dependencies)
+        run: |
+          pip install pip-audit==2.10.1
+          mkdir -p security/reports
+          pip-audit -r application/backend/requirements.txt --strict --progress-spinner off -f json -o security/reports/pip-audit.json
+          pip-audit -r application/backend/requirements.txt --strict --progress-spinner off --desc on
+      - name: npm audit (frontend dependencies, fail on HIGH+)
+        working-directory: ${{ env.PROJECT_DIR }}/application/frontend
+        run: |
+          npm audit --json > ../../security/reports/npm-audit.json || true
+          npm audit --audit-level=high
+      - name: Trivy fs (lockfiles + secrets, fail on fixable HIGH/CRITICAL)
+        run: |
+          docker run --rm -v "$HOME/.cache/trivy:/root/.cache/trivy" -v "$PWD:/src" -w /src "$TRIVY_IMAGE" fs --quiet \
+            --scanners vuln,secret --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 \
+            --format json --output security/reports/trivy-fs.json .
+          docker run --rm -v "$HOME/.cache/trivy:/root/.cache/trivy" -v "$PWD:/src" -w /src "$TRIVY_IMAGE" fs --quiet \
+            --scanners vuln,secret --severity HIGH,CRITICAL --ignore-unfixed .
+      - name: Trivy config (IaC misconfiguration report - informational)
+        run: |
+          docker run --rm -v "$HOME/.cache/trivy:/root/.cache/trivy" -v "$PWD:/src" -w /src "$TRIVY_IMAGE" config --quiet \
+            --severity HIGH,CRITICAL --format json --output security/reports/trivy-config.json .
+          docker run --rm -v "$HOME/.cache/trivy:/root/.cache/trivy" -v "$PWD:/src" -w /src "$TRIVY_IMAGE" config --quiet --severity HIGH,CRITICAL .
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: sca-reports
+          path: ${{ env.PROJECT_DIR }}/security/reports/
+
+  # ---------------------------------------------------------------- 4. secret scanning
+  secret-scan:
+    name: "4. Secret scan (Gitleaks)"
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Gitleaks - working tree of the project folder
+        run: |
+          mkdir -p "$PROJECT_DIR/security/reports"
+          docker run --rm -v "$PWD/$PROJECT_DIR:/scan" "$GITLEAKS_IMAGE" \
+            dir /scan --config /scan/security/.gitleaks.toml --redact --no-banner --verbose \
+            --report-format json --report-path /scan/security/reports/gitleaks-dir.json
+      - name: Gitleaks - git history of the project folder
+        run: |
+          # the container runs as root while the checkout belongs to the runner user -> mark it safe for git
+          docker run --rm -v "$PWD:/repo" --entrypoint sh "$GITLEAKS_IMAGE" -c "\
+            git config --global --add safe.directory /repo && \
+            gitleaks git /repo --config /repo/$PROJECT_DIR/security/.gitleaks.toml --redact --no-banner \
+              --log-opts='-- $PROJECT_DIR' \
+              --report-format json --report-path /repo/$PROJECT_DIR/security/reports/gitleaks-history.json"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: secret-scan-reports
+          path: ${{ env.PROJECT_DIR }}/security/reports/
+
+  # ---------------------------------------------------------------- 5. docker build + image scan
+  docker-build-scan:
+    name: "5. Docker build + Trivy image scan"
+    needs: build-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_DIR }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build images (tag = commit SHA)
+        run: |
+          docker build -t "$BACKEND_IMAGE:${{ github.sha }}" application/backend
+          docker build -t "$FRONTEND_IMAGE:${{ github.sha }}" application/frontend
+          docker image ls | grep stockpilot
+      - name: Trivy image scan - backend
+        run: |
+          mkdir -p security/reports
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$HOME/.cache/trivy:/root/.cache/trivy" -v "$PWD/security/reports:/reports" \
+            "$TRIVY_IMAGE" image --quiet --severity HIGH,CRITICAL --ignore-unfixed \
+            --format json --output /reports/trivy-backend.json "$BACKEND_IMAGE:${{ github.sha }}"
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$HOME/.cache/trivy:/root/.cache/trivy" \
+            "$TRIVY_IMAGE" image --quiet --severity HIGH,CRITICAL --ignore-unfixed "$BACKEND_IMAGE:${{ github.sha }}"
+      - name: Trivy image scan - frontend
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$HOME/.cache/trivy:/root/.cache/trivy" -v "$PWD/security/reports:/reports" \
+            "$TRIVY_IMAGE" image --quiet --severity HIGH,CRITICAL --ignore-unfixed \
+            --format json --output /reports/trivy-frontend.json "$FRONTEND_IMAGE:${{ github.sha }}"
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$HOME/.cache/trivy:/root/.cache/trivy" \
+            "$TRIVY_IMAGE" image --quiet --severity HIGH,CRITICAL --ignore-unfixed "$FRONTEND_IMAGE:${{ github.sha }}"
+      - name: Save images for the push job (what was scanned is what gets pushed)
+        run: docker save "$BACKEND_IMAGE:${{ github.sha }}" "$FRONTEND_IMAGE:${{ github.sha }}" | gzip > /tmp/images.tar.gz
+      - uses: actions/upload-artifact@v7
+        with:
+          name: images
+          path: /tmp/images.tar.gz
+          retention-days: 1
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: image-scan-reports
+          path: ${{ env.PROJECT_DIR }}/security/reports/
+
+  # ---------------------------------------------------------------- 6. security gate
+  security-gate:
+    name: "6. Security gate (no fixable HIGH/CRITICAL, no secrets, clean SAST)"
+    needs: [sast, sca, secret-scan, docker-build-scan]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        if: needs.docker-build-scan.result == 'success'
+        with:
+          name: image-scan-reports
+          path: reports
+      - name: Evaluate gate
+        run: |
+          {
+            echo "## Security gate"
+            echo "| Check | Result |"
+            echo "|---|---|"
+            echo "| SAST (Bandit + Semgrep) | ${{ needs.sast.result }} |"
+            echo "| SCA (pip-audit, npm audit, Trivy fs) | ${{ needs.sca.result }} |"
+            echo "| Secret scan (Gitleaks) | ${{ needs.secret-scan.result }} |"
+            echo "| Image build + scan | ${{ needs.docker-build-scan.result }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          status=0
+          for r in "${{ needs.sast.result }}" "${{ needs.sca.result }}" "${{ needs.secret-scan.result }}" "${{ needs.docker-build-scan.result }}"; do
+            [ "$r" = "success" ] || status=1
+          done
+          for f in reports/trivy-backend.json reports/trivy-frontend.json; do
+            [ -f "$f" ] || { echo "missing $f"; status=1; continue; }
+            n=$(jq '[.Results[]? | (.Vulnerabilities // [])[] | select(.Severity=="HIGH" or .Severity=="CRITICAL")] | length' "$f")
+            echo "| $(basename "$f" .json) fixable HIGH/CRITICAL | $n |" >> "$GITHUB_STEP_SUMMARY"
+            echo "$f: $n fixable HIGH/CRITICAL vulnerabilities"
+            [ "$n" -eq 0 ] || status=1
+          done
+          if [ "$status" -ne 0 ]; then
+            echo "**GATE FAILED - images will not be pushed**" >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Security gate failed"
+            exit 1
+          fi
+          echo "**GATE PASSED**" >> "$GITHUB_STEP_SUMMARY"
+          echo "Security gate passed"
+
+  # ---------------------------------------------------------------- 7. push to GHCR
+  push-ghcr:
+    name: "7. Push images to GHCR"
+    needs: security-gate
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: images
+          path: /tmp
+      - uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Load and push SHA-tagged images
+        run: |
+          gunzip -c /tmp/images.tar.gz | docker load
+          docker push "$BACKEND_IMAGE:${{ github.sha }}"
+          docker push "$FRONTEND_IMAGE:${{ github.sha }}"
+      - name: Verify the SHA tags exist in GHCR
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for img in stockpilot-backend stockpilot-frontend; do
+            ref="ghcr.io/${{ github.repository_owner }}/$img:${{ github.sha }}"
+            echo "== $ref"
+            docker buildx imagetools inspect "$ref" | head -4
+            curl -fsS -H "Authorization: Bearer $(printf '%s' "$GHCR_TOKEN" | base64 -w0)" \
+              "https://ghcr.io/v2/${{ github.repository_owner }}/$img/tags/list" | jq -c '{name, tags: (.tags | length), latest_tags: (.tags[-5:])}'
+          done
+          {
+            echo "## Images pushed"
+            echo "- \`$BACKEND_IMAGE:${{ github.sha }}\`"
+            echo "- \`$FRONTEND_IMAGE:${{ github.sha }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ---------------------------------------------------------------- 8. deploy to Kubernetes
+  deploy-kind:
+    name: "8. Deploy to Kubernetes (kind) with Helm"
+    needs: push-ghcr
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_DIR }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: azure/setup-helm@v5
+      - name: Create ephemeral kind cluster
+        uses: helm/kind-action@v1.15.1
+        with:
+          cluster_name: stockpilot-ci
+      - name: Registry pull secret (GITHUB_TOKEN, read-only packages scope)
+        run: |
+          kubectl create namespace stockpilot
+          kubectl create secret docker-registry ghcr-pull -n stockpilot \
+            --docker-server=ghcr.io --docker-username="${{ github.actor }}" \
+            --docker-password="${{ secrets.GITHUB_TOKEN }}"
+      - name: helm upgrade --install (images pulled from GHCR by commit SHA)
+        run: |
+          helm upgrade --install stockpilot helm/stockpilot -n stockpilot \
+            -f helm/stockpilot/values-ci.yaml \
+            --set global.imageRegistry=ghcr.io/${{ github.repository_owner }} \
+            --set backend.image.tag=${{ github.sha }} \
+            --set frontend.image.tag=${{ github.sha }} \
+            --wait --timeout 6m
+      - name: Rollout status
+        run: |
+          kubectl rollout status deploy/stockpilot-backend -n stockpilot --timeout=180s
+          kubectl rollout status deploy/stockpilot-frontend -n stockpilot --timeout=120s
+          kubectl get all,pvc,cm,secret,hpa -n stockpilot
+      - name: Smoke test (helm test + curl /health through a port-forward)
+        run: |
+          helm test stockpilot -n stockpilot --logs
+          kubectl port-forward -n stockpilot svc/stockpilot-backend 18000:8000 >/tmp/pf.log 2>&1 &
+          sleep 5
+          curl -fsS http://127.0.0.1:18000/health
+          curl -fsS http://127.0.0.1:18000/ready
+          curl -fsS -X POST http://127.0.0.1:18000/api/items -H 'Content-Type: application/json' \
+            -d '{"sku":"CI-0001","name":"Pipeline smoke item","quantity":3}'
+          curl -fsS http://127.0.0.1:18000/api/stats
+          kubectl get pods -n stockpilot -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'
+      - name: Diagnostics on failure
+        if: failure()
+        run: |
+          kubectl get pods -A
+          kubectl describe pods -n stockpilot
+          kubectl logs -n stockpilot -l app.kubernetes.io/component=backend --all-containers --tail=100 || true
+          kubectl get events -n stockpilot --sort-by=.lastTimestamp

@@ -1,0 +1,31 @@
+$ semgrep scan --metrics=off --error --config p/python --config p/javascript --config p/react --config p/dockerfile --json-output=security/reports/semgrep.json application/backend/app application/backend/alembic application/frontend/src application/backend/Dockerfile application/frontend/Dockerfile 2>&1 | tail -30
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 17 files tracked by git with 232 Code rules:
+                                                                                                                        
+  Language     Rules   Files          Origin      Rules                                                                 
+ ────────────────────────────        ───────────────────                                                                
+  python         151       8          Community     232                                                                 
+  js              68       5                                                                                            
+  dockerfile       7       2                                                                                            
+                                                                                                                        
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 0 (0 blocking)
+ • Rules run: 226
+ • Targets scanned: 15
+ • Parsed lines: ~100.0%
+ • Scan was limited to files tracked by git
+ • For a detailed list of skipped files and lines, run semgrep with the --verbose flag
+Ran 226 rules on 15 files: 0 findings.
+(need more rules? `semgrep login` for additional free Semgrep Registry rules)
+
+If Semgrep missed a finding, please send us feedback to let us know!
+See https://semgrep.dev/docs/reporting-false-negatives/

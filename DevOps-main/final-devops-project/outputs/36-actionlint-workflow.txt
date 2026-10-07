@@ -1,0 +1,19 @@
+$ docker run --rm -v "$PWD:/repo" --workdir /repo rhysd/actionlint:latest .github/workflows/final-devops-project.yml && echo 'actionlint: no problems found' && grep -E '^  [a-z-]+:$|name: "[0-9]' .github/workflows/final-devops-project.yml
+actionlint: no problems found
+  push:
+  build-test:
+    name: "1. Build & test (pytest + frontend build)"
+  sast:
+    name: "2. SAST (Bandit + Semgrep)"
+  sca:
+    name: "3. SCA (pip-audit + npm audit + Trivy fs/config)"
+  secret-scan:
+    name: "4. Secret scan (Gitleaks)"
+  docker-build-scan:
+    name: "5. Docker build + Trivy image scan"
+  security-gate:
+    name: "6. Security gate (no fixable HIGH/CRITICAL, no secrets, clean SAST)"
+  push-ghcr:
+    name: "7. Push images to GHCR"
+  deploy-kind:
+    name: "8. Deploy to Kubernetes (kind) with Helm"

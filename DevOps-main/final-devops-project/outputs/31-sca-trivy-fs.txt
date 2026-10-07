@@ -1,0 +1,16 @@
+$ trivy fs --quiet --scanners vuln,secret --severity HIGH,CRITICAL --ignore-unfixed --skip-dirs application/frontend/node_modules --exit-code 1 --format json --output security/reports/trivy-fs.json . ; echo "exit code: $?"; trivy fs --quiet --scanners vuln,secret --severity HIGH,CRITICAL --ignore-unfixed --skip-dirs application/frontend/node_modules --exit-code 1 .
+exit code: 0
+
+Report Summary
+
+┌────────────────────────────────────────┬──────┬─────────────────┬─────────┐
+│                 Target                 │ Type │ Vulnerabilities │ Secrets │
+├────────────────────────────────────────┼──────┼─────────────────┼─────────┤
+│ application/backend/requirements.txt   │ pip  │        0        │    -    │
+├────────────────────────────────────────┼──────┼─────────────────┼─────────┤
+│ application/frontend/package-lock.json │ npm  │        0        │    -    │
+└────────────────────────────────────────┴──────┴─────────────────┴─────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+

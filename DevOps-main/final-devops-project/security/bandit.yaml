@@ -1,0 +1,4 @@
+# Bandit SAST config for the FastAPI backend (run from application/backend).
+exclude_dirs: ["tests", ".venv", "alembic/versions"]
+# No skipped checks: every Bandit test runs. The CI gate fails on MEDIUM+ severity with MEDIUM+ confidence.
+skips: []

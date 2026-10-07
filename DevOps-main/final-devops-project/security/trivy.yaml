@@ -1,0 +1,10 @@
+# Shared Trivy settings (trivy --config security/trivy.yaml ...).
+severity:
+  - HIGH
+  - CRITICAL
+scan:
+  skip-dirs:
+    - application/frontend/node_modules
+    - application/backend/.venv
+vulnerability:
+  ignore-unfixed: true

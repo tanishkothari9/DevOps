@@ -1,0 +1,2 @@
+# Accepted risks (CVE id + justification + review date). Empty on purpose: the security gate
+# currently passes with zero fixable HIGH/CRITICAL findings, so nothing is suppressed.

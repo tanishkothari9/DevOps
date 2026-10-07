@@ -1,0 +1,3 @@
+$ pip-audit -r application/backend/requirements.txt --strict --progress-spinner off -f json -o security/reports/pip-audit.json; pip-audit -r application/backend/requirements.txt --strict --progress-spinner off --desc on
+No known vulnerabilities found
+No known vulnerabilities found

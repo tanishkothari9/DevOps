@@ -1,0 +1,15 @@
+# Gitleaks config: default ruleset + allowlist for generated artefacts that are not source code.
+title = "stockpilot gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "generated reports, lockfiles and screenshots"
+paths = [
+  '''security/reports/''',
+  '''outputs/''',
+  '''screenshots/''',
+  '''package-lock\.json''',
+  '''node_modules/''',
+]

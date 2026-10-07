@@ -1,0 +1,6 @@
+$ trivy image --quiet --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --format json --output security/reports/trivy-backend-before-fix.json stockpilot-backend:before-fix; echo "security gate exit code: $? (1 = FAIL)"; jq -r '.Results[] | select(.Vulnerabilities) | .Vulnerabilities[] | [.PkgName, .InstalledVersion, .FixedVersion, .VulnerabilityID, .Severity] | @tsv' security/reports/trivy-backend-before-fix.json | column -t
+security gate exit code: 1 (1 = FAIL)
+msgpack     1.1.2   1.2.1   GHSA-6v7p-g79w-8964  HIGH
+setuptools  70.3.0  78.1.1  CVE-2025-47273       HIGH
+urllib3     2.7.0   2.8.0   CVE-2026-97687       HIGH
+urllib3     2.7.0   2.8.0   CVE-2026-97689       HIGH

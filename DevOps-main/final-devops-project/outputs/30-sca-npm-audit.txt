@@ -1,0 +1,10 @@
+$ cd application/frontend && npm audit --audit-level=high && npm audit --json > ../../security/reports/npm-audit.json; jq '.metadata.vulnerabilities' ../../security/reports/npm-audit.json
+found 0 vulnerabilities
+{
+  "info": 0,
+  "low": 0,
+  "moderate": 0,
+  "high": 0,
+  "critical": 0,
+  "total": 0
+}
