@@ -42,7 +42,7 @@ spec:
             httpGet: {path: /health, port: http}
             periodSeconds: 3
             timeoutSeconds: 3
-            failureThreshold: 20
+            failureThreshold: 40   # up to 2 minutes for imports + alembic on a busy node
           readinessProbe:
             httpGet: {path: /ready, port: http}
             periodSeconds: 10

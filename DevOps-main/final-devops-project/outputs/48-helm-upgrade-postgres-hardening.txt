@@ -1,5 +1,15 @@
-$ helm upgrade stockpilot helm/stockpilot -n taskboard -f helm/stockpilot/values-local.yaml --wait --timeout 5m | head -8 && kubectl rollout status statefulset/stockpilot-postgres -n taskboard --timeout=180s && kubectl exec -n taskboard stockpilot-postgres-0 -- id && kubectl get pods -n taskboard && curl -s -H 'Host: stockpilot.local' localhost:8082/api/stats | jq -c '{total_skus,total_units}' && helm history stockpilot -n taskboard
+$ helm upgrade stockpilot helm/stockpilot -n taskboard -f helm/stockpilot/values-local.yaml --wait --timeout 12m | head -7 && kubectl exec -n taskboard stockpilot-postgres-0 -- id && kubectl get sts stockpilot-postgres -n taskboard -o jsonpath='{.spec.template.spec.securityContext}{"\n"}{.spec.template.spec.containers[0].securityContext}{"\n"}' && kubectl get pods -n taskboard && curl -s -H 'Host: stockpilot.local' localhost:8082/api/stats | jq -c '{total_skus,total_units}' && helm history stockpilot -n taskboard --max 3 | cut -c1-110
 level=WARN msg="upgrade failed" name=stockpilot error="server-side apply failed for object taskboard/stockpilot networking.k8s.io/v1, Kind=Ingress: Internal error occurred: failed calling webhook \"validate.nginx.ingress.kubernetes.io\": failed to call webhook: Post \"https://ingress-nginx-controller-admission.ingress-nginx.svc:443/networking/v1/ingresses?timeout=10s\": dial tcp 10.108.139.255:443: connect: connection refused"
 Error: UPGRADE FAILED: server-side apply failed for object taskboard/stockpilot networking.k8s.io/v1, Kind=Ingress: Internal error occurred: failed calling webhook "validate.nginx.ingress.kubernetes.io": failed to call webhook: Post "https://ingress-nginx-controller-admission.ingress-nginx.svc:443/networking/v1/ingresses?timeout=10s": dial tcp 10.108.139.255:443: connect: connection refused
-Waiting for partitioned roll out to finish: 0 out of 1 new pods have been updated...
-error: timed out waiting for the condition
+uid=70(postgres) gid=70(postgres) groups=70(postgres)
+{"fsGroup":70,"runAsGroup":70,"runAsNonRoot":true,"runAsUser":70,"seccompProfile":{"type":"RuntimeDefault"}}
+{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}
+NAME                                   READY   STATUS             RESTARTS         AGE
+stockpilot-backend-5466465799-bsxg8    0/1     Pending            0                69s
+stockpilot-backend-586ddb8bb5-22xfs    0/1     CrashLoopBackOff   10 (2m50s ago)   64m
+stockpilot-backend-586ddb8bb5-v8hb4    0/1     Running            12 (2m37s ago)   64m
+stockpilot-frontend-574dfff6c6-mswtc   0/1     Pending            0                68s
+stockpilot-frontend-6b44d5c648-69lgn   1/1     Running            12 (111s ago)    64m
+stockpilot-frontend-6b44d5c648-f999j   1/1     Running            11 (4m41s ago)   64m
+stockpilot-postgres-0                  1/1     Terminating        0                18m
+jq: parse error: Invalid numeric literal at line 1, column 7

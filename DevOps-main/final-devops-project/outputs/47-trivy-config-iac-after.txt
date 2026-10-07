@@ -1,0 +1,65 @@
+$ trivy config --quiet --severity HIGH,CRITICAL --format json --output security/reports/trivy-config.json . ; jq -r '[.Results[]? | .Misconfigurations // [] | .[] | select(.Status=="FAIL")] | length | "HIGH/CRITICAL misconfigurations: \(.)"' security/reports/trivy-config.json; jq -r '[.Results[]? | select(.Misconfigurations) | .Target] | unique | .[]' security/reports/trivy-config.json | sed 's/^/scanned: /'; trivy config --quiet --severity HIGH,CRITICAL . ; echo "exit code: $?"
+HIGH/CRITICAL misconfigurations: 0
+
+Report Summary
+
+┌────────────────────────────────────────────┬────────────┬───────────────────┐
+│                   Target                   │    Type    │ Misconfigurations │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ application/backend/Dockerfile             │ dockerfile │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ application/frontend/Dockerfile            │ dockerfile │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ gitops/argocd-application.yaml             │ kubernetes │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm/stockpilot/templates/backend.yaml     │    helm    │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm/stockpilot/templates/configmap.yaml   │    helm    │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm/stockpilot/templates/frontend.yaml    │    helm    │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm/stockpilot/templates/hpa.yaml         │    helm    │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm/stockpilot/templates/ingress.yaml     │    helm    │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm/stockpilot/templates/monitoring.yaml  │    helm    │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm/stockpilot/templates/postgres.yaml    │    helm    │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ helm/stockpilot/templates/secret.yaml      │    helm    │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kubernetes/backend.yaml                    │ kubernetes │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kubernetes/configmap.yaml                  │ kubernetes │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kubernetes/frontend.yaml                   │ kubernetes │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kubernetes/hpa.yaml                        │ kubernetes │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kubernetes/ingress.yaml                    │ kubernetes │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kubernetes/namespace.yaml                  │ kubernetes │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kubernetes/postgres.yaml                   │ kubernetes │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ kubernetes/secret.yaml                     │ kubernetes │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ monitoring/stockpilot-monitoring.yaml      │ kubernetes │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ terraform                                  │ terraform  │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ terraform/eks.tf                           │ terraform  │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ terraform/network.tf                       │ terraform  │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ terraform/security.tf                      │ terraform  │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ terraform/storage.tf                       │ terraform  │         0         │
+├────────────────────────────────────────────┼────────────┼───────────────────┤
+│ troubleshooting/broken/rotated-secret.yaml │ kubernetes │         0         │
+└────────────────────────────────────────────┴────────────┴───────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+exit code: 0
