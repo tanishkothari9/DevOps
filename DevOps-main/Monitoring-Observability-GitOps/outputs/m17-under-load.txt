@@ -1,0 +1,6 @@
+$ kubectl top pods -n s20-monitoring
+error: Metrics API not available
+$ curl -s localhost:19090/api/v1/query --data-urlencode 'query=sum by (status) (rate(http_request_duration_seconds_count{namespace="s20-monitoring"}[1m]))' | jq -r '.data.result[] | "req/s status=\(.metric.status)\t\(.value[1] | tonumber * 100 | floor / 100)"'
+req/s status=200	20.67
+req/s status=500	0.57
+$ curl -s localhost:19090/api/v1/query --data-urlencode 'query=sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="s20-monitoring",container!=""}[2m]))' | jq -r '.data.result[] | "\(.metric.pod)\tCPU \(.value[1] | tonumber * 1000 | floor)m"'

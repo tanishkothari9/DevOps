@@ -1,0 +1,13 @@
+$ kubectl wait --for=condition=complete job/s20-loadtest -n s20-monitoring --timeout=300s
+job.batch/s20-loadtest condition met
+$ kubectl logs job/s20-loadtest -n s20-monitoring
+loadtest: 8 workers -> http://s20-podinfo:9898 for 180s
+worker 2 finished: 418 requests
+worker 6 finished: 427 requests
+worker 8 finished: 425 requests
+worker 3 finished: 438 requests
+worker 4 finished: 421 requests
+worker 7 finished: 418 requests
+worker 5 finished: 435 requests
+worker 1 finished: 430 requests
+loadtest complete

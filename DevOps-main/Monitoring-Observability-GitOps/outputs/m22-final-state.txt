@@ -1,0 +1,22 @@
+$ kubectl top nodes
+NAME       CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+minikube   1847m        18%      5018Mi          64%         
+$ kubectl top pods -n s20-monitoring
+NAME                              CPU(cores)   MEMORY(bytes)   
+s20-cpu-burner-57747c7cff-l6x5k   100m         0Mi             
+s20-loadgen-6d674c86b7-lzgbr      7m           0Mi             
+s20-podinfo-857d8c84c9-cx5vn      4m           24Mi            
+s20-podinfo-857d8c84c9-j4kz4      5m           27Mi            
+$ kubectl get pods -n s20-monitoring
+NAME                              READY   STATUS             RESTARTS         AGE
+s20-cpu-burner-57747c7cff-l6x5k   1/1     Running            0                139m
+s20-crashloop-7dfdbfddf5-zx9zv    0/1     CrashLoopBackOff   30 (4m45s ago)   148m
+s20-loadgen-6d674c86b7-lzgbr      1/1     Running            0                148m
+s20-loadtest-x6628                0/1     Completed          0                9m37s
+s20-podinfo-857d8c84c9-cx5vn      1/1     Running            0                2m19s
+s20-podinfo-857d8c84c9-j4kz4      1/1     Running            0                2m19s
+$ curl -s localhost:19090/api/v1/alerts | jq -r '.data.alerts[] | select(.labels.session=="20") | "\(.state | ascii_upcase)\t\(.labels.alertname)\t\(.labels.pod // "-")"'
+FIRING	S20PodCrashLooping	s20-crashloop-7dfdbfddf5-zx9zv
+FIRING	S20HighCPUUsage	s20-cpu-burner-57747c7cff-l6x5k
+FIRING	S20PodNotReady	s20-crashloop-7dfdbfddf5-zx9zv
+FIRING	S20PodNotReady	s20-loadtest-x6628

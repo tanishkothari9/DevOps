@@ -1,0 +1,5 @@
+$ kubectl get pods -n s20-monitoring -l app=s20-loadtest
+NAME                 READY   STATUS    RESTARTS   AGE
+s20-loadtest-x6628   1/1     Running   0          64s
+$ kubectl logs job/s20-loadtest -n s20-monitoring
+loadtest: 8 workers -> http://s20-podinfo:9898 for 180s

@@ -1,0 +1,19 @@
+$ date -u +%H:%M:%SZ
+19:37:48Z
+$ kubectl scale deployment s20-podinfo -n s20-monitoring --replicas=2
+deployment.apps/s20-podinfo scaled
+$ kubectl rollout status deployment/s20-podinfo -n s20-monitoring --timeout=300s
+Waiting for deployment "s20-podinfo" rollout to finish: 0 out of 2 new replicas have been updated...
+Waiting for deployment "s20-podinfo" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "s20-podinfo" rollout to finish: 1 of 2 updated replicas are available...
+deployment "s20-podinfo" successfully rolled out
+$ kubectl get pods -n s20-monitoring -l app=s20-podinfo
+NAME                           READY   STATUS    RESTARTS   AGE
+s20-podinfo-857d8c84c9-cx5vn   1/1     Running   0          5s
+s20-podinfo-857d8c84c9-j4kz4   1/1     Running   0          5s
+$ for i in $(seq 1 40); do s=$(curl -s localhost:19090/api/v1/rules | jq -r '.data.groups[] | select(.name=="s20-demo.rules") | .rules[] | select(.name=="S20AppDown") | .state'); u=$(curl -s localhost:19090/api/v1/query --data-urlencode 'query=sum(up{job="s20-podinfo"})' | jq -r '.data.result[0].value[1]'); echo "$(date -u +%H:%M:%SZ)  S20AppDown state=$s  sum(up)=$u"; [ "$s" = "inactive" ] && break; sleep 15; done
+19:37:54Z  S20AppDown state=firing  sum(up)=null
+19:38:09Z  S20AppDown state=firing  sum(up)=2
+19:38:24Z  S20AppDown state=inactive  sum(up)=2
+$ curl -s localhost:19093/api/v2/alerts | jq -r '[.[] | select(.labels.alertname=="S20AppDown")] | "Alertmanager active S20AppDown alerts: \(length)"'
+Alertmanager active S20AppDown alerts: 0

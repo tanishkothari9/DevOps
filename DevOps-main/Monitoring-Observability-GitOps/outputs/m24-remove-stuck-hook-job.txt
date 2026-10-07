@@ -1,0 +1,11 @@
+$ kubectl get events -n monitoring --field-selector reason=FailedMount -o custom-columns='COUNT:.count,OBJECT:.involvedObject.name,MESSAGE:.message' | tail -1
+25      kps-kube-prometheus-stack-admission-patch-h24wf   MountVolume.SetUp failed for volume "kube-api-access-ljnzr" : failed to fetch token: serviceaccounts "kps-kube-prometheus-stack-admission" not found
+$ kubectl delete job kps-kube-prometheus-stack-admission-patch -n monitoring
+job.batch "kps-kube-prometheus-stack-admission-patch" deleted from monitoring namespace
+$ helm status kps -n monitoring | head -6
+NAME: kps
+LAST DEPLOYED: Thu Oct  8 00:56:28 2026
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 10
+DESCRIPTION: Upgrade complete

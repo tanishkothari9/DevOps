@@ -1,0 +1,13 @@
+$ date -u +%H:%M:%SZ
+19:34:56Z
+$ kubectl scale deployment s20-podinfo -n s20-monitoring --replicas=0
+deployment.apps/s20-podinfo scaled
+$ kubectl rollout status deployment/s20-podinfo -n s20-monitoring --timeout=120s
+Waiting for deployment spec update to be observed...
+deployment "s20-podinfo" successfully rolled out
+$ kubectl get deploy s20-podinfo -n s20-monitoring
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+s20-podinfo   2/0     2            2           143m
+$ kubectl get endpointslices -n s20-monitoring -l kubernetes.io/service-name=s20-podinfo
+NAME                ADDRESSTYPE   PORTS   ENDPOINTS                   AGE
+s20-podinfo-6vlt4   IPv4          9898    10.244.0.192,10.244.0.197   143m

@@ -1,0 +1,6 @@
+$ helm upgrade kps prometheus-community/kube-prometheus-stack -n monitoring -f monitoring/kps-values.yaml --no-hooks --timeout 15m | grep -E "STATUS|REVISION"
+STATUS: deployed
+REVISION: 10
+$ kubectl get servicemonitor kps-kube-prometheus-stack-kubelet -n monitoring -o jsonpath='{range .spec.endpoints[*]}{.path} interval={.interval}{"\n"}{end}'
+/metrics/probes interval=
+/metrics/resource interval=30s

@@ -32,10 +32,12 @@ TRACES  -> one request's journey    "WHERE did the time go?"
 **What it is:** A numeric measurement recorded at regular intervals, stored as a time series
 `name{labels} value @timestamp`. Cheap to store, fast to query and aggregate, ideal for dashboards and alerts.
 
+Real samples scraped in this homework (kubelet `/metrics/resource`, podinfo `/metrics`, Prometheus `up`):
+
 ```text
-container_cpu_usage_seconds_total{namespace="s20-monitoring",pod="s20-cpu-burner-..."}  1234.5
-http_request_duration_seconds_count{status="500"}                                       42
-up{job="s20-podinfo"}                                                                     1
+container_cpu_usage_seconds_total{container="podinfo",namespace="s20-monitoring",pod="s20-podinfo-857d8c84c9-jlhr4"} 11.923177
+http_request_duration_seconds_bucket{method="GET",path="healthz",status="200",le="0.005"} 71
+up{container="podinfo",endpoint="http",instance="10.244.0.35:9898",job="s20-podinfo",namespace="s20-monitoring",pod="s20-podinfo-684bf75754-hxglt",service="s20-podinfo"} 1
 ```
 
 Metric types (Prometheus): **Counter** (only goes up - requests, errors), **Gauge** (goes up and down -
@@ -52,10 +54,12 @@ error rate of podinfo, `up` for application health, all of them feeding the cust
 or the system. They carry the **detail and context** a number cannot - error messages, stack traces,
 request IDs, user IDs.
 
+Real lines from this homework (`kubectl logs --previous` of the crash-looping pod, and podinfo's structured JSON log):
+
 ```text
-2026-10-07T17:01:02Z INFO  app starting...
-2026-10-07T17:01:04Z ERROR FATAL: DATABASE_URL is not set
-{"level":"debug","ts":"...","msg":"request completed","method":"GET","path":"/status/500","status":500}
+app starting...
+FATAL: DATABASE_URL is not set
+{"level":"debug","ts":"2026-10-07T18:01:01.144Z","caller":"http/logging.go:21","msg":"request started","proto":"HTTP/1.1","uri":"/status/500","method":"GET","remote":"10.244.0.37:60428","user-agent":"Wget"}
 ```
 
 Best practice: **structured logs** (JSON) so they can be filtered by field, and write to
@@ -69,6 +73,8 @@ the load generator and the crash-looping pod (`--previous` shows the log of the 
 **What it is:** A trace follows **one request** as it travels through many services. Each hop is a
 **span** (name, start time, duration, parent span). All spans share a **trace ID** that is propagated
 in request headers (W3C `traceparent`).
+
+Illustrative example (no tracing backend was deployed in this lab):
 
 ```text
 Trace ID: 4bf92f3577b34da6

@@ -1,0 +1,20 @@
+$ curl -s localhost:19090/api/v1/query --data-urlencode 'query=up{job="s20-podinfo"}' | jq -r '.data.result[] | "up{pod=\"\(.metric.pod)\"} = \(.value[1])"'
+up{pod="s20-podinfo-857d8c84c9-cx5vn"} = 1
+up{pod="s20-podinfo-857d8c84c9-j4kz4"} = 1
+$ curl -s localhost:19090/api/v1/query --data-urlencode 'query=kube_deployment_status_replicas_available{namespace="s20-monitoring"}' | jq -r '.data.result[] | "available replicas \(.metric.deployment) = \(.value[1])"'
+available replicas s20-crashloop = 0
+available replicas s20-podinfo = 2
+available replicas s20-cpu-burner = 1
+available replicas s20-loadgen = 1
+$ curl -s localhost:19090/api/v1/query --data-urlencode 'query=sum by (status) (rate(http_request_duration_seconds_count{namespace="s20-monitoring"}[2m]))' | jq -r '.data.result[] | "req/s status=\(.metric.status) = \(.value[1] | tonumber * 100 | floor / 100)"'
+req/s status=200 = 1.62
+req/s status=500 = 0.94
+$ curl -s localhost:19090/api/v1/query --data-urlencode 'query=histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{namespace="s20-monitoring"}[5m])))' | jq -r '.data.result[] | "p95 latency = \(.value[1] | tonumber * 1000 | floor) ms"'
+p95 latency = 9 ms
+$ curl -s localhost:19090/api/v1/query --data-urlencode 'query=sum by (pod) (kube_pod_container_status_restarts_total{namespace="s20-monitoring"})' | jq -r '.data.result[] | "restarts \(.metric.pod) = \(.value[1])"'
+restarts s20-crashloop-7dfdbfddf5-zx9zv = 30
+restarts s20-loadgen-6d674c86b7-lzgbr = 0
+restarts s20-cpu-burner-57747c7cff-l6x5k = 0
+restarts s20-loadtest-x6628 = 0
+restarts s20-podinfo-857d8c84c9-j4kz4 = 0
+restarts s20-podinfo-857d8c84c9-cx5vn = 0

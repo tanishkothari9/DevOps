@@ -1,0 +1,31 @@
+$ kubectl scale deployment s20-cpu-burner s20-crashloop -n s20-monitoring --replicas=0
+deployment.apps/s20-cpu-burner scaled
+deployment.apps/s20-crashloop scaled
+$ kubectl get deploy -n s20-monitoring
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+s20-cpu-burner   1/0     1            1           148m
+s20-crashloop    0/0     1            0           148m
+s20-loadgen      1/1     1            1           148m
+s20-podinfo      2/2     2            2           148m
+$ kubectl get pods -n monitoring
+NAME                                                    READY   STATUS              RESTARTS      AGE
+alertmanager-kps-kube-prometheus-stack-alertmanager-0   2/2     Running             0             145m
+kps-grafana-78b57db8f-hql4q                             3/3     Running             2 (60m ago)   74m
+kps-kube-prometheus-stack-admission-patch-h24wf         0/1     ContainerCreating   0             52m
+kps-kube-prometheus-stack-operator-58d67cfcf8-nfb7b     1/1     Running             1 (28m ago)   54m
+kps-kube-state-metrics-5bc6965bdf-ssf62                 1/1     Running             0             54m
+kps-prometheus-node-exporter-b2rhb                      1/1     Running             0             41m
+prometheus-kps-kube-prometheus-stack-prometheus-0       2/2     Running             4 (28m ago)   145m
+$ kubectl get pods -n argocd
+NAME                                                READY   STATUS    RESTARTS      AGE
+argocd-application-controller-0                     1/1     Running   0             160m
+argocd-applicationset-controller-76fd8cdd4f-cnj67   1/1     Running   0             160m
+argocd-dex-server-66c78cf887-j6n9r                  1/1     Running   0             160m
+argocd-notifications-controller-7fb9868fd6-k97rl    1/1     Running   7 (28m ago)   160m
+argocd-redis-bdbdffcb4-7nj88                        1/1     Running   0             160m
+argocd-repo-server-d89c7967d-672r6                  1/1     Running   8 (27m ago)   160m
+argocd-server-776b7cdd4d-4hq54                      1/1     Running   9 (28m ago)   160m
+$ kubectl get applications -n argocd
+NAME                SYNC STATUS   HEALTH STATUS
+s20-gitops-app      Synced        Healthy
+stockpilot-gitops   Synced        Progressing

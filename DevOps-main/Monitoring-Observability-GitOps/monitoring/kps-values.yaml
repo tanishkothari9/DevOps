@@ -16,13 +16,17 @@ kubeProxy:
 kubeApiServer:
   enabled: false
 
-# cAdvisor is scraped every 10s by default; on a crowded node that scrape takes >10s and times out.
-# The kubelet's own /metrics page kept timing out (>25s) on the shared node, so only cAdvisor
-# (container CPU / memory) and probe metrics are scraped from the kubelet.
+# On the crowded shared node the kubelet's /metrics and /metrics/cadvisor pages took >25s and timed
+# out. Container CPU / memory (container_cpu_usage_seconds_total, container_memory_working_set_bytes)
+# are instead taken from the much smaller /metrics/resource endpoint - the same data metrics-server
+# uses for `kubectl top`.
 kubelet:
   serviceMonitor:
     kubelet: false
-    cAdvisorInterval: 30s
+    cAdvisor: false
+    resource: true
+    resourcePath: /metrics/resource
+    resourceInterval: 30s
 
 prometheus:
   prometheusSpec:

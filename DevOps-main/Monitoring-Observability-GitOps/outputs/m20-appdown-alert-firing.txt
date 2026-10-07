@@ -1,0 +1,21 @@
+$ kubectl get pods -n s20-monitoring -l app=s20-podinfo
+NAME                           READY   STATUS      RESTARTS      AGE
+s20-podinfo-857d8c84c9-jlhr4   0/1     Completed   2 (22m ago)   34m
+s20-podinfo-857d8c84c9-n9d7l   0/1     Completed   2 (21m ago)   41m
+$ for i in $(seq 1 40); do s=$(curl -s localhost:19090/api/v1/rules | jq -r '.data.groups[] | select(.name=="s20-demo.rules") | .rules[] | select(.name=="S20AppDown") | .state'); echo "$(date -u +%H:%M:%SZ)  S20AppDown state=$s"; [ "$s" = "firing" ] && break; sleep 15; done
+19:35:09Z  S20AppDown state=inactive
+19:35:24Z  S20AppDown state=inactive
+19:35:39Z  S20AppDown state=inactive
+19:35:54Z  S20AppDown state=pending
+19:36:09Z  S20AppDown state=pending
+19:36:24Z  S20AppDown state=pending
+19:36:39Z  S20AppDown state=pending
+19:36:55Z  S20AppDown state=firing
+$ curl -s localhost:19090/api/v1/alerts | jq -r '.data.alerts[] | select(.labels.alertname=="S20AppDown") | "\(.state | ascii_upcase)  \(.labels.alertname)  severity=\(.labels.severity)  activeAt=\(.activeAt)\n  \(.annotations.summary): \(.annotations.description)"'
+FIRING  S20AppDown  severity=critical  activeAt=2026-10-07T19:35:50.331068152Z
+  s20-podinfo application is DOWN: No healthy s20-podinfo target has been scraped by Prometheus for more than 1 minute.
+$ kubectl logs deploy/s20-loadgen -n s20-monitoring --tail=4
+GET /status/500 failed (expected)
+wget: can't connect to remote host (10.104.140.190): Connection refused
+wget: can't connect to remote host (10.104.140.190): Connection refused
+GET /status/500 failed (expected)

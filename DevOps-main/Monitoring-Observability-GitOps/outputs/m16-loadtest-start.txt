@@ -1,0 +1,9 @@
+$ kubectl apply -f monitoring/loadtest-job.yaml
+job.batch/s20-loadtest created
+$ kubectl wait --for=condition=Ready pod -l app=s20-loadtest -n s20-monitoring --timeout=180s
+error: no matching resources found
+$ kubectl get pods -n s20-monitoring -l app=s20-loadtest
+NAME                 READY   STATUS    RESTARTS   AGE
+s20-loadtest-x6628   0/1     Pending   0          0s
+$ kubectl logs job/s20-loadtest -n s20-monitoring
+Error from server (NotFound): the server could not find the requested resource ( pods/log s20-loadtest-x6628)
