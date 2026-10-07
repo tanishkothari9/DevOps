@@ -1,0 +1,164 @@
+# Monitoring demo workloads (namespace s20-monitoring)
+#  - s20-podinfo     : healthy web app with liveness/readiness probes and a /metrics endpoint
+#  - s20-loadgen     : sends a steady stream of requests to podinfo (so we have request metrics + logs)
+#  - s20-cpu-burner  : busy loop pinned at its CPU limit -> fires the high-CPU alert
+#  - s20-crashloop   : exits with an error on start -> CrashLoopBackOff -> fires the crash-loop alert
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: s20-monitoring
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s20-podinfo
+  namespace: s20-monitoring
+  labels:
+    app: s20-podinfo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: s20-podinfo
+  template:
+    metadata:
+      labels:
+        app: s20-podinfo
+    spec:
+      containers:
+        - name: podinfo
+          image: ghcr.io/stefanprodan/podinfo:6.7.1
+          command: ["./podinfo", "--port=9898", "--level=debug"]
+          ports:
+            - name: http
+              containerPort: 9898
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 9898
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 9898
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: s20-podinfo
+  namespace: s20-monitoring
+  labels:
+    app: s20-podinfo
+spec:
+  selector:
+    app: s20-podinfo
+  ports:
+    - name: http
+      port: 9898
+      targetPort: 9898
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s20-loadgen
+  namespace: s20-monitoring
+  labels:
+    app: s20-loadgen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: s20-loadgen
+  template:
+    metadata:
+      labels:
+        app: s20-loadgen
+    spec:
+      containers:
+        - name: loadgen
+          image: busybox:1.36
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "loadgen started, target=http://s20-podinfo:9898"
+              while true; do
+                wget -q -O /dev/null http://s20-podinfo:9898/ && echo "GET / 200"
+                wget -q -O /dev/null http://s20-podinfo:9898/status/500 || echo "GET /status/500 failed (expected)"
+                sleep 1
+              done
+          resources:
+            requests:
+              cpu: 5m
+              memory: 8Mi
+            limits:
+              cpu: 50m
+              memory: 32Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s20-cpu-burner
+  namespace: s20-monitoring
+  labels:
+    app: s20-cpu-burner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: s20-cpu-burner
+  template:
+    metadata:
+      labels:
+        app: s20-cpu-burner
+    spec:
+      containers:
+        - name: burner
+          image: busybox:1.36
+          command: ["/bin/sh", "-c", "echo 'burning CPU up to the 200m limit'; while true; do :; done"]
+          resources:
+            requests:
+              cpu: 50m
+              memory: 8Mi
+            limits:
+              cpu: 200m
+              memory: 32Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s20-crashloop
+  namespace: s20-monitoring
+  labels:
+    app: s20-crashloop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: s20-crashloop
+  template:
+    metadata:
+      labels:
+        app: s20-crashloop
+    spec:
+      containers:
+        - name: app
+          image: busybox:1.36
+          command: ["/bin/sh", "-c", "echo 'app starting...'; sleep 2; echo 'FATAL: DATABASE_URL is not set' >&2; exit 1"]
+          resources:
+            requests:
+              cpu: 5m
+              memory: 8Mi
+            limits:
+              cpu: 50m
+              memory: 32Mi

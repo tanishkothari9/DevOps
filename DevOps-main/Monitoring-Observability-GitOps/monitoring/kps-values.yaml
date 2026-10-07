@@ -1,0 +1,76 @@
+# kube-prometheus-stack values - tuned for a small, shared minikube node.
+# helm upgrade --install kps prometheus-community/kube-prometheus-stack -n monitoring --create-namespace -f kps-values.yaml
+
+# Control-plane components are not reachable from inside minikube (they bind to 127.0.0.1),
+# so scraping them only produces false "TargetDown" alerts.
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeProxy:
+  enabled: false
+
+prometheus:
+  prometheusSpec:
+    retention: 6h
+    scrapeInterval: 30s
+    evaluationInterval: 30s
+    # Pick up ServiceMonitors / PodMonitors / PrometheusRules from ANY namespace and with ANY labels
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    resources:
+      requests:
+        cpu: 100m
+        memory: 400Mi
+      limits:
+        memory: 1536Mi
+
+alertmanager:
+  alertmanagerSpec:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        memory: 128Mi
+
+prometheusOperator:
+  resources:
+    requests:
+      cpu: 20m
+      memory: 64Mi
+    limits:
+      memory: 256Mi
+
+kube-state-metrics:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      memory: 128Mi
+
+prometheus-node-exporter:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 24Mi
+    limits:
+      memory: 64Mi
+
+grafana:
+  adminPassword: s20-demo-admin   # demo-only password for a local lab cluster
+  resources:
+    requests:
+      cpu: 20m
+      memory: 128Mi
+    limits:
+      memory: 384Mi
+  grafana.ini:
+    auth.anonymous:
+      enabled: true
+      org_role: Viewer

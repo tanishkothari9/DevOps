@@ -1,0 +1,72 @@
+# Custom alerting rules for the Session 20 demo (namespaces s20-*)
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: s20-demo-alerts
+  namespace: s20-monitoring
+  labels:
+    app: s20-demo
+spec:
+  groups:
+    - name: s20-demo.rules
+      rules:
+        - alert: S20PodCrashLooping
+          expr: |
+            max_over_time(kube_pod_container_status_waiting_reason{namespace=~"s20-.*", reason="CrashLoopBackOff"}[5m]) >= 1
+          for: 1m
+          labels:
+            severity: critical
+            session: "20"
+          annotations:
+            summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is crash looping"
+            description: "Container {{ $labels.container }} is in CrashLoopBackOff (restarting repeatedly)."
+
+        - alert: S20HighCPUUsage
+          expr: |
+            sum by (namespace, pod, container) (rate(container_cpu_usage_seconds_total{namespace=~"s20-.*", container!=""}[2m]))
+              /
+            sum by (namespace, pod, container) (kube_pod_container_resource_limits{namespace=~"s20-.*", resource="cpu"})
+              > 0.8
+          for: 1m
+          labels:
+            severity: warning
+            session: "20"
+          annotations:
+            summary: "High CPU in {{ $labels.namespace }}/{{ $labels.pod }}"
+            description: "Container {{ $labels.container }} is using {{ $value | humanizePercentage }} of its CPU limit."
+
+        - alert: S20HighMemoryUsage
+          expr: |
+            sum by (namespace, pod, container) (container_memory_working_set_bytes{namespace=~"s20-.*", container!=""})
+              /
+            sum by (namespace, pod, container) (kube_pod_container_resource_limits{namespace=~"s20-.*", resource="memory"})
+              > 0.9
+          for: 2m
+          labels:
+            severity: warning
+            session: "20"
+          annotations:
+            summary: "High memory in {{ $labels.namespace }}/{{ $labels.pod }}"
+            description: "Container {{ $labels.container }} is using {{ $value | humanizePercentage }} of its memory limit."
+
+        - alert: S20AppTargetDown
+          expr: |
+            up{namespace="s20-monitoring", service="s20-podinfo"} == 0
+          for: 1m
+          labels:
+            severity: critical
+            session: "20"
+          annotations:
+            summary: "podinfo target {{ $labels.instance }} is down"
+            description: "Prometheus cannot scrape {{ $labels.pod }} - the application is unhealthy or not running."
+
+        - alert: S20PodNotReady
+          expr: |
+            sum by (namespace, pod) (kube_pod_status_ready{namespace=~"s20-.*", condition="false"}) == 1
+          for: 1m
+          labels:
+            severity: warning
+            session: "20"
+          annotations:
+            summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is not ready"
+            description: "The readiness probe is failing, so the pod receives no traffic from its Service."
