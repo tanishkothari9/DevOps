@@ -1,0 +1,12 @@
+$ kubectl get svc myapp-canary-service -n s10-canary -o jsonpath='selector: {.spec.selector}{"\n"}'; kubectl get endpointslices -l kubernetes.io/service-name=myapp-canary-service -n s10-canary -o jsonpath='{range .items[*].endpoints[*]}{.addresses[0]}{"  ready="}{.conditions.ready}{"  pod="}{.targetRef.name}{"\n"}{end}'
+selector: {"app":"myapp-canary"}
+10.244.0.250  ready=true  pod=app-stable-868c799b48-qrlkz
+10.244.0.243  ready=true  pod=app-stable-868c799b48-7b9qb
+10.244.0.244  ready=true  pod=app-stable-868c799b48-cwt65
+10.244.0.239  ready=true  pod=app-stable-868c799b48-v6vx2
+10.244.0.242  ready=true  pod=app-stable-868c799b48-r5v67
+10.244.0.249  ready=true  pod=app-stable-868c799b48-n47pb
+10.244.0.240  ready=true  pod=app-stable-868c799b48-8fgkb
+10.244.0.245  ready=true  pod=app-stable-868c799b48-v8bwr
+10.244.0.246  ready=true  pod=app-stable-868c799b48-92zcb
+10.244.0.4  ready=true  pod=app-canary-64df56cd69-r5whd

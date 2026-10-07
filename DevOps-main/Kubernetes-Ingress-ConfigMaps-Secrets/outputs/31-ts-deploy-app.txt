@@ -1,0 +1,18 @@
+$ cat 04-troubleshooting/app-secret-broken.yaml | grep -v '^#'; kubectl apply -f 04-troubleshooting/app-secret-broken.yaml -f 04-troubleshooting/app-client.yaml -n s12-troubleshoot && kubectl rollout status deployment/yatri-app -n s12-troubleshoot --timeout=1200s && kubectl get pods -n s12-troubleshoot
+apiVersion: v1
+kind: Secret
+metadata:
+  name: yatri-app-db-secret
+type: Opaque
+data:
+  DB_USER: eWF0cmlfYWRtaW4=
+  DB_PASSWORD: ZHVtbXktcGFzcy0xMjMK
+secret/yatri-app-db-secret created
+deployment.apps/yatri-app created
+Waiting for deployment spec update to be observed...
+Waiting for deployment "yatri-app" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "yatri-app" rollout to finish: 0 of 1 updated replicas are available...
+deployment "yatri-app" successfully rolled out
+NAME                         READY   STATUS    RESTARTS   AGE
+postgres-d45dfc8ff-gkhb2     1/1     Running   0          2m56s
+yatri-app-6759575d79-w4pjb   1/1     Running   0          60s

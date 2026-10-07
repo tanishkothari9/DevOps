@@ -1,0 +1,18 @@
+$ kubectl exec curl-test-pod -n s11-services -- nslookup web-service-clusterip; kubectl exec curl-test-pod -n s11-services -- curl -s -m 5 http://web-service-clusterip:8080
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+** server can't find web-service-clusterip.cluster.local: NXDOMAIN
+
+
+** server can't find web-service-clusterip.cluster.local: NXDOMAIN
+
+** server can't find web-service-clusterip.svc.cluster.local: NXDOMAIN
+
+** server can't find web-service-clusterip.svc.cluster.local: NXDOMAIN
+
+Name:	web-service-clusterip.s11-services.svc.cluster.local
+Address: 10.101.36.245
+
+command terminated with exit code 1
+Hello from pod web-app-clusterip-5d984469f7-fc7v8 [01-clusterip]

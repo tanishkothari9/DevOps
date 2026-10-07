@@ -1,0 +1,13 @@
+$ kubectl get svc -n s11-services -o wide; echo; kubectl get endpointslices -n s11-services
+NAME                        TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE     SELECTOR
+external-database-service   ExternalName   <none>          example.com   <none>         4m58s   <none>
+web-service-clusterip       ClusterIP      10.101.36.245   <none>        8080/TCP       8m46s   app=web-clusterip
+web-service-headless        ClusterIP      None            <none>        80/TCP         3m56s   app=web-headless
+web-service-loadbalancer    LoadBalancer   10.97.104.45    <pending>     80:32161/TCP   6m10s   app=web-loadbalancer
+web-service-nodeport        NodePort       10.109.48.84    <none>        80:31180/TCP   7m47s   app=web-nodeport
+
+NAME                             ADDRESSTYPE   PORTS   ENDPOINTS                                AGE
+web-service-clusterip-2q5bz      IPv4          80      10.244.0.217,10.244.0.215,10.244.0.216   8m45s
+web-service-headless-zqdkq       IPv4          80      10.244.0.247,10.244.0.252,10.244.0.253   3m49s
+web-service-loadbalancer-d4jcn   IPv4          80      10.244.0.231,10.244.0.229,10.244.0.230   6m8s
+web-service-nodeport-dpkzj       IPv4          80      10.244.0.221,10.244.0.222                7m44s

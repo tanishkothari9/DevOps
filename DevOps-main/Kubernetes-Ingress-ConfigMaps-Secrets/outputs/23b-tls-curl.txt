@@ -1,0 +1,16 @@
+$ kubectl port-forward svc/ingress-nginx-controller -n ingress-nginx 8443:443 8081:80 >/dev/null 2>&1 & PF=$!; for i in $(seq 1 40); do curl -s -o /dev/null -m 2 http://localhost:8081/ && break; sleep 1; done; echo '=== HTTPS /'; curl -sk -m 10 --resolve secure.yatri.local:8443:127.0.0.1 https://secure.yatri.local:8443/; echo '=== HTTPS /api'; curl -sk -m 10 --resolve secure.yatri.local:8443:127.0.0.1 https://secure.yatri.local:8443/api | head -4; echo '=== certificate presented by the controller:'; curl -vk -m 10 --resolve secure.yatri.local:8443:127.0.0.1 https://secure.yatri.local:8443/ 2>&1 | grep -E 'subject:|issuer:|SSL connection|< HTTP/'; echo '=== plain HTTP is redirected to HTTPS:'; curl -sI -m 10 -H 'Host: secure.yatri.local' http://localhost:8081/ | grep -iE '^HTTP|^location'; kill $PF
+=== HTTPS /
+Yatri FRONTEND (nginx) - served via Ingress path "/"
+=== HTTPS /api
+Yatri BACKEND API
+host header     : secure.yatri.local:8443
+path            : /api
+served by pod   : yatri-backend-578f965c76-6zccv
+=== certificate presented by the controller:
+* SSL connection using TLSv1.3 / AEAD-AES256-GCM-SHA384 / [blank] / UNDEF
+*  subject: CN=secure.yatri.local; O=yatri-demo
+*  issuer: CN=secure.yatri.local; O=yatri-demo
+< HTTP/2 200 
+=== plain HTTP is redirected to HTTPS:
+HTTP/1.1 308 Permanent Redirect
+Location: https://secure.yatri.local

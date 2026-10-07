@@ -1,0 +1,9 @@
+$ echo '=== pod in s11-services'; kubectl exec curl-test-pod -n s11-services -- cat /etc/resolv.conf; echo '=== pod in s11-other'; kubectl exec curl-test-pod -n s11-other -- cat /etc/resolv.conf
+=== pod in s11-services
+search s11-services.svc.cluster.local svc.cluster.local cluster.local
+nameserver 10.96.0.10
+options ndots:5
+=== pod in s11-other
+search s11-other.svc.cluster.local svc.cluster.local cluster.local
+nameserver 10.96.0.10
+options ndots:5

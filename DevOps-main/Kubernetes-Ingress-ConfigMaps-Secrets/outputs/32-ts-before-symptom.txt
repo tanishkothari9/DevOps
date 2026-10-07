@@ -1,0 +1,10 @@
+$ sleep 15; echo '=== app logs:'; kubectl logs deployment/yatri-app -n s12-troubleshoot --tail=3; echo '=== postgres logs:'; kubectl logs deployment/postgres -n s12-troubleshoot --tail=4
+=== app logs:
+psql: error: connection to server at "postgres" (10.98.57.54), port 5432 failed: FATAL:  password authentication failed for user "yatri_admin"
+psql: error: connection to server at "postgres" (10.98.57.54), port 5432 failed: FATAL:  password authentication failed for user "yatri_admin"
+psql: error: connection to server at "postgres" (10.98.57.54), port 5432 failed: FATAL:  password authentication failed for user "yatri_admin"
+=== postgres logs:
+2026-10-07 19:33:50.030 UTC [260] FATAL:  password authentication failed for user "yatri_admin"
+2026-10-07 19:33:50.030 UTC [260] DETAIL:  Connection matched file "/var/lib/postgresql/data/pg_hba.conf" line 128: "host all all all scram-sha-256"
+2026-10-07 19:33:55.659 UTC [273] FATAL:  password authentication failed for user "yatri_admin"
+2026-10-07 19:33:55.659 UTC [273] DETAIL:  Connection matched file "/var/lib/postgresql/data/pg_hba.conf" line 128: "host all all all scram-sha-256"

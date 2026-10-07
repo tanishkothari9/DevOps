@@ -1,0 +1,14 @@
+$ kubectl apply -f 03-ingress/ingress-tls.yaml -n s12-demo && sleep 10 && kubectl get ingress -n s12-demo && kubectl describe ingress yatri-ingress-tls -n s12-demo | sed -n '/^TLS:/,/^Annotations:/p'
+ingress.networking.k8s.io/yatri-ingress-tls created
+NAME                CLASS   HOSTS                         ADDRESS        PORTS     AGE
+yatri-ingress       nginx   yatri.local,api.yatri.local   192.168.49.2   80        80s
+yatri-ingress-tls   nginx   secure.yatri.local            192.168.49.2   80, 443   12s
+TLS:
+  yatri-tls terminates secure.yatri.local
+Rules:
+  Host                Path  Backends
+  ----                ----  --------
+  secure.yatri.local  
+                      /api   yatri-backend-service:80 (10.244.0.40:5000,10.244.0.41:5000)
+                      /      yatri-frontend-service:80 (10.244.0.38:80,10.244.0.36:80)
+Annotations:          nginx.ingress.kubernetes.io/ssl-redirect: true

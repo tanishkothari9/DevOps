@@ -1,0 +1,11 @@
+$ kubectl exec headless-dns-client -n s11-services -- nslookup web-stateful-0.web-service-headless.s11-services.svc.cluster.local; for p in 0 1 2; do kubectl exec headless-dns-client -n s11-services -- curl -s -m 5 http://web-stateful-$p.web-service-headless; done
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	web-stateful-0.web-service-headless.s11-services.svc.cluster.local
+Address: 10.244.0.247
+
+
+Hello from web-stateful-0 [05-headless]
+Hello from web-stateful-1 [05-headless]
+Hello from web-stateful-2 [05-headless]

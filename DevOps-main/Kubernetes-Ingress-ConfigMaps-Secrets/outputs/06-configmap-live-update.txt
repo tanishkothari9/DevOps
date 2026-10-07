@@ -1,0 +1,13 @@
+$ echo "$(date +%T) applying app-config-v2.yaml (LOG_LEVEL INFO -> DEBUG, cache.ttl 300 -> 60)"; kubectl apply -f 01-configmap/app-config-v2.yaml -n s12-demo; for i in $(seq 1 60); do V=$(kubectl exec configmap-demo -n s12-demo -- cat /etc/config/LOG_LEVEL); echo "$(date +%T) file /etc/config/LOG_LEVEL = $V"; [ "$V" = DEBUG ] && break; sleep 10; done; echo '--- mounted file app.properties now:'; kubectl exec configmap-demo -n s12-demo -- cat /etc/config/app.properties; echo '--- but the variable injected at start is still the old value:'; kubectl exec configmap-demo -n s12-demo -- sh -c 'echo LOG_LEVEL=$LOG_LEVEL MAX_BOOKING_DAYS=$MAX_BOOKING_DAYS'
+00:54:19 applying app-config-v2.yaml (LOG_LEVEL INFO -> DEBUG, cache.ttl 300 -> 60)
+configmap/yatri-app-config configured
+00:55:04 file /etc/config/LOG_LEVEL = INFO
+00:55:31 file /etc/config/LOG_LEVEL = INFO
+00:55:51 file /etc/config/LOG_LEVEL = INFO
+00:56:04 file /etc/config/LOG_LEVEL = DEBUG
+--- mounted file app.properties now:
+app.name=yatri
+feature.new-booking-ui=true
+cache.ttl.seconds=60
+--- but the variable injected at start is still the old value:
+LOG_LEVEL=INFO MAX_BOOKING_DAYS=30

@@ -1,0 +1,14 @@
+$ kubectl get deploy,rs,pods -l app=web-clusterip -n s11-services; P=$(kubectl get pods -l app=web-clusterip -n s11-services -o jsonpath='{.items[0].metadata.name}'); RS=$(kubectl get pod $P -n s11-services -o jsonpath='{.metadata.ownerReferences[0].name}'); echo; echo "Pod $P  -> owned by ReplicaSet $RS"; echo "ReplicaSet $RS -> owned by $(kubectl get rs $RS -n s11-services -o jsonpath='{.metadata.ownerReferences[0].kind}/{.metadata.ownerReferences[0].name}')"
+NAME                                READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/web-app-clusterip   3/3     3            3           9m53s
+
+NAME                                           DESIRED   CURRENT   READY   AGE
+replicaset.apps/web-app-clusterip-5d984469f7   3         3         3       9m53s
+
+NAME                                     READY   STATUS    RESTARTS   AGE
+pod/web-app-clusterip-5d984469f7-4shgn   1/1     Running   0          9m52s
+pod/web-app-clusterip-5d984469f7-9pdkk   1/1     Running   0          9m52s
+pod/web-app-clusterip-5d984469f7-g4hrl   1/1     Running   0          9m52s
+
+Pod web-app-clusterip-5d984469f7-4shgn  -> owned by ReplicaSet web-app-clusterip-5d984469f7
+ReplicaSet web-app-clusterip-5d984469f7 -> owned by Deployment/web-app-clusterip

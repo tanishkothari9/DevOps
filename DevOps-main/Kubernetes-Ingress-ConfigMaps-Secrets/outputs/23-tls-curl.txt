@@ -1,0 +1,5 @@
+$ kubectl port-forward svc/ingress-nginx-controller -n ingress-nginx 8443:443 8081:80 >/dev/null 2>&1 & PF=$!; sleep 5; echo '=== HTTPS /'; curl -sk -m 10 --resolve secure.yatri.local:8443:127.0.0.1 https://secure.yatri.local:8443/; echo '=== HTTPS /api'; curl -sk -m 10 --resolve secure.yatri.local:8443:127.0.0.1 https://secure.yatri.local:8443/api | head -4; echo '=== certificate presented by the controller:'; curl -vk -m 10 --resolve secure.yatri.local:8443:127.0.0.1 https://secure.yatri.local:8443/ 2>&1 | grep -E 'subject:|issuer:|SSL connection|HTTP/'; echo '=== plain HTTP is redirected to HTTPS:'; curl -sI -m 10 -H 'Host: secure.yatri.local' http://localhost:8081/ | grep -iE '^HTTP|^location'; kill $PF
+=== HTTPS /
+=== HTTPS /api
+=== certificate presented by the controller:
+=== plain HTTP is redirected to HTTPS:

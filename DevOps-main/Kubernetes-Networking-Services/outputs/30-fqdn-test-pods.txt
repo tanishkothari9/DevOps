@@ -1,0 +1,5 @@
+$ kubectl apply -f dns-test/curl-test-pod.yaml -n s11-services && kubectl apply -f dns-test/curl-test-pod.yaml -n s11-other && kubectl wait --for=condition=Ready pod/curl-test-pod -n s11-services --timeout=900s && kubectl wait --for=condition=Ready pod/curl-test-pod -n s11-other --timeout=900s
+pod/curl-test-pod created
+pod/curl-test-pod created
+pod/curl-test-pod condition met
+pod/curl-test-pod condition met

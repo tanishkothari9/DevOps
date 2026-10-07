@@ -1,0 +1,12 @@
+$ kubectl port-forward svc/ingress-nginx-controller -n ingress-nginx 8081:80 >/dev/null 2>&1 & PF=$!; sleep 5; echo '=== Host: api.yatri.local  path: /'; curl -s -m 10 -H 'Host: api.yatri.local' http://localhost:8081/; echo '=== Host: unknown.local (no rule) -> controller default backend:'; curl -s -m 10 -o /dev/null -w 'HTTP %{http_code}\n' -H 'Host: unknown.local' http://localhost:8081/; kill $PF
+=== Host: api.yatri.local  path: /
+Yatri BACKEND API
+host header     : api.yatri.local
+path            : /
+served by pod   : yatri-backend-578f965c76-2mv87
+ENVIRONMENT     : production
+DEFAULT_CURRENCY: INR
+POSTGRES_USER   : demo_user
+POSTGRES_DB     : demo_db
+=== Host: unknown.local (no rule) -> controller default backend:
+HTTP 404

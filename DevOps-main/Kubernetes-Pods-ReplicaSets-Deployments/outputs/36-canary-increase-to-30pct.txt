@@ -1,0 +1,14 @@
+$ kubectl scale deployment app-canary --replicas=3 -n s10-canary && kubectl scale deployment app-stable --replicas=7 -n s10-canary && kubectl rollout status deployment/app-canary -n s10-canary --timeout=900s && sleep 5 && kubectl get deploy -n s10-canary && echo '100 requests with 7 stable + 3 canary pods:' && kubectl exec curl-client -n s10-canary -- sh -c "for i in \$(seq 1 100); do curl -s -m 5 http://myapp-canary-service || echo FAILED; done" | sort | uniq -c
+deployment.apps/app-canary scaled
+deployment.apps/app-stable scaled
+Waiting for deployment "app-canary" rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for deployment "app-canary" rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for deployment "app-canary" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "app-canary" rollout to finish: 2 of 3 updated replicas are available...
+deployment "app-canary" successfully rolled out
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+app-canary   3/3     3            3           75s
+app-stable   7/7     7            7           3m46s
+100 requests with 7 stable + 3 canary pods:
+  37 CANARY v2
+  63 STABLE v1

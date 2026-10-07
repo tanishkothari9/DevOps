@@ -1,0 +1,3 @@
+$ kubectl delete namespace s11-services s11-other --wait=false
+namespace "s11-services" deleted
+namespace "s11-other" deleted

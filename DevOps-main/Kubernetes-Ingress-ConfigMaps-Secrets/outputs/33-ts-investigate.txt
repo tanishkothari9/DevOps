@@ -1,0 +1,7 @@
+$ echo '=== password the APP sends (from yatri-app-db-secret):'; kubectl get secret yatri-app-db-secret -n s12-troubleshoot -o jsonpath='{.data.DB_PASSWORD}' | base64 -d | xxd; echo '=== password the DB was created with (postgres-admin-secret):'; kubectl get secret postgres-admin-secret -n s12-troubleshoot -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d | xxd; echo '=== length inside the running app container:'; kubectl exec deployment/yatri-app -n s12-troubleshoot -- sh -c 'printf %s "$DB_PASSWORD" | wc -c'
+=== password the APP sends (from yatri-app-db-secret):
+00000000: 6475 6d6d 792d 7061 7373 2d31 3233 0a    dummy-pass-123.
+=== password the DB was created with (postgres-admin-secret):
+00000000: 6475 6d6d 792d 7061 7373 2d31 3233       dummy-pass-123
+=== length inside the running app container:
+15

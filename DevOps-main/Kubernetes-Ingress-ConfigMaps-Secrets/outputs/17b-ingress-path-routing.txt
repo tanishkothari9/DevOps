@@ -1,0 +1,17 @@
+$ kubectl port-forward svc/ingress-nginx-controller -n ingress-nginx 8081:80 >/dev/null 2>&1 & PF=$!; for i in $(seq 1 40); do curl -s -o /dev/null -m 2 http://localhost:8081/ && break; sleep 1; done; echo '=== Host: yatri.local  path: /'; curl -s -m 10 -H 'Host: yatri.local' http://localhost:8081/; echo '=== Host: yatri.local  path: /api'; curl -s -m 10 -H 'Host: yatri.local' http://localhost:8081/api; echo '=== Host: yatri.local  path: /api/bookings'; curl -s -m 10 -H 'Host: yatri.local' http://localhost:8081/api/bookings | head -4; kill $PF
+=== Host: yatri.local  path: /
+Yatri FRONTEND (nginx) - served via Ingress path "/"
+=== Host: yatri.local  path: /api
+Yatri BACKEND API
+host header     : yatri.local
+path            : /api
+served by pod   : yatri-backend-578f965c76-6zccv
+ENVIRONMENT     : production
+DEFAULT_CURRENCY: INR
+POSTGRES_USER   : demo_user
+POSTGRES_DB     : demo_db
+=== Host: yatri.local  path: /api/bookings
+Yatri BACKEND API
+host header     : yatri.local
+path            : /api/bookings
+served by pod   : yatri-backend-578f965c76-9xss4

@@ -1,0 +1,7 @@
+$ echo 'ClusterIP before:' $(kubectl get svc web-service-clusterip -n s11-services -o jsonpath='{.spec.clusterIP}'); kubectl get endpointslices -l kubernetes.io/service-name=web-service-clusterip -n s11-services -o jsonpath='endpoints before: {.items[0].endpoints[*].addresses[0]}{"\n"}'; P=$(kubectl get pods -l app=web-clusterip -n s11-services -o jsonpath='{.items[0].metadata.name}'); kubectl delete pod $P -n s11-services; kubectl rollout status deployment/web-app-clusterip -n s11-services --timeout=900s >/dev/null; sleep 3; echo 'ClusterIP after: ' $(kubectl get svc web-service-clusterip -n s11-services -o jsonpath='{.spec.clusterIP}'); kubectl get endpointslices -l kubernetes.io/service-name=web-service-clusterip -n s11-services -o jsonpath='endpoints after:  {.items[0].endpoints[*].addresses[0]}{"\n"}'; kubectl exec curl-client -n s11-services -- curl -s -m 5 http://web-service-clusterip:8080
+ClusterIP before: 10.101.36.245
+endpoints before: 10.244.0.217 10.244.0.215 10.244.0.216
+pod "web-app-clusterip-5d984469f7-4shgn" deleted from s11-services namespace
+ClusterIP after:  10.101.36.245
+endpoints after:  10.244.0.217 10.244.0.215 10.244.0.25
+Hello from pod web-app-clusterip-5d984469f7-9pdkk [01-clusterip]

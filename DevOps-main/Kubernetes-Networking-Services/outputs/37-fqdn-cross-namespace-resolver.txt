@@ -1,0 +1,10 @@
+$ echo '=== short name from s11-dns-b:'; kubectl exec curl-test-pod -n s11-dns-b -- curl -s -m 5 http://web-service-clusterip:8080 || echo "curl exit $? (6 = could not resolve host)"; echo '=== <service>.<namespace> from s11-dns-b:'; kubectl exec curl-test-pod -n s11-dns-b -- curl -s -m 5 http://web-service-clusterip.s11-dns-a:8080; echo '=== <service>.<namespace>.svc from s11-dns-b:'; kubectl exec curl-test-pod -n s11-dns-b -- curl -s -m 5 http://web-service-clusterip.s11-dns-a.svc:8080; echo '=== kubernetes.default (API server) resolves too - 401/403 JSON = we reached it:'; kubectl exec curl-test-pod -n s11-dns-b -- curl -sk -m 5 -o /dev/null -w 'HTTP %{http_code} from %{remote_ip}\n' https://kubernetes.default/version
+=== short name from s11-dns-b:
+command terminated with exit code 6
+curl exit 6 (6 = could not resolve host)
+=== <service>.<namespace> from s11-dns-b:
+Hello from pod web-app-clusterip-5d984469f7-qfp8b [01-clusterip]
+=== <service>.<namespace>.svc from s11-dns-b:
+Hello from pod web-app-clusterip-5d984469f7-qfp8b [01-clusterip]
+=== kubernetes.default (API server) resolves too - 401/403 JSON = we reached it:
+HTTP 200 from 10.96.0.1

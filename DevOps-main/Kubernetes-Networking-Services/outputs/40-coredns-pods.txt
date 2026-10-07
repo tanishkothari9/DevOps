@@ -1,0 +1,5 @@
+$ kubectl get deploy coredns -n kube-system -o wide; kubectl get pods -n kube-system -l k8s-app=kube-dns -o wide
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE    CONTAINERS   IMAGES                                    SELECTOR
+coredns   1/1     1            1           153m   coredns      registry.k8s.io/coredns/coredns:v1.14.6   k8s-app=kube-dns
+NAME                       READY   STATUS    RESTARTS   AGE    IP           NODE       NOMINATED NODE   READINESS GATES
+coredns-559f6c778d-dfnhj   1/1     Running   1          153m   10.244.0.2   minikube   <none>           <none>

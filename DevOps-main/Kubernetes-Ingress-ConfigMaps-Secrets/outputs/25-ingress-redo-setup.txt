@@ -1,0 +1,29 @@
+$ kubectl create namespace s12-ingress && kubectl apply -f 01-configmap/app-config.yaml -f 02-secret/db-secret.yaml -f 03-ingress/frontend.yaml -f 03-ingress/backend.yaml -n s12-ingress && kubectl create secret tls yatri-tls --cert=$TLS_DIR/tls.crt --key=$TLS_DIR/tls.key -n s12-ingress && kubectl rollout status deployment/yatri-frontend -n s12-ingress --timeout=1200s && kubectl rollout status deployment/yatri-backend -n s12-ingress --timeout=1200s && kubectl apply -f 03-ingress/ingress.yaml -f 03-ingress/ingress-tls.yaml -n s12-ingress && for i in $(seq 1 60); do A=$(kubectl get ingress yatri-ingress-tls -n s12-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}'); [ -n "$A" ] && break; sleep 5; done; sleep 10; kubectl get pods,svc,ingress -n s12-ingress
+namespace/s12-ingress created
+configmap/yatri-app-config created
+secret/yatri-db-secret created
+configmap/yatri-frontend-html created
+deployment.apps/yatri-frontend created
+service/yatri-frontend-service created
+deployment.apps/yatri-backend created
+service/yatri-backend-service created
+secret/yatri-tls created
+Waiting for deployment "yatri-frontend" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "yatri-frontend" rollout to finish: 1 of 2 updated replicas are available...
+deployment "yatri-frontend" successfully rolled out
+deployment "yatri-backend" successfully rolled out
+ingress.networking.k8s.io/yatri-ingress created
+ingress.networking.k8s.io/yatri-ingress-tls created
+NAME                                 READY   STATUS    RESTARTS   AGE
+pod/yatri-backend-578f965c76-6zccv   1/1     Running   0          47s
+pod/yatri-backend-578f965c76-9xss4   1/1     Running   0          47s
+pod/yatri-frontend-d544c8744-fsnqc   1/1     Running   0          47s
+pod/yatri-frontend-d544c8744-wrjhl   1/1     Running   0          47s
+
+NAME                             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+service/yatri-backend-service    ClusterIP   10.96.191.45     <none>        80/TCP    47s
+service/yatri-frontend-service   ClusterIP   10.101.192.110   <none>        80/TCP    47s
+
+NAME                                          CLASS   HOSTS                         ADDRESS        PORTS     AGE
+ingress.networking.k8s.io/yatri-ingress       nginx   yatri.local,api.yatri.local   192.168.49.2   80        46s
+ingress.networking.k8s.io/yatri-ingress-tls   nginx   secure.yatri.local            192.168.49.2   80, 443   46s

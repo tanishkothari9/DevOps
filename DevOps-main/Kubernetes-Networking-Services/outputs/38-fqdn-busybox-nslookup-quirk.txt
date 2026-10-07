@@ -1,0 +1,6 @@
+$ echo '=== busybox nslookup does NOT apply the search list to names that contain a dot:'; kubectl exec curl-test-pod -n s11-dns-b -- nslookup kubernetes.default 2>&1 | grep -E 'NXDOMAIN|Name|Address: 10'; echo '=== with the full FQDN (trailing dot = absolute name) it works:'; kubectl exec curl-test-pod -n s11-dns-b -- nslookup kubernetes.default.svc.cluster.local. 2>&1 | grep -E 'Name|Address: 10'
+=== busybox nslookup does NOT apply the search list to names that contain a dot:
+** server can't find kubernetes.default: NXDOMAIN
+=== with the full FQDN (trailing dot = absolute name) it works:
+Name:	kubernetes.default.svc.cluster.local
+Address: 10.96.0.1

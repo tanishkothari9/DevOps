@@ -1,0 +1,2 @@
+$ kubectl delete namespace s12-troubleshoot --wait=false
+namespace "s12-troubleshoot" deleted

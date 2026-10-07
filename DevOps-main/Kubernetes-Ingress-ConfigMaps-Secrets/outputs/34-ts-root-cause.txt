@@ -1,0 +1,5 @@
+$ echo 'echo    "dummy-pass-123" | base64  ->' $(echo "dummy-pass-123" | base64); echo 'echo -n "dummy-pass-123" | base64  ->' $(echo -n "dummy-pass-123" | base64); echo; echo "dummy-pass-123" | xxd
+echo    "dummy-pass-123" | base64  -> ZHVtbXktcGFzcy0xMjMK
+echo -n "dummy-pass-123" | base64  -> ZHVtbXktcGFzcy0xMjM=
+
+00000000: 6475 6d6d 792d 7061 7373 2d31 3233 0a    dummy-pass-123.

@@ -1,0 +1,18 @@
+$ kubectl exec curl-test-pod -n s11-services -- nslookup does-not-exist; echo "exit code: $?"
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+** server can't find does-not-exist.cluster.local: NXDOMAIN
+
+** server can't find does-not-exist.cluster.local: NXDOMAIN
+
+** server can't find does-not-exist.s11-services.svc.cluster.local: NXDOMAIN
+
+** server can't find does-not-exist.svc.cluster.local: NXDOMAIN
+
+** server can't find does-not-exist.s11-services.svc.cluster.local: NXDOMAIN
+
+** server can't find does-not-exist.svc.cluster.local: NXDOMAIN
+
+command terminated with exit code 1
+exit code: 1

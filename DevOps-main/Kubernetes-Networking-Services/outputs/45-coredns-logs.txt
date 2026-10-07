@@ -1,0 +1,13 @@
+$ kubectl logs -n kube-system -l k8s-app=kube-dns --tail=12
+[INFO] 10.244.0.199:45821 - 31293 "AAAA IN stockpilot-postgres.taskboard.svc.cluster.local. udp 65 false 512" NOERROR qr,aa,rd 158 0.000337708s
+[INFO] 10.244.0.199:45821 - 46399 "A IN stockpilot-postgres.taskboard.svc.cluster.local. udp 65 false 512" NOERROR qr,aa,rd 128 0.000376583s
+[INFO] 10.244.0.37:43968 - 9356 "A IN s20-podinfo.s20-monitoring.svc.cluster.local. udp 62 false 512" NOERROR qr,aa,rd 122 0.000745375s
+[INFO] 10.244.0.37:43968 - 57992 "AAAA IN s20-podinfo.s20-monitoring.svc.cluster.local. udp 62 false 512" NOERROR qr,aa,rd 155 0.000116542s
+[INFO] 10.244.0.37:42162 - 31564 "A IN s20-podinfo.s20-monitoring.svc.cluster.local. udp 62 false 512" NOERROR qr,aa,rd 122 0.000264334s
+[INFO] 10.244.0.37:42162 - 17739 "AAAA IN s20-podinfo.s20-monitoring.svc.cluster.local. udp 62 false 512" NOERROR qr,aa,rd 155 0.000215208s
+[INFO] 10.244.0.37:50101 - 15099 "AAAA IN s20-podinfo.s20-monitoring.svc.cluster.local. udp 62 false 512" NOERROR qr,aa,rd 155 0.005261459s
+[INFO] 10.244.0.37:50101 - 64766 "A IN s20-podinfo.s20-monitoring.svc.cluster.local. udp 62 false 512" NOERROR qr,aa,rd 122 0.001311667s
+[INFO] 10.244.0.37:38270 - 53666 "A IN s20-podinfo.s20-monitoring.svc.cluster.local. udp 62 false 512" NOERROR qr,aa,rd 122 0.001420709s
+[INFO] 10.244.0.37:38270 - 5793 "AAAA IN s20-podinfo.s20-monitoring.svc.cluster.local. udp 62 false 512" NOERROR qr,aa,rd 155 0.002535125s
+[INFO] 10.244.0.37:43552 - 40189 "A IN s20-podinfo.s20-monitoring.svc.cluster.local. udp 62 false 512" NOERROR qr,aa,rd 122 0.009555375s
+[INFO] 10.244.0.37:43552 - 42368 "AAAA IN s20-podinfo.s20-monitoring.svc.cluster.local. udp 62 false 512" NOERROR qr,aa,rd 155 0.009602458s

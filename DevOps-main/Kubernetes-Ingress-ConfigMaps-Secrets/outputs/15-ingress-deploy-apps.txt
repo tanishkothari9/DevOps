@@ -1,0 +1,21 @@
+$ kubectl apply -f 03-ingress/frontend.yaml -f 03-ingress/backend.yaml -n s12-demo && kubectl rollout status deployment/yatri-frontend -n s12-demo --timeout=1200s && kubectl rollout status deployment/yatri-backend -n s12-demo --timeout=1200s && kubectl get pods,svc -n s12-demo -l 'app in (yatri-frontend,yatri-backend)'
+configmap/yatri-frontend-html created
+deployment.apps/yatri-frontend created
+service/yatri-frontend-service created
+deployment.apps/yatri-backend created
+service/yatri-backend-service created
+Waiting for deployment "yatri-frontend" rollout to finish: 0 out of 2 new replicas have been updated...
+Waiting for deployment "yatri-frontend" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "yatri-frontend" rollout to finish: 1 of 2 updated replicas are available...
+deployment "yatri-frontend" successfully rolled out
+Waiting for deployment "yatri-backend" rollout to finish: 1 of 2 updated replicas are available...
+deployment "yatri-backend" successfully rolled out
+NAME                                 READY   STATUS    RESTARTS   AGE
+pod/yatri-backend-578f965c76-2mv87   1/1     Running   0          17s
+pod/yatri-backend-578f965c76-gq4d4   1/1     Running   0          16s
+pod/yatri-frontend-d544c8744-vww6l   1/1     Running   0          18s
+pod/yatri-frontend-d544c8744-wqjdm   1/1     Running   0          18s
+
+NAME                             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+service/yatri-backend-service    ClusterIP   10.105.202.13    <none>        80/TCP    17s
+service/yatri-frontend-service   ClusterIP   10.111.156.176   <none>        80/TCP    18s

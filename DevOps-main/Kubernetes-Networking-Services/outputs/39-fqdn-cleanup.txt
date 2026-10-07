@@ -1,0 +1,3 @@
+$ kubectl delete namespace s11-dns-a s11-dns-b --wait=false
+namespace "s11-dns-a" deleted
+namespace "s11-dns-b" deleted

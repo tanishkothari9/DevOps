@@ -1,0 +1,6 @@
+$ kubectl exec deployment/yatri-backend-combined -n s12-demo -- sh -c 'echo ENVIRONMENT=$ENVIRONMENT  [ConfigMap]; echo LOG_LEVEL=$LOG_LEVEL  [ConfigMap]; echo DEFAULT_CURRENCY=$DEFAULT_CURRENCY  [ConfigMap]; echo POSTGRES_USER=$POSTGRES_USER  [Secret]; echo POSTGRES_DB=$POSTGRES_DB  [Secret]'
+ENVIRONMENT=production [ConfigMap]
+LOG_LEVEL=DEBUG [ConfigMap]
+DEFAULT_CURRENCY=INR [ConfigMap]
+POSTGRES_USER=demo_user [Secret]
+POSTGRES_DB=demo_db [Secret]

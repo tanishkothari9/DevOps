@@ -1,0 +1,4 @@
+$ echo '100 requests to the Service with 9 stable + 1 canary pod:'; kubectl exec curl-client -n s10-canary -- sh -c "for i in \$(seq 1 100); do curl -s -m 5 http://myapp-canary-service || echo FAILED; done" | sort | uniq -c
+100 requests to the Service with 9 stable + 1 canary pod:
+  10 CANARY v2
+  90 STABLE v1

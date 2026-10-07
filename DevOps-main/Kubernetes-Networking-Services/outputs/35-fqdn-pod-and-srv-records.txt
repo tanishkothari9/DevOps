@@ -1,0 +1,14 @@
+$ IP=$(kubectl get pod curl-test-pod -n s11-services -o jsonpath='{.status.podIP}'); D=$(echo $IP | tr . -); echo "pod IP $IP -> $D.s11-services.pod.cluster.local"; kubectl exec curl-test-pod -n s11-other -- nslookup $D.s11-services.pod.cluster.local; kubectl exec curl-test-pod -n s11-other -- nslookup -type=srv _http._tcp.web-service-clusterip.s11-services.svc.cluster.local
+pod IP 10.244.0.29 -> 10-244-0-29.s11-services.pod.cluster.local
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+
+Name:	10-244-0-29.s11-services.pod.cluster.local
+Address: 10.244.0.29
+
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+_http._tcp.web-service-clusterip.s11-services.svc.cluster.local	service = 0 100 8080 web-service-clusterip.s11-services.svc.cluster.local
+

@@ -1,0 +1,40 @@
+$ kubectl apply -f 05-headless/client-pod.yaml -n s11-services && kubectl wait --for=condition=Ready pod/headless-dns-client -n s11-services --timeout=900s >/dev/null; echo '=== headless service -> one A record per pod:'; kubectl exec headless-dns-client -n s11-services -- nslookup web-service-headless; echo '=== normal ClusterIP service -> one virtual IP:'; kubectl exec headless-dns-client -n s11-services -- nslookup web-service-clusterip
+pod/headless-dns-client created
+=== headless service -> one A record per pod:
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	web-service-headless.s11-services.svc.cluster.local
+Address: 10.244.0.253
+Name:	web-service-headless.s11-services.svc.cluster.local
+Address: 10.244.0.247
+Name:	web-service-headless.s11-services.svc.cluster.local
+Address: 10.244.0.252
+
+** server can't find web-service-headless.cluster.local: NXDOMAIN
+
+
+** server can't find web-service-headless.svc.cluster.local: NXDOMAIN
+
+** server can't find web-service-headless.cluster.local: NXDOMAIN
+
+** server can't find web-service-headless.svc.cluster.local: NXDOMAIN
+
+command terminated with exit code 1
+=== normal ClusterIP service -> one virtual IP:
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	web-service-clusterip.s11-services.svc.cluster.local
+Address: 10.101.36.245
+
+** server can't find web-service-clusterip.cluster.local: NXDOMAIN
+
+** server can't find web-service-clusterip.svc.cluster.local: NXDOMAIN
+
+
+** server can't find web-service-clusterip.cluster.local: NXDOMAIN
+
+** server can't find web-service-clusterip.svc.cluster.local: NXDOMAIN
+
+command terminated with exit code 1

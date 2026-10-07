@@ -1,0 +1,9 @@
+$ kubectl get pods -n s11-services --show-labels | grep -E 'NAME|web-app-clusterip'; kubectl patch svc broken-backend-service -n s11-services --type=merge -p '{"spec":{"selector":{"app":"web-clusterip"},"ports":[{"name":"http","port":80,"targetPort":80,"protocol":"TCP"}]}}' && sleep 3 && kubectl get endpointslices -l kubernetes.io/service-name=broken-backend-service -n s11-services && kubectl exec curl-test-pod -n s11-services -- curl -s -m 5 http://broken-backend-service
+NAME                                    READY   STATUS    RESTARTS   AGE     LABELS
+web-app-clusterip-5d984469f7-9pdkk      1/1     Running   0          13m     app=web-clusterip,pod-template-hash=5d984469f7
+web-app-clusterip-5d984469f7-fc7v8      1/1     Running   0          3m25s   app=web-clusterip,pod-template-hash=5d984469f7
+web-app-clusterip-5d984469f7-g4hrl      1/1     Running   0          13m     app=web-clusterip,pod-template-hash=5d984469f7
+service/broken-backend-service patched
+NAME                           ADDRESSTYPE   PORTS   ENDPOINTS                               AGE
+broken-backend-service-s52r9   IPv4          80      10.244.0.217,10.244.0.25,10.244.0.215   19s
+Hello from pod web-app-clusterip-5d984469f7-9pdkk [01-clusterip]

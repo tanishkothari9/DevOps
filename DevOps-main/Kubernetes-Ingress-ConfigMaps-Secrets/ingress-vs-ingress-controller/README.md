@@ -41,7 +41,7 @@ Kubernetes ships **no** Ingress Controller by default - you install one. On mini
 - Service `ingress-nginx-controller` (the entry point, NodePort on minikube, `LoadBalancer` in the cloud)
 - IngressClass `nginx` (the name that Ingress objects reference via `ingressClassName: nginx`)
 
-The real output is in the main [README](../README.md#task-3-ingress) (`kubectl get pods,svc -n ingress-nginx`, `kubectl get ingressclass`).
+The real output is in the main [README](../README.md#the-ingress-controller-in-my-cluster) (`kubectl get pods,svc -n ingress-nginx`, `kubectl get ingressclass`).
 
 ## Difference between them
 

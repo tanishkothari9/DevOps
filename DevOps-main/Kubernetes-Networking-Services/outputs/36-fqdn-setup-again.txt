@@ -1,0 +1,11 @@
+$ kubectl create namespace s11-dns-a && kubectl create namespace s11-dns-b && kubectl apply -f 01-clusterip/app-deployment.yaml -f 01-clusterip/service.yaml -n s11-dns-a && kubectl apply -f dns-test/curl-test-pod.yaml -n s11-dns-b && kubectl rollout status deployment/web-app-clusterip -n s11-dns-a --timeout=900s && kubectl wait --for=condition=Ready pod/curl-test-pod -n s11-dns-b --timeout=900s
+namespace/s11-dns-a created
+namespace/s11-dns-b created
+deployment.apps/web-app-clusterip created
+service/web-service-clusterip created
+pod/curl-test-pod created
+Waiting for deployment "web-app-clusterip" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "web-app-clusterip" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "web-app-clusterip" rollout to finish: 2 of 3 updated replicas are available...
+deployment "web-app-clusterip" successfully rolled out
+pod/curl-test-pod condition met

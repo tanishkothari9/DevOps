@@ -1,0 +1,4 @@
+$ kubectl port-forward svc/ingress-nginx-controller -n ingress-nginx 8081:80 >/dev/null 2>&1 & PF=$!; sleep 5; echo '=== Host: yatri.local  path: /'; curl -s -m 10 -H 'Host: yatri.local' http://localhost:8081/; echo '=== Host: yatri.local  path: /api'; curl -s -m 10 -H 'Host: yatri.local' http://localhost:8081/api; echo '=== Host: yatri.local  path: /api/bookings'; curl -s -m 10 -H 'Host: yatri.local' http://localhost:8081/api/bookings; kill $PF
+=== Host: yatri.local  path: /
+=== Host: yatri.local  path: /api
+=== Host: yatri.local  path: /api/bookings

@@ -1,0 +1,4 @@
+$ kubectl delete pod configmap-demo -n s12-demo && kubectl apply -f 01-configmap/pod-configmap.yaml -n s12-demo && kubectl wait --for=condition=Ready pod/configmap-demo -n s12-demo --timeout=1200s >/dev/null && kubectl exec configmap-demo -n s12-demo -- sh -c 'echo after restart: LOG_LEVEL=$LOG_LEVEL MAX_BOOKING_DAYS=$MAX_BOOKING_DAYS'
+pod "configmap-demo" deleted from s12-demo namespace
+pod/configmap-demo created
+after restart: LOG_LEVEL=DEBUG MAX_BOOKING_DAYS=45

@@ -1,0 +1,11 @@
+$ kubectl get daemonsets -n kube-system; echo; kubectl get statefulsets -n s11-services; kubectl get pods -l app=web-headless -n s11-services
+NAME         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kindnet      1         1         1       1            1           <none>                   152m
+kube-proxy   1         1         1       1            1           kubernetes.io/os=linux   152m
+
+NAME           READY   AGE
+web-stateful   3/3     4m23s
+NAME             READY   STATUS    RESTARTS   AGE
+web-stateful-0   1/1     Running   0          4m12s
+web-stateful-1   1/1     Running   0          110s
+web-stateful-2   1/1     Running   0          101s

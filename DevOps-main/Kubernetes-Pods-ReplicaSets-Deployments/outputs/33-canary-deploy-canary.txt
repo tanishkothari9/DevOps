@@ -1,0 +1,21 @@
+$ kubectl apply -f 03-canary/deployment-canary.yaml -n s10-canary && kubectl rollout status deployment/app-canary -n s10-canary --timeout=900s && kubectl get deploy -n s10-canary && kubectl get pods -n s10-canary -L track,version
+deployment.apps/app-canary created
+Waiting for deployment spec update to be observed...
+Waiting for deployment "app-canary" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "app-canary" rollout to finish: 0 of 1 updated replicas are available...
+deployment "app-canary" successfully rolled out
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+app-canary   1/1     1            1           28s
+app-stable   9/9     9            9           2m59s
+NAME                          READY   STATUS    RESTARTS   AGE     TRACK    VERSION
+app-canary-64df56cd69-r5whd   1/1     Running   0          28s     canary   v2
+app-stable-868c799b48-7b9qb   1/1     Running   0          2m56s   stable   v1
+app-stable-868c799b48-8fgkb   1/1     Running   0          2m55s   stable   v1
+app-stable-868c799b48-92zcb   1/1     Running   0          2m57s   stable   v1
+app-stable-868c799b48-cwt65   1/1     Running   0          2m55s   stable   v1
+app-stable-868c799b48-n47pb   1/1     Running   0          2m55s   stable   v1
+app-stable-868c799b48-qrlkz   1/1     Running   0          2m56s   stable   v1
+app-stable-868c799b48-r5v67   1/1     Running   0          2m54s   stable   v1
+app-stable-868c799b48-v6vx2   1/1     Running   0          2m55s   stable   v1
+app-stable-868c799b48-v8bwr   1/1     Running   0          2m54s   stable   v1
+curl-client                   1/1     Running   0          2m55s            

@@ -1,0 +1,29 @@
+$ echo '=== short name from s11-other (fails):'; kubectl exec curl-test-pod -n s11-other -- nslookup web-service-clusterip; echo '=== <svc>.<namespace> from s11-other:'; kubectl exec curl-test-pod -n s11-other -- nslookup web-service-clusterip.s11-services; echo '=== full FQDN from s11-other:'; kubectl exec curl-test-pod -n s11-other -- curl -s -m 5 http://web-service-clusterip.s11-services.svc.cluster.local:8080
+=== short name from s11-other (fails):
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+** server can't find web-service-clusterip.cluster.local: NXDOMAIN
+
+** server can't find web-service-clusterip.cluster.local: NXDOMAIN
+
+** server can't find web-service-clusterip.svc.cluster.local: NXDOMAIN
+
+** server can't find web-service-clusterip.svc.cluster.local: NXDOMAIN
+
+** server can't find web-service-clusterip.s11-other.svc.cluster.local: NXDOMAIN
+
+** server can't find web-service-clusterip.s11-other.svc.cluster.local: NXDOMAIN
+
+command terminated with exit code 1
+=== <svc>.<namespace> from s11-other:
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Non-authoritative answer:
+
+** server can't find web-service-clusterip.s11-services: NXDOMAIN
+
+command terminated with exit code 1
+=== full FQDN from s11-other:
+Hello from pod web-app-clusterip-5d984469f7-fc7v8 [01-clusterip]

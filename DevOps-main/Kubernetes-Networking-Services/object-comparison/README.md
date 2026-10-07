@@ -17,7 +17,7 @@ each point. Screenshots live in [`../screenshots`](../screenshots).
 | **Use directly?** | Rarely - almost always created *by* a Deployment | Yes - the normal way to run stateless apps |
 
 **Relationship:** `Deployment  --owns-->  ReplicaSet (one per revision)  --owns-->  Pods`.
-The pod-template-hash label (e.g. `web-app-clusterip-6b9d...`) is how each ReplicaSet tells its own
+The pod-template-hash label (e.g. `web-app-clusterip-5d984469f7` in my cluster) is how each ReplicaSet tells its own
 Pods apart from the Pods of the other revisions. During a rolling update you can see two ReplicaSets
 at the same time (old scaling down, new scaling up) - see Session 10's rolling update demo.
 
@@ -78,3 +78,66 @@ them. They are linked only by **labels** - neither references the other by name.
 ---
 
 ## Evidence from the cluster
+
+### Deployment -> ReplicaSet -> Pod ownership
+```bash
+kubectl get deploy,rs,pods -l app=web-clusterip -n s11-services
+# then follow .metadata.ownerReferences from a Pod upwards
+```
+```
+deployment.apps/web-app-clusterip   3/3     3            3           9m53s
+replicaset.apps/web-app-clusterip-5d984469f7   3         3         3       9m53s
+pod/web-app-clusterip-5d984469f7-4shgn   1/1     Running   0          9m52s
+pod/web-app-clusterip-5d984469f7-9pdkk   1/1     Running   0          9m52s
+pod/web-app-clusterip-5d984469f7-g4hrl   1/1     Running   0          9m52s
+
+Pod web-app-clusterip-5d984469f7-4shgn  -> owned by ReplicaSet web-app-clusterip-5d984469f7
+ReplicaSet web-app-clusterip-5d984469f7 -> owned by Deployment/web-app-clusterip
+```
+![ownership](../screenshots/21-cmp-deployment-rs-pods.png)
+
+### ReplicaSet replaces a Pod, the Service keeps its IP and follows the new Pod
+```bash
+kubectl get svc web-service-clusterip -n s11-services -o jsonpath='{.spec.clusterIP}'
+kubectl get endpointslices -l kubernetes.io/service-name=web-service-clusterip -n s11-services -o jsonpath='{.items[0].endpoints[*].addresses[0]}'
+kubectl delete pod <one web-app-clusterip pod> -n s11-services
+# ... same two commands again, then curl the Service
+```
+```
+ClusterIP before: 10.101.36.245
+endpoints before: 10.244.0.217 10.244.0.215 10.244.0.216
+pod "web-app-clusterip-5d984469f7-4shgn" deleted from s11-services namespace
+ClusterIP after:  10.101.36.245
+endpoints after:  10.244.0.217 10.244.0.215 10.244.0.25
+Hello from pod web-app-clusterip-5d984469f7-9pdkk [01-clusterip]
+```
+![service vs replicaset](../screenshots/22-cmp-service-vs-replicaset.png)
+
+The **ReplicaSet** did its job (a new Pod with a *new IP* `10.244.0.25` replaced `.216`), and the
+**Service** did its job (same ClusterIP `10.101.36.245`, endpoint list updated automatically, clients
+noticed nothing).
+
+### DaemonSet vs StatefulSet in the same cluster
+```bash
+kubectl get daemonsets -n kube-system
+kubectl get statefulsets -n s11-services
+kubectl get pods -l app=web-headless -n s11-services
+```
+```
+NAME         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kindnet      1         1         1       1            1           <none>                   152m
+kube-proxy   1         1         1       1            1           kubernetes.io/os=linux   152m
+
+NAME           READY   AGE
+web-stateful   3/3     4m23s
+NAME             READY   STATUS    RESTARTS   AGE
+web-stateful-0   1/1     Running   0          4m12s
+web-stateful-1   1/1     Running   0          110s     <- created after -0 was ready
+web-stateful-2   1/1     Running   0          101s     <- created after -1 was ready
+```
+![ds vs sts](../screenshots/23-cmp-daemonset-statefulset.png)
+
+DaemonSets: DESIRED = number of nodes (1), no replica count. StatefulSet: ordinal names created in
+order (the ages show `-0` first, then `-1`, then `-2`). More StatefulSet/DaemonSet hands-on
+(PVC per Pod, stable identity after restart) is in Session 10's README
+(`Kubernetes-Pods-ReplicaSets-Deployments`, Part A).

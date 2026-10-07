@@ -1,0 +1,15 @@
+$ kubectl create namespace s12-troubleshoot && kubectl apply -f 04-troubleshooting/postgres.yaml -n s12-troubleshoot && kubectl rollout status deployment/postgres -n s12-troubleshoot --timeout=1200s && kubectl get pods,svc -n s12-troubleshoot
+namespace/s12-troubleshoot created
+secret/postgres-admin-secret created
+deployment.apps/postgres created
+service/postgres created
+Waiting for deployment spec update to be observed...
+Waiting for deployment spec update to be observed...
+Waiting for deployment "postgres" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "postgres" rollout to finish: 0 of 1 updated replicas are available...
+deployment "postgres" successfully rolled out
+NAME                           READY   STATUS    RESTARTS   AGE
+pod/postgres-d45dfc8ff-gkhb2   1/1     Running   0          110s
+
+NAME               TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
+service/postgres   ClusterIP   10.98.57.54   <none>        5432/TCP   110s

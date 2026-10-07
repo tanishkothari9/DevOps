@@ -1,0 +1,4 @@
+$ kubectl logs -n ingress-nginx deploy/ingress-nginx-controller --tail=300 | grep -E 'yatri|unknown.local' | tail -5
+I1007 19:29:16.776694       7 status.go:311] "updating Ingress status" namespace="s12-demo" ingress="yatri-ingress" currentValue=null newValue=[{"ip":"192.168.49.2"}]
+I1007 19:29:17.240664       7 event.go:377] Event(v1.ObjectReference{Kind:"Ingress", Namespace:"s12-demo", Name:"yatri-ingress", UID:"4f59284a-f0f6-4fcc-8815-1687cb2fa89e", APIVersion:"networking.k8s.io/v1", ResourceVersion:"24569", FieldPath:""}): type: 'Normal' reason: 'Sync' Scheduled for sync
+127.0.0.1 - - [07/Oct/2026:19:29:47 +0000] "GET / HTTP/1.1" 200 226 "-" "curl/8.7.1" 78 0.262 [s12-demo-yatri-backend-service-80] [] 10.244.0.40:5000 226 0.261 200 30da79e1d982bc00f327891215740f3c

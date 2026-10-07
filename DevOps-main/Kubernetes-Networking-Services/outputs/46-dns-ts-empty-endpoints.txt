@@ -1,0 +1,18 @@
+$ kubectl apply -f coredns/empty-endpoints.yaml -n s11-services && kubectl get svc broken-backend-service -n s11-services -o wide; echo '--- DNS works:'; kubectl exec curl-test-pod -n s11-services -- nslookup broken-backend-service | grep -A1 '^Name'; echo '--- but connection fails:'; kubectl exec curl-test-pod -n s11-services -- curl -s -m 5 http://broken-backend-service || echo "curl failed (exit $?)"; echo '--- because there are no endpoints:'; kubectl get endpointslices -l kubernetes.io/service-name=broken-backend-service -n s11-services; kubectl describe svc broken-backend-service -n s11-services | grep -E 'Selector|TargetPort|Endpoints'; kubectl get pods -l app=wrong-backend-name -n s11-services
+service/broken-backend-service created
+NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+broken-backend-service   ClusterIP   10.103.242.220   <none>        80/TCP    1s    app=wrong-backend-name
+--- DNS works:
+command terminated with exit code 1
+Name:	broken-backend-service.s11-services.svc.cluster.local
+Address: 10.103.242.220
+--- but connection fails:
+command terminated with exit code 7
+curl failed (exit 7)
+--- because there are no endpoints:
+NAME                           ADDRESSTYPE   PORTS     ENDPOINTS   AGE
+broken-backend-service-s52r9   IPv4          <unset>   <unset>     8s
+Selector:                 app=wrong-backend-name
+TargetPort:               5000/TCP
+Endpoints:                
+No resources found in s11-services namespace.

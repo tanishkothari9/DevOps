@@ -1,0 +1,9 @@
+$ openssl req -x509 -nodes -newkey rsa:2048 -days 30 -keyout $TLS_DIR/tls.key -out $TLS_DIR/tls.crt -subj '/CN=secure.yatri.local/O=yatri-demo' -addext 'subjectAltName=DNS:secure.yatri.local' 2>&1 | tail -2; openssl x509 -in $TLS_DIR/tls.crt -noout -subject -issuer -dates -ext subjectAltName
+..+...+............+..+...+............+++++++++++++++++++++++++++++++++++++++*.....+...+............+...+..+.+...........+...+.......+......+.....+...+++++++++++++++++++++++++++++++++++++++*............+...+.....+............+...............+.+..+.........................+.....+...+.+..........................+...+....+.....+.......+.....+....+..+...+.........+...+..........+.........+......+.........+......+..+...+....+.........+...........+...+.+.........+......+.........+...+..+.......+...+...+........+...............++++++
+-----
+subject=CN=secure.yatri.local, O=yatri-demo
+issuer=CN=secure.yatri.local, O=yatri-demo
+notBefore=Oct  7 19:30:06 2026 GMT
+notAfter=Nov  6 19:30:06 2026 GMT
+X509v3 Subject Alternative Name: 
+    DNS:secure.yatri.local
