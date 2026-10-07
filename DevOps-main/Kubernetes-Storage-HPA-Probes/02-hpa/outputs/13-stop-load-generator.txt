@@ -1,0 +1,3 @@
+$ ./load_generator.sh stop
+Stopping load generator...
+deployment.apps "load-generator" deleted from s13-hpa-demo namespace

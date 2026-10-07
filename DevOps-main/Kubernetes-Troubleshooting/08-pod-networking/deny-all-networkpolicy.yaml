@@ -1,0 +1,10 @@
+# Second networking problem: a default-deny ingress NetworkPolicy blocks all traffic
+# into Pods of the namespace.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress

@@ -1,0 +1,27 @@
+$ gh run view 37663439038 -R tanishkothari9/DevOps | sed '/ANNOTATIONS/,/ARTIFACTS/{/ARTIFACTS/!d;}'
+
+✓ main Session 17 - DevSecOps Pipeline · 37663439038
+Triggered via workflow_dispatch about 13 minutes ago
+
+JOBS
+✓ 1. Build in 14s (ID 112936517150)
+✓ 2. Unit Test in 13s (ID 112936651412)
+✓ 3. SAST (Bandit + Semgrep) in 30s (ID 112936773973)
+✓ 4. SCA (pip-audit + Trivy fs) in 36s (ID 112937016869)
+✓ 5. Secret Scan (Gitleaks) in 16s (ID 112937323532)
+✓ 6. Docker Build in 35s (ID 112937472428)
+✓ 7. Container Image Scan (Trivy) in 26s (ID 112937758432)
+✓ 8. Security Gate in 21s (ID 112937977956)
+✓ 9. Push Image (GHCR) in 19s (ID 112938170559)
+✓ 10. Deploy to Kubernetes in 1m4s (ID 112938331965)
+
+ARTIFACTS
+docker-image
+test-reports
+image-scan-reports
+sast-reports
+gitleaks-report
+app-build
+
+For more information about a job, try: gh run view --job=<job-id>
+View this run on GitHub: https://github.com/tanishkothari9/DevOps/actions/runs/37663439038

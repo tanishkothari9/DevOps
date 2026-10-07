@@ -1,0 +1,2 @@
+$ kubectl exec hostpath-demo -n s13-volumes -- sh -c "echo hello-from-hostpath-pod > /data/hello.txt && cat /data/hello.txt"
+hello-from-hostpath-pod

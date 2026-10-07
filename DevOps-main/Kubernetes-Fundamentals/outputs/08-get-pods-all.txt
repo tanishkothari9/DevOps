@@ -1,0 +1,22 @@
+$ kubectl get pods -A
+NAMESPACE       NAME                                                READY   STATUS              RESTARTS      AGE
+argocd          argocd-application-controller-0                     0/1     ContainerCreating   0             4m15s
+argocd          argocd-applicationset-controller-76fd8cdd4f-cnj67   0/1     ContainerCreating   0             4m18s
+argocd          argocd-dex-server-66c78cf887-j6n9r                  0/1     Init:0/1            0             4m18s
+argocd          argocd-notifications-controller-7fb9868fd6-k97rl    0/1     ContainerCreating   0             4m17s
+argocd          argocd-redis-bdbdffcb4-7nj88                        0/1     Init:0/1            0             4m17s
+argocd          argocd-repo-server-d89c7967d-672r6                  0/1     Init:0/1            0             4m17s
+argocd          argocd-server-776b7cdd4d-4hq54                      0/1     ContainerCreating   0             4m16s
+ingress-nginx   ingress-nginx-admission-create-x4tbq                0/1     Completed           0             8m16s
+ingress-nginx   ingress-nginx-admission-patch-9hp6j                 0/1     Completed           0             8m16s
+ingress-nginx   ingress-nginx-controller-d7cd8c989-mj2cs            1/1     Running             0             8m16s
+kube-system     coredns-559f6c778d-dfnhj                            1/1     Running             0             8m24s
+kube-system     etcd-minikube                                       1/1     Running             0             8m44s
+kube-system     kindnet-5txqx                                       1/1     Running             0             8m23s
+kube-system     kube-apiserver-minikube                             1/1     Running             0             8m38s
+kube-system     kube-controller-manager-minikube                    1/1     Running             0             8m43s
+kube-system     kube-proxy-l74bq                                    1/1     Running             0             8m24s
+kube-system     kube-scheduler-minikube                             1/1     Running             0             8m36s
+kube-system     metrics-server-768f9f6999-2ss5q                     0/1     Running             1 (43s ago)   8m18s
+kube-system     storage-provisioner                                 1/1     Running             4 (55s ago)   8m17s
+monitoring      kps-kube-prometheus-stack-admission-create-qp4vv    0/1     ContainerCreating   0             3m8s

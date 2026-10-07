@@ -1,0 +1,8 @@
+$ kubectl wait --for=condition=Ready pod --all -n s13-probes --timeout=180s; kubectl get pods -n s13-probes
+pod/liveness-demo condition met
+pod/readiness-demo condition met
+pod/startup-demo condition met
+NAME             READY   STATUS    RESTARTS   AGE
+liveness-demo    1/1     Running   0          111s
+readiness-demo   1/1     Running   0          110s
+startup-demo     1/1     Running   0          107s

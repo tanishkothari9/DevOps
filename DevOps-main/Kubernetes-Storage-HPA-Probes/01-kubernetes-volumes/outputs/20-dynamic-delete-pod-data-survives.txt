@@ -1,0 +1,5 @@
+$ OLD=$(kubectl get pod -n s13-volumes -l app=dynamic-storage-app -o jsonpath="{.items[0].metadata.name}") && kubectl delete pod $OLD -n s13-volumes && kubectl rollout status deployment/dynamic-storage-app -n s13-volumes --timeout=120s && NEW=$(kubectl get pod -n s13-volumes -l app=dynamic-storage-app --field-selector=status.phase=Running -o jsonpath="{.items[0].metadata.name}") && echo "old pod: $OLD  new pod: $NEW" && kubectl exec $NEW -n s13-volumes -- cat /data/orders.txt
+pod "dynamic-storage-app-7dd7fffb76-s5g2p" deleted from s13-volumes namespace
+deployment "dynamic-storage-app" successfully rolled out
+old pod: dynamic-storage-app-7dd7fffb76-s5g2p  new pod: dynamic-storage-app-7dd7fffb76-6ptlz
+order-123-saved-at-22:43:45

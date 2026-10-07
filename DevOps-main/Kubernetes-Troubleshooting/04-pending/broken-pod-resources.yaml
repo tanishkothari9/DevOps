@@ -1,0 +1,13 @@
+# Pending because no node has enough CPU/memory (from scenarios/scenario-3-pending).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pending-resources-demo
+spec:
+  containers:
+    - name: hungry-app
+      image: nginx:alpine
+      resources:
+        requests:
+          cpu: "500"
+          memory: "1000Gi"

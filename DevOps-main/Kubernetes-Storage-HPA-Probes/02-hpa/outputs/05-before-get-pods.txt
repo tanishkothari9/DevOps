@@ -1,0 +1,4 @@
+$ kubectl get pods -n s13-hpa-demo -o wide
+NAME                             READY   STATUS    RESTARTS   AGE    IP            NODE       NOMINATED NODE   READINESS GATES
+yatri-backend-68b645bcdb-96drk   1/1     Running   0          4m1s   10.244.0.67   minikube   <none>           <none>
+yatri-backend-68b645bcdb-qlxdc   1/1     Running   0          4m2s   10.244.0.66   minikube   <none>           <none>

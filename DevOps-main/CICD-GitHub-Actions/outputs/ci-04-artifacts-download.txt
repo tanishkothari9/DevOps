@@ -1,0 +1,25 @@
+$ gh api repos/tanishkothari9/DevOps/actions/runs/37659659275/artifacts --jq '.artifacts[] | "\(.name)\t\(.size_in_bytes) bytes\texpires \(.expires_at)"'; echo; gh run download 37659659275 -R tanishkothari9/DevOps -n calculator-build -D calculator-build && gh run download 37659659275 -R tanishkothari9/DevOps -n test-reports -D test-reports && find calculator-build test-reports -type f | sort && echo && cat calculator-build/build-info.txt && echo && grep -o '<testsuite [^>]*' test-reports/junit.xml | tr ' ' '\n' | grep -E 'tests=|failures=|errors=' && grep -o 'line-rate="[0-9.]*"' test-reports/coverage.xml | head -1
+test-reports	1144 bytes	expires 2026-10-14T17:31:29Z
+docker-image	45086784 bytes	expires 2026-10-08T17:31:59Z
+calculator-build	2661 bytes	expires 2026-10-14T17:31:39Z
+
+calculator-build/app/__init__.py
+calculator-build/app/calculator.py
+calculator-build/app/main.py
+calculator-build/build-info.txt
+calculator-build/calculator-app.tar.gz
+calculator-build/requirements.txt
+test-reports/coverage.xml
+test-reports/junit.xml
+
+Application : Session 16 Calculator API
+Build Status: SUCCESS
+Build Date  : 2026-10-07T17:31:39Z
+Git Commit  : 03e2987506924a0a4beaae0230987b993c4d67fc
+Workflow Run: 37659659275
+Runner      : GitHub Actions 1000000152 (Linux)
+
+errors="0"
+failures="0"
+tests="15"
+line-rate="1"

@@ -1,0 +1,13 @@
+# BUG 2: selector is right, but targetPort points at 8080 while nginx listens on 80
+# -> endpoints exist, but connections are refused.
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  selector:
+    app: web
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: ClusterIP

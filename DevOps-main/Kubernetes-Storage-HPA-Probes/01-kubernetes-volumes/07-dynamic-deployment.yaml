@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dynamic-storage-app
+  namespace: s13-volumes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dynamic-storage-app
+  template:
+    metadata:
+      labels:
+        app: dynamic-storage-app
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.27
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: dynamic-pvc

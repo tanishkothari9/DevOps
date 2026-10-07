@@ -1,0 +1,21 @@
+$ kubectl describe deploy s20-podinfo -n s20-monitoring | grep -E "Liveness|Readiness|Limits|Requests|cpu|memory"
+    Limits:
+      cpu:     200m
+      memory:  128Mi
+    Requests:
+      cpu:         10m
+      memory:      32Mi
+    Liveness:      http-get http://:9898/healthz delay=3s timeout=1s period=10s successThreshold=1 failureThreshold=3
+    Readiness:     http-get http://:9898/readyz delay=2s timeout=1s period=5s successThreshold=1 failureThreshold=3
+$ kubectl exec -n s20-monitoring deploy/s20-loadgen -- wget -qO- http://s20-podinfo:9898/healthz
+{
+  "status": "OK"
+}
+$ kubectl exec -n s20-monitoring deploy/s20-loadgen -- wget -qO- http://s20-podinfo:9898/readyz
+{
+  "status": "OK"
+}
+$ kubectl get pods -n s20-monitoring -l app=s20-podinfo -o custom-columns='POD:.metadata.name,READY:.status.containerStatuses[0].ready,RESTARTS:.status.containerStatuses[0].restartCount,PHASE:.status.phase'
+POD                            READY   RESTARTS   PHASE
+s20-podinfo-684bf75754-92tql   true    4          Running
+s20-podinfo-684bf75754-hxglt   true    3          Running

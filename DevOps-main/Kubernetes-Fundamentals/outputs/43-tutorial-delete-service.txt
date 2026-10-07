@@ -1,0 +1,10 @@
+$ NODE_PORT=$(kubectl get services/kubernetes-bootcamp -n s09-tutorial -o go-template="{{(index .spec.ports 0).nodePort}}"); echo "NodePort before delete: $NODE_PORT"; kubectl delete service -l app=kubernetes-bootcamp -n s09-tutorial && kubectl get services -n s09-tutorial; echo "--- curl the old NodePort now fails:"; minikube ssh -- curl -s -m 3 http://$(minikube ip):$NODE_PORT || echo "=> connection failed (Service is gone)"; echo "--- but the app is still running inside the pod (curl the pod IP from the node):"; POD_IP=$(kubectl get pods -n s09-tutorial -o jsonpath="{.items[0].status.podIP}"); minikube ssh -- curl -s http://$POD_IP:80 | head -2
+NodePort before delete: 31036
+service "kubernetes-bootcamp" deleted from s09-tutorial namespace
+No resources found in s09-tutorial namespace.
+--- curl the old NodePort now fails:
+ssh: Process exited with status 7
+=> connection failed (Service is gone)
+--- but the app is still running inside the pod (curl the pod IP from the node):
+Hostname: kubernetes-bootcamp-5bcf65bf6d-2llhl
+IP: 127.0.0.1

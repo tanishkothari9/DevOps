@@ -1,0 +1,5 @@
+$ kubectl rollout status deployment/kubernetes-bootcamp -n s09-tutorial --timeout=180s; kubectl get deployments -n s09-tutorial
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 0 of 1 updated replicas are available...
+deployment "kubernetes-bootcamp" successfully rolled out
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+kubernetes-bootcamp   0/1     1            0           34s

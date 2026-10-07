@@ -1,0 +1,12 @@
+$ kubectl apply -f 00-core-objects/daemonset.yaml -n s10-core && kubectl rollout status daemonset/node-logging-agent -n s10-core --timeout=120s && kubectl get daemonset node-logging-agent -n s10-core -o wide && kubectl get pods -l app=node-logging-agent -n s10-core -o wide && kubectl get nodes
+daemonset.apps/node-logging-agent created
+Waiting for daemon set spec update to be observed...
+Waiting for daemon set "node-logging-agent" rollout to finish: 0 out of 1 new pods have been updated...
+Waiting for daemon set "node-logging-agent" rollout to finish: 0 of 1 updated pods are available...
+daemon set "node-logging-agent" successfully rolled out
+NAME                 DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE   CONTAINERS      IMAGES         SELECTOR
+node-logging-agent   1         1         1       1            1           <none>          4s    fluent-logger   busybox:1.36   app=node-logging-agent
+NAME                       READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+node-logging-agent-nxbb4   1/1     Running   0          4s    10.244.0.128   minikube   <none>           <none>
+NAME       STATUS   ROLES           AGE   VERSION
+minikube   Ready    control-plane   64m   v1.37.0

@@ -1,0 +1,10 @@
+$ kubectl exec emptydir-demo -n s13-volumes -c writer -- ls -l /shared; kubectl exec emptydir-demo -n s13-volumes -c web -- ls -l /usr/share/nginx/html; kubectl describe pod emptydir-demo -n s13-volumes | grep -A4 "^Volumes:"
+total 4
+-rw-r--r--    1 root     root           550 Oct  7 17:07 index.html
+total 4
+-rw-r--r-- 1 root root 600 Oct  7 17:07 index.html
+Volumes:
+  shared-data:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>

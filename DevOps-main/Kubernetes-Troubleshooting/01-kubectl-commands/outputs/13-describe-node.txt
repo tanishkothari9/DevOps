@@ -1,0 +1,14 @@
+$ kubectl describe node minikube | grep -A12 "Allocated resources"
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests      Limits
+  --------           --------      ------
+  cpu                4150m (41%)   10100m (101%)
+  memory             2638Mi (33%)  6780Mi (86%)
+  ephemeral-storage  0 (0%)        0 (0%)
+  hugepages-1Gi      0 (0%)        0 (0%)
+  hugepages-2Mi      0 (0%)        0 (0%)
+  hugepages-32Mi     0 (0%)        0 (0%)
+  hugepages-64Ki     0 (0%)        0 (0%)
+Events:
+  Type    Reason                   Age                From             Message

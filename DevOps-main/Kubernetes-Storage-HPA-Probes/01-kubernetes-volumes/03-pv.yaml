@@ -1,0 +1,16 @@
+# Static PersistentVolume created by the admin (cluster-scoped).
+# storageClassName "manual" makes sure the claim binds to THIS PV
+# instead of the default "standard" StorageClass provisioning a new one.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: s13-static-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /tmp/s13-static-data

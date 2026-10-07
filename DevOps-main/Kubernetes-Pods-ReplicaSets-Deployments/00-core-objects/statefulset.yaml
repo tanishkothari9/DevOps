@@ -1,0 +1,51 @@
+# StatefulSet: ordered Pods (web-0, web-1, web-2), stable names, one PVC per Pod.
+# Lightweight replacement for the reference mysql:5.7 example (5Gi x 3 is too heavy for a laptop).
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-sts
+spec:
+  clusterIP: None          # headless Service required by the StatefulSet
+  selector:
+    app: web-sts
+  ports:
+    - port: 80
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: web
+spec:
+  serviceName: web-sts
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web-sts
+  template:
+    metadata:
+      labels:
+        app: web-sts
+    spec:
+      containers:
+        - name: app
+          image: busybox:1.36
+          # each Pod appends to a file on ITS OWN volume, so data survives Pod restarts
+          command: ["sh", "-c", "echo \"$(date) started as $(hostname)\" >> /data/history.log; sleep 36000"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "16Mi"
+            limits:
+              cpu: "50m"
+              memory: "32Mi"
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 64Mi

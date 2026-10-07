@@ -1,0 +1,38 @@
+# The "application": tries to log in to Postgres every 5s with the password from the app Secret
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yatri-app
+  labels:
+    app: yatri-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yatri-app
+  template:
+    metadata:
+      labels:
+        app: yatri-app
+    spec:
+      containers:
+        - name: app
+          image: postgres:16-alpine     # reused only for the psql client binary
+          command:
+            - sh
+            - -c
+            - |
+              while true; do
+                PGPASSWORD="$DB_PASSWORD" psql -h postgres -U "$DB_USER" -d yatri_db -tAc "select 'DB connection OK as ' || current_user" 2>&1
+                sleep 5
+              done
+          envFrom:
+            - secretRef:
+                name: yatri-app-db-secret
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "16Mi"
+            limits:
+              cpu: "100m"
+              memory: "64Mi"

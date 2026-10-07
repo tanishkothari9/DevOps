@@ -1,0 +1,45 @@
+# Rolling Update - v1 (adapted from devops-heros/session10-k8s-core-objects/01-rolling-update)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-rolling
+  labels:
+    app: app-rolling
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1        # at most 1 extra pod during the update (4 + 1 = 5)
+      maxUnavailable: 0  # never go below 4 ready pods -> zero downtime
+  selector:
+    matchLabels:
+      app: app-rolling
+  template:
+    metadata:
+      labels:
+        app: app-rolling
+        version: v1
+    spec:
+      containers:
+        - name: web
+          image: nginx:1.24-alpine
+          ports:
+            - containerPort: 80
+          lifecycle:
+            postStart:
+              exec:
+                command: ["sh", "-c", "echo \"VERSION: v1 | image: nginx:1.24-alpine | pod: $(hostname)\" > /usr/share/nginx/html/index.html"]
+          resources:
+            requests:
+              cpu: "30m"
+              memory: "32Mi"
+            limits:
+              cpu: "100m"
+              memory: "64Mi"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 5

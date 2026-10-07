@@ -1,0 +1,21 @@
+$ kubectl describe pod -n production-webapp -l app=web-app | grep -E "^Name:|Liveness|Readiness|Startup|Requests|Limits|cpu|memory|/data|ClaimName" | head -20
+Name:             web-app-d45775485-tqzgh
+    Limits:
+      cpu:     200m
+      memory:  128Mi
+    Requests:
+      cpu:        100m
+      memory:     64Mi
+    Liveness:     http-get http://:80/ delay=5s timeout=2s period=5s successThreshold=1 failureThreshold=3
+    Readiness:    http-get http://:80/ delay=5s timeout=2s period=5s successThreshold=1 failureThreshold=2
+    Startup:      http-get http://:80/ delay=0s timeout=1s period=2s successThreshold=1 failureThreshold=30
+      /data from persistent-storage (rw)
+    ClaimName:  web-data
+Name:             web-app-d45775485-z92fs
+    Limits:
+      cpu:     200m
+      memory:  128Mi
+    Requests:
+      cpu:        100m
+      memory:     64Mi
+    Liveness:     http-get http://:80/ delay=5s timeout=2s period=5s successThreshold=1 failureThreshold=3

@@ -1,0 +1,19 @@
+# Fix: explicitly allow traffic from Pods labelled role=client to api-server on 8080.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-client-to-api
+spec:
+  podSelector:
+    matchLabels:
+      app: api-server
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              role: client
+      ports:
+        - protocol: TCP
+          port: 8080

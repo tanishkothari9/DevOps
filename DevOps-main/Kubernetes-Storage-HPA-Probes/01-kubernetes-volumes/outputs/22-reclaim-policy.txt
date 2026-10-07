@@ -1,0 +1,5 @@
+$ kubectl delete namespace s13-volumes && sleep 5 && kubectl get pv
+namespace "s13-volumes" deleted
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS     CLAIM                     STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+pvc-a370513e-0f76-495d-9e63-35798a271258   500Mi      RWO            Delete           Released   s13-volumes/dynamic-pvc   standard       <unset>                          5m11s
+s13-static-pv                              1Gi        RWO            Retain           Released   s13-volumes/static-pvc    manual         <unset>                          7m59s

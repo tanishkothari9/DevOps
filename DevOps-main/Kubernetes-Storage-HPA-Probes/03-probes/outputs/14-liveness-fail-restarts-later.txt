@@ -1,0 +1,7 @@
+$ kubectl get pod liveness-fail-demo -n s13-probes; kubectl describe pod liveness-fail-demo -n s13-probes | grep -E "Restart Count|Last State|Reason"
+NAME                 READY   STATUS    RESTARTS       AGE
+liveness-fail-demo   1/1     Running   1 (4m4s ago)   5m7s
+    Last State:     Terminated
+      Reason:       Completed
+    Restart Count:  1
+  Type     Reason        Age                    From               Message

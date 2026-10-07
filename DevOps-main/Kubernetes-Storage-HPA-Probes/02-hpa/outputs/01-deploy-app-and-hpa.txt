@@ -1,0 +1,5 @@
+$ kubectl apply -f hpa.yml
+namespace/s13-hpa-demo created
+deployment.apps/yatri-backend created
+service/yatri-backend-service created
+horizontalpodautoscaler.autoscaling/yatri-backend-hpa created

@@ -1,0 +1,18 @@
+$ kubectl rollout undo deployments/kubernetes-bootcamp -n s09-tutorial && kubectl rollout status deployments/kubernetes-bootcamp -n s09-tutorial --timeout=120s && kubectl get pods -n s09-tutorial && kubectl describe pods -n s09-tutorial | grep "Image:" && kubectl rollout history deployment/kubernetes-bootcamp -n s09-tutorial
+deployment.apps/kubernetes-bootcamp rolled back
+Waiting for deployment spec update to be observed...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 old replicas are pending termination...
+deployment "kubernetes-bootcamp" successfully rolled out
+NAME                                   READY   STATUS        RESTARTS   AGE
+kubernetes-bootcamp-5888b75678-4ggt6   1/1     Running       0          94s
+kubernetes-bootcamp-5888b75678-9kws2   1/1     Running       0          72s
+kubernetes-bootcamp-7648ff76c4-9d9z2   0/1     Terminating   0          28s
+    Image:          traefik/whoami:v1.10.3
+    Image:          traefik/whoami:v1.10.3
+    Image:          traefik/whoami:v10
+deployment.apps/kubernetes-bootcamp 
+REVISION  CHANGE-CAUSE
+1         <none>
+3         <none>
+4         <none>
+

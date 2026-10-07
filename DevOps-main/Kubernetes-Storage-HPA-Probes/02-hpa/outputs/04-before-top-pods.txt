@@ -1,0 +1,4 @@
+$ kubectl top pods -n s13-hpa-demo
+NAME                             CPU(cores)   MEMORY(bytes)   
+yatri-backend-68b645bcdb-96drk   10m          11Mi            
+yatri-backend-68b645bcdb-qlxdc   12m          21Mi            

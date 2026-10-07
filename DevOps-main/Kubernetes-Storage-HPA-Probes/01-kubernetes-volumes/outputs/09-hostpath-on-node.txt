@@ -1,0 +1,4 @@
+$ minikube ssh "ls -l /tmp/s13-hostpath-data && cat /tmp/s13-hostpath-data/hello.txt"
+total 4
+-rw-r--r-- 1 root root 24 Oct  7 17:09 hello.txt
+hello-from-hostpath-pod

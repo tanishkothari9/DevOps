@@ -1,0 +1,31 @@
+$ kubectl describe pod nginx-pod -n s09-basics | sed -n "1,12p;/^Containers:/,/Ready:/p;/^Events:/,\$p"
+Name:             nginx-pod
+Namespace:        s09-basics
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 07 Oct 2026 22:36:38 +0530
+Labels:           app=nginx-pod
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.17
+IPs:
+  IP:  10.244.0.17
+Containers:
+  nginx:
+    Container ID:   containerd://590f79a167e3250d6bd17e671ad936bdc09daedeaa9f7de2ef5bca951f1081ec
+    Image:          nginx:1.25-alpine
+    Image ID:       docker.io/library/nginx@sha256:516475cc129da42866742567714ddc681e5eed7b9ee0b9e9c015e464b4221a00
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Wed, 07 Oct 2026 22:39:00 +0530
+    Ready:          True
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  2m35s  default-scheduler  Successfully assigned s09-basics/nginx-pod to minikube
+  Normal  Pulling    2m31s  kubelet            spec.containers{nginx}: Pulling image "nginx:1.25-alpine"
+  Normal  Pulled     15s    kubelet            spec.containers{nginx}: Successfully pulled image "nginx:1.25-alpine" in 1m17.413s (2m16.204s including waiting). Image size: 20193659 bytes.
+  Normal  Created    14s    kubelet            spec.containers{nginx}: Container created
+  Normal  Started    12s    kubelet            spec.containers{nginx}: Container started

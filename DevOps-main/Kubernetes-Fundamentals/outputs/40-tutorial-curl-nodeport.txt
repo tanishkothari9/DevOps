@@ -1,0 +1,5 @@
+$ NODE_PORT=$(kubectl get services/kubernetes-bootcamp -n s09-tutorial -o go-template="{{(index .spec.ports 0).nodePort}}"); echo "NODE_PORT=$NODE_PORT  MINIKUBE_IP=$(minikube ip)"; minikube ssh -- curl -s http://$(minikube ip):$NODE_PORT | head -3
+NODE_PORT=30473  MINIKUBE_IP=192.168.49.2
+Hostname: kubernetes-bootcamp-5bcf65bf6d-2llhl
+IP: 127.0.0.1
+IP: ::1

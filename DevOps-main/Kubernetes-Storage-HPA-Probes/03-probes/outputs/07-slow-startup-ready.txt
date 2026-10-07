@@ -1,0 +1,5 @@
+$ kubectl get pod slow-startup-demo -n s13-probes; kubectl logs slow-startup-demo -n s13-probes
+NAME                READY   STATUS    RESTARTS   AGE
+slow-startup-demo   0/1     Running   0          50s
+booting (20s)...
+started

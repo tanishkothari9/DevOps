@@ -1,0 +1,4 @@
+$ kubectl get hpa -n production-webapp; kubectl top pods -n production-webapp
+NAME          REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          42s
+error: metrics not available yet

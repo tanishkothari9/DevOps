@@ -1,0 +1,10 @@
+$ kubectl exec get-demo -n s14-commands -- curl -s -o /dev/null http://web; kubectl logs deployment/web -n s14-commands --tail=3; echo; kubectl logs -l app=web -n s14-commands --tail=2 --prefix
+Found 2 pods, using pod/web-7f98c7b879-gz4x2
+2026/10/07 18:02:32 [notice] 1#1: start worker process 36
+2026/10/07 18:02:32 [notice] 1#1: start worker process 37
+2026/10/07 18:02:32 [notice] 1#1: start worker process 38
+
+[pod/web-7f98c7b879-gz4x2/nginx] 2026/10/07 18:02:32 [notice] 1#1: start worker process 37
+[pod/web-7f98c7b879-gz4x2/nginx] 2026/10/07 18:02:32 [notice] 1#1: start worker process 38
+[pod/web-7f98c7b879-hh5wj/nginx] 2026/10/07 18:02:32 [notice] 1#1: start worker process 38
+[pod/web-7f98c7b879-hh5wj/nginx] 10.244.0.140 - - [07/Oct/2026:18:03:10 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"

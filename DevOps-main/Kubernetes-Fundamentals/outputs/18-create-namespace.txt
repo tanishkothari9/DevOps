@@ -1,0 +1,12 @@
+$ kubectl create namespace s09-basics && kubectl get namespaces
+namespace/s09-basics created
+NAME              STATUS   AGE
+argocd            Active   7m59s
+default           Active   11m
+ingress-nginx     Active   10m
+kube-node-lease   Active   11m
+kube-public       Active   11m
+kube-system       Active   11m
+monitoring        Active   5m50s
+s09-basics        Active   1s
+s13-volumes       Active   5s

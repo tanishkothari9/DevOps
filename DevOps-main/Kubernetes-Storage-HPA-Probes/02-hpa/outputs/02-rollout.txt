@@ -1,0 +1,16 @@
+$ kubectl rollout status deployment/yatri-backend -n s13-hpa-demo --timeout=180s && kubectl get deploy,svc,hpa,pods -n s13-hpa-demo -o wide
+Waiting for deployment "yatri-backend" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "yatri-backend" rollout to finish: 1 of 2 updated replicas are available...
+deployment "yatri-backend" successfully rolled out
+NAME                            READY   UP-TO-DATE   AVAILABLE   AGE    CONTAINERS   IMAGES               SELECTOR
+deployment.apps/yatri-backend   2/2     2            2           110s   backend      python:3.11-alpine   app=yatri-backend
+
+NAME                            TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE    SELECTOR
+service/yatri-backend-service   ClusterIP   10.97.143.39   <none>        80/TCP    102s   app=yatri-backend
+
+NAME                                                    REFERENCE                  TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/yatri-backend-hpa   Deployment/yatri-backend   cpu: <unknown>/50%   2         10        2          98s
+
+NAME                                 READY   STATUS    RESTARTS   AGE    IP            NODE       NOMINATED NODE   READINESS GATES
+pod/yatri-backend-68b645bcdb-96drk   1/1     Running   0          102s   10.244.0.67   minikube   <none>           <none>
+pod/yatri-backend-68b645bcdb-qlxdc   1/1     Running   0          103s   10.244.0.66   minikube   <none>           <none>

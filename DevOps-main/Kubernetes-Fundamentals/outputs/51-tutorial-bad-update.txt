@@ -1,0 +1,8 @@
+$ kubectl set image deployments/kubernetes-bootcamp whoami=traefik/whoami:v10 -n s09-tutorial && sleep 25 && kubectl get deployments -n s09-tutorial && kubectl get pods -n s09-tutorial
+deployment.apps/kubernetes-bootcamp image updated
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+kubernetes-bootcamp   2/2     1            2           4m43s
+NAME                                   READY   STATUS             RESTARTS   AGE
+kubernetes-bootcamp-5888b75678-4ggt6   1/1     Running            0          90s
+kubernetes-bootcamp-5888b75678-9kws2   1/1     Running            0          68s
+kubernetes-bootcamp-7648ff76c4-9d9z2   0/1     ImagePullBackOff   0          24s

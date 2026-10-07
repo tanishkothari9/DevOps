@@ -1,0 +1,9 @@
+$ POD=$(kubectl get pods -l app=nginx-rs -n s09-basics -o jsonpath="{.items[0].metadata.name}"); echo "Deleting $POD"; kubectl delete pod $POD -n s09-basics; sleep 2; kubectl get pods -l app=nginx-rs -n s09-basics -o wide; kubectl get rs nginx-rs -n s09-basics
+Deleting nginx-rs-58fpf
+pod "nginx-rs-58fpf" deleted from s09-basics namespace
+NAME             READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+nginx-rs-6n5f6   1/1     Running   0          81s   10.244.0.47   minikube   <none>           <none>
+nginx-rs-smkfv   1/1     Running   0          34s   10.244.0.50   minikube   <none>           <none>
+nginx-rs-zm55v   1/1     Running   0          81s   10.244.0.46   minikube   <none>           <none>
+NAME       DESIRED   CURRENT   READY   AGE
+nginx-rs   3         3         3       82s

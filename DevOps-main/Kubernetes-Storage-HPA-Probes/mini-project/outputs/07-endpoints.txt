@@ -1,0 +1,4 @@
+$ kubectl describe svc web-service -n production-webapp | grep -E "Selector|TargetPort|Endpoints"
+Selector:                 app=web-app
+TargetPort:               80/TCP
+Endpoints:                10.244.0.125:80,10.244.0.126:80

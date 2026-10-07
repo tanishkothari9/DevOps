@@ -1,0 +1,12 @@
+# Service gives the Deployment's pods one stable virtual IP + DNS name
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: web
+  ports:
+    - port: 80
+      targetPort: 80

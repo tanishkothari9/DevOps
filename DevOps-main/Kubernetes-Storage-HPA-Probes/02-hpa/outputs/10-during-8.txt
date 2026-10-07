@@ -1,0 +1,26 @@
+$ date +%T; kubectl get hpa -n s13-hpa-demo; echo; kubectl top pods -n s13-hpa-demo -l app=yatri-backend; echo; kubectl get pods -n s13-hpa-demo -l app=yatri-backend
+23:28:49
+NAME                REFERENCE                  TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+yatri-backend-hpa   Deployment/yatri-backend   cpu: 103%/50%   2         10        8          18m
+
+NAME                             CPU(cores)   MEMORY(bytes)   
+yatri-backend-68b645bcdb-6g75p   218m         11Mi            
+yatri-backend-68b645bcdb-849nz   207m         12Mi            
+yatri-backend-68b645bcdb-96drk   212m         11Mi            
+yatri-backend-68b645bcdb-cg7xl   205m         11Mi            
+yatri-backend-68b645bcdb-d5bqj   209m         11Mi            
+yatri-backend-68b645bcdb-ghg26   200m         11Mi            
+yatri-backend-68b645bcdb-lzb4w   196m         11Mi            
+yatri-backend-68b645bcdb-qlxdc   208m         14Mi            
+
+NAME                             READY   STATUS              RESTARTS   AGE
+yatri-backend-68b645bcdb-6g75p   1/1     Running             0          5m57s
+yatri-backend-68b645bcdb-849nz   1/1     Running             0          5m21s
+yatri-backend-68b645bcdb-96drk   1/1     Running             0          18m
+yatri-backend-68b645bcdb-cg7xl   1/1     Running             0          5m20s
+yatri-backend-68b645bcdb-d5bqj   1/1     Running             0          5m57s
+yatri-backend-68b645bcdb-ghg26   1/1     Running             0          5m20s
+yatri-backend-68b645bcdb-lzb4w   1/1     Running             0          5m20s
+yatri-backend-68b645bcdb-m6cdn   0/1     ContainerCreating   0          2s
+yatri-backend-68b645bcdb-qlxdc   1/1     Running             0          18m
+yatri-backend-68b645bcdb-xzzqs   0/1     ContainerCreating   0          2s

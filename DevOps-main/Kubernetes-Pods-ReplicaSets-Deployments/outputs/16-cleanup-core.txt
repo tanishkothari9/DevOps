@@ -1,0 +1,10 @@
+$ kubectl delete -f 00-core-objects/ -n s10-core && kubectl delete pvc -l app=web-sts -n s10-core; kubectl delete pvc data-web-0 data-web-1 data-web-2 -n s10-core --ignore-not-found; kubectl get all,pvc -n s10-core
+daemonset.apps "node-logging-agent" deleted from s10-core namespace
+replicaset.apps "yatri-backend-rs" deleted from s10-core namespace
+service "web-sts" deleted from s10-core namespace
+statefulset.apps "web" deleted from s10-core namespace
+Error from server (NotFound): error when deleting "00-core-objects/pod.yaml": pods "yatri-demo-pod" not found
+persistentvolumeclaim "data-web-0" deleted from s10-core namespace
+persistentvolumeclaim "data-web-1" deleted from s10-core namespace
+persistentvolumeclaim "data-web-2" deleted from s10-core namespace
+No resources found in s10-core namespace.

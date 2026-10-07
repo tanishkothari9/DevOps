@@ -1,0 +1,2 @@
+$ kubectl apply -f namespace.yaml
+namespace/production-webapp created

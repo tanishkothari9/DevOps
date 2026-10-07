@@ -1,0 +1,9 @@
+$ sleep 12; kubectl logs -l app=node-logging-agent -n s10-core --tail=3; echo; kubectl get daemonsets -A
+[Wed Oct  7 18:00:13 UTC 2026] Collecting host system metrics on node-logging-agent-nxbb4
+[Wed Oct  7 18:00:23 UTC 2026] Collecting host system metrics on node-logging-agent-nxbb4
+
+NAMESPACE     NAME                           DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kube-system   kindnet                        1         1         1       1            1           <none>                   64m
+kube-system   kube-proxy                     1         1         1       1            1           kubernetes.io/os=linux   64m
+monitoring    kps-prometheus-node-exporter   1         1         1       1            1           kubernetes.io/os=linux   52m
+s10-core      node-logging-agent             1         1         1       1            1           <none>                   18s

@@ -1,0 +1,4 @@
+$ kubectl apply -f 05-pvc-pod.yaml && kubectl wait --for=condition=Ready pod/static-storage-demo -n s13-volumes --timeout=120s && kubectl exec static-storage-demo -n s13-volumes -- sh -c "echo student-data-on-static-pv > /data/student.txt && cat /data/student.txt"
+pod/static-storage-demo created
+pod/static-storage-demo condition met
+student-data-on-static-pv

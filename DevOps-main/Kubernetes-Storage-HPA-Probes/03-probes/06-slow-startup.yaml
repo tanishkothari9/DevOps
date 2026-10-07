@@ -1,0 +1,25 @@
+# Slow-starting app: it only becomes "started" after 20s (creates /tmp/started).
+# The startupProbe protects it - liveness/readiness are not checked until startup succeeds.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: slow-startup-demo
+  namespace: s13-probes
+spec:
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c", "echo 'booting (20s)...'; sleep 20; touch /tmp/started; echo 'started'; sleep 3600"]
+      startupProbe:
+        exec:
+          command: ["cat", "/tmp/started"]
+        periodSeconds: 2
+        failureThreshold: 30     # up to 60s allowed for startup
+      livenessProbe:
+        exec:
+          command: ["cat", "/tmp/started"]
+        periodSeconds: 5
+      readinessProbe:
+        exec:
+          command: ["cat", "/tmp/started"]
+        periodSeconds: 5

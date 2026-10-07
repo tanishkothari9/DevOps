@@ -1,0 +1,9 @@
+$ kubectl apply -f basic-objects/replicaset.yaml -n s09-basics && sleep 3 && kubectl wait --for=condition=Ready pod -l app=nginx-rs -n s09-basics --timeout=180s && kubectl get rs,pods -l app=nginx-rs -n s09-basics -o wide
+replicaset.apps/nginx-rs created
+pod/nginx-rs-58fpf condition met
+pod/nginx-rs-6n5f6 condition met
+pod/nginx-rs-zm55v condition met
+NAME                 READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+pod/nginx-rs-58fpf   1/1     Running   0          39s   10.244.0.48   minikube   <none>           <none>
+pod/nginx-rs-6n5f6   1/1     Running   0          39s   10.244.0.47   minikube   <none>           <none>
+pod/nginx-rs-zm55v   1/1     Running   0          39s   10.244.0.46   minikube   <none>           <none>

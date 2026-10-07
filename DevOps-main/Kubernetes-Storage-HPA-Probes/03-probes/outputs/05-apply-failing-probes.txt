@@ -1,0 +1,6 @@
+$ kubectl apply -f 04-liveness-fail.yaml -f 05-readiness-fail.yaml -f 06-slow-startup.yaml
+pod/liveness-fail-demo created
+pod/readiness-fail-demo created
+service/readiness-fail-svc created
+service/readiness-demo-svc created
+pod/slow-startup-demo created

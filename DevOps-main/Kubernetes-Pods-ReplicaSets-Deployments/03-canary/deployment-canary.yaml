@@ -1,0 +1,44 @@
+# Canary - canary track (v2), 1 replica(s). 9 stable + 1 canary = ~10% canary traffic.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-canary
+  labels:
+    app: myapp-canary
+    track: canary
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-canary
+      track: canary
+  template:
+    metadata:
+      labels:
+        app: myapp-canary      # shared label -> selected by the one Service
+        track: canary
+        version: v2
+    spec:
+      containers:
+        - name: web
+          image: nginx:1.25-alpine
+          ports:
+            - containerPort: 80
+          lifecycle:
+            postStart:
+              exec:
+                command: ["sh", "-c", "echo \"CANARY v2\" > /usr/share/nginx/html/index.html"]
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "32Mi"
+            limits:
+              cpu: "80m"
+              memory: "64Mi"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 5

@@ -1,0 +1,36 @@
+# Recreate - v1. All old pods are killed BEFORE any new pod is created (expect downtime).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-recreate
+  labels:
+    app: app-recreate
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: app-recreate
+  template:
+    metadata:
+      labels:
+        app: app-recreate
+        version: v1
+    spec:
+      containers:
+        - name: web
+          image: nginx:1.24-alpine
+          ports:
+            - containerPort: 80
+          lifecycle:
+            postStart:
+              exec:
+                command: ["sh", "-c", "echo \"STRATEGY: RECREATE | VERSION: v1 | pod: $(hostname)\" > /usr/share/nginx/html/index.html"]
+          resources:
+            requests:
+              cpu: "30m"
+              memory: "32Mi"
+            limits:
+              cpu: "100m"
+              memory: "64Mi"

@@ -1,0 +1,46 @@
+$ kubectl get pod get-demo -n s14-commands -o yaml | head -45
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{},"labels":{"app":"get-demo"},"name":"get-demo","namespace":"s14-commands"},"spec":{"containers":[{"image":"nginx:1.27","name":"nginx","ports":[{"containerPort":80}]}]}}
+  creationTimestamp: "2026-10-07T18:02:31Z"
+  generation: 1
+  labels:
+    app: get-demo
+  name: get-demo
+  namespace: s14-commands
+  resourceVersion: "10038"
+  uid: 7ff4ee9a-3098-4460-b70b-b66e85f59609
+spec:
+  containers:
+  - image: nginx:1.27
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    ports:
+    - containerPort: 80
+      protocol: TCP
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-q87bd
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: minikube
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300

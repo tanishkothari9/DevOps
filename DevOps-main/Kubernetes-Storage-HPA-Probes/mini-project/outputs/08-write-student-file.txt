@@ -1,0 +1,3 @@
+$ POD_NAME=$(kubectl get pods -n production-webapp -l app=web-app -o jsonpath="{.items[0].metadata.name}"); echo "pod: $POD_NAME"; kubectl exec -n production-webapp "$POD_NAME" -- sh -c "echo \"Student: Tanish Kothari\" > /data/student.txt"; kubectl exec -n production-webapp "$POD_NAME" -- cat /data/student.txt
+pod: web-app-d45775485-tqzgh
+Student: Tanish Kothari

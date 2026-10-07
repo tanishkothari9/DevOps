@@ -1,0 +1,13 @@
+$ kubectl describe pods -n s09-tutorial | grep -E "^Name:|Image:"; kubectl rollout history deployment/kubernetes-bootcamp -n s09-tutorial
+Name:             kubernetes-bootcamp-5888b75678-4ggt6
+    Image:          traefik/whoami:v1.10.3
+Name:             kubernetes-bootcamp-5888b75678-9kws2
+    Image:          traefik/whoami:v1.10.3
+Name:                      kubernetes-bootcamp-5bcf65bf6d-2llhl
+    Image:          traefik/whoami:v1.10.1
+    Image:         busybox:1.36
+deployment.apps/kubernetes-bootcamp 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+

@@ -1,0 +1,7 @@
+$ kubectl logs yatri-demo-pod -n s10-core --tail=3; kubectl exec yatri-demo-pod -n s10-core -- sh -c "hostname; nginx -v; wget -qO- localhost | grep title"
+2026/10/07 17:52:49 [notice] 1#1: start worker process 37
+2026/10/07 17:52:49 [notice] 1#1: start worker process 38
+2026/10/07 17:52:49 [notice] 1#1: start worker process 39
+yatri-demo-pod
+nginx version: nginx/1.25.5
+<title>Welcome to nginx!</title>

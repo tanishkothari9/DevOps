@@ -1,0 +1,3 @@
+$ kubectl delete pod yatri-demo-pod -n s10-core && kubectl get pods -n s10-core
+pod "yatri-demo-pod" deleted from s10-core namespace
+No resources found in s10-core namespace.

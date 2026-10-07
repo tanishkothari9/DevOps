@@ -1,0 +1,8 @@
+$ curl -s localhost:19090/api/v1/alerts | jq -r '.data.alerts[] | select(.labels.session=="20") | "\(.state | ascii_upcase)\t\(.labels.alertname)\t\(.labels.pod // "-")\tsince \(.activeAt)\t\(.annotations.summary)"'
+FIRING	S20PodCrashLooping	s20-crashloop-7dfdbfddf5-zx9zv	since 2026-10-07T17:51:20.331068152Z	Pod s20-monitoring/s20-crashloop-7dfdbfddf5-zx9zv is crash looping
+FIRING	S20HighCPUUsage	s20-cpu-burner-57747c7cff-l6x5k	since 2026-10-07T17:59:20.331068152Z	High CPU in s20-monitoring/s20-cpu-burner-57747c7cff-l6x5k
+FIRING	S20PodNotReady	s20-crashloop-7dfdbfddf5-zx9zv	since 2026-10-07T17:50:20.331068152Z	Pod s20-monitoring/s20-crashloop-7dfdbfddf5-zx9zv is not ready
+$ curl -s localhost:19093/api/v2/alerts | jq -r '.[] | select(.labels.session=="20") | "ALERTMANAGER\t\(.status.state)\t\(.labels.alertname)\tseverity=\(.labels.severity)\t\(.labels.pod // "-")"'
+ALERTMANAGER	active	S20HighCPUUsage	severity=warning	s20-cpu-burner-57747c7cff-l6x5k
+ALERTMANAGER	active	S20PodCrashLooping	severity=critical	s20-crashloop-7dfdbfddf5-zx9zv
+ALERTMANAGER	active	S20PodNotReady	severity=warning	s20-crashloop-7dfdbfddf5-zx9zv

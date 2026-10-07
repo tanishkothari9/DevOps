@@ -125,13 +125,13 @@ spec:
       containers:
         - name: burner
           image: busybox:1.36
-          command: ["/bin/sh", "-c", "echo 'burning CPU up to the 200m limit'; while true; do :; done"]
+          command: ["/bin/sh", "-c", "echo 'burning CPU up to the 100m limit'; while true; do :; done"]
           resources:
             requests:
-              cpu: 50m
+              cpu: 20m
               memory: 8Mi
             limits:
-              cpu: 200m
+              cpu: 100m
               memory: 32Mi
 ---
 apiVersion: apps/v1

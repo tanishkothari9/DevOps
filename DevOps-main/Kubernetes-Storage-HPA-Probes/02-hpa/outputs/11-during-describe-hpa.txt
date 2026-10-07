@@ -1,0 +1,28 @@
+$ kubectl describe hpa yatri-backend-hpa -n s13-hpa-demo
+Name:                                                  yatri-backend-hpa
+Namespace:                                             s13-hpa-demo
+Labels:                                                app=yatri-backend
+Annotations:                                           <none>
+CreationTimestamp:                                     Wed, 07 Oct 2026 23:10:43 +0530
+Reference:                                             Deployment/yatri-backend
+Metrics:                                               ( current / target )
+  resource cpu on pods  (as a percentage of request):  103% (206m) / 50%
+Min replicas:                                          2
+Max replicas:                                          10
+Deployment pods:                                       10 current / 10 desired
+Conditions:
+  Type            Status  Reason            Message
+  ----            ------  ------            -------
+  AbleToScale     True    ReadyForNewScale  recommended size matches current size
+  ScalingActive   True    ValidMetricFound  the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  True    TooManyReplicas   the desired replica count is more than the maximum replica count
+  ScaledToZero    False   NotScaledToZero   the HPA controller did not scale the workload to zero
+Events:
+  Type     Reason                        Age                   From                       Message
+  ----     ------                        ----                  ----                       -------
+  Warning  FailedComputeMetricsReplicas  15m (x12 over 18m)    horizontal-pod-autoscaler  invalid metrics (1 invalid out of 1), first error is: failed to get cpu resource metric value: failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource metrics API: the server is currently unable to handle the request (get pods.metrics.k8s.io)
+  Warning  FailedGetResourceMetric       8m31s (x31 over 18m)  horizontal-pod-autoscaler  failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource metrics API: the server is currently unable to handle the request (get pods.metrics.k8s.io)
+  Normal   SuccessfulRescale             6m30s                 horizontal-pod-autoscaler  New size: 4; reason: cpu resource utilization (percentage of request) above target
+  Normal   SuccessfulRescale             5m55s                 horizontal-pod-autoscaler  New size: 8; reason: cpu resource utilization (percentage of request) above target
+  Warning  FailedGetResourceMetric       3m25s (x4 over 14m)   horizontal-pod-autoscaler  failed to get cpu utilization: unable to get metrics for resource cpu: no metrics returned from resource metrics API
+  Normal   SuccessfulRescale             34s                   horizontal-pod-autoscaler  New size: 10; reason: cpu resource utilization (percentage of request) above target

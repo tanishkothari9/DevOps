@@ -1,0 +1,26 @@
+$ sed -i '' -e 's/replicas: 2/replicas: 3/' -e 's/nginx:1.27-alpine/nginx:1.28-alpine/' gitops/app/deployment.yaml
+$ git diff -- gitops/app/deployment.yaml
+diff --git a/DevOps-main/Monitoring-Observability-GitOps/gitops/app/deployment.yaml b/DevOps-main/Monitoring-Observability-GitOps/gitops/app/deployment.yaml
+index 12ce12a..541bc76 100644
+--- a/DevOps-main/Monitoring-Observability-GitOps/gitops/app/deployment.yaml
++++ b/DevOps-main/Monitoring-Observability-GitOps/gitops/app/deployment.yaml
+@@ -6,7 +6,7 @@ metadata:
+   labels:
+     app: s20-gitops-app
+ spec:
+-  replicas: 2
++  replicas: 3
+   selector:
+     matchLabels:
+       app: s20-gitops-app
+@@ -17,7 +17,7 @@ spec:
+     spec:
+       containers:
+         - name: app
+-          image: nginx:1.27-alpine
++          image: nginx:1.28-alpine
+           ports:
+             - containerPort: 80
+           resources:
+$ /private/tmp/claude-501/-Users-tanishkothari-Code-learning-sst-devops-devops-2/e68a0ffe-ac42-4077-9a09-92e41c2ade38/scratchpad/tools/gitpush.sh "feat(gitops): scale s20-gitops-app to 3 replicas and bump nginx to 1.28-alpine" DevOps-main/Monitoring-Observability-GitOps/gitops/app
+b03556f feat(gitops): scale s20-gitops-app to 3 replicas and bump nginx to 1.28-alpine

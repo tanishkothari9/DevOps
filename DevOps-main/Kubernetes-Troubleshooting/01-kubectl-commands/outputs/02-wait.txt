@@ -1,0 +1,5 @@
+$ kubectl wait --for=condition=Ready pod --all -n s14-commands --timeout=180s
+pod/get-demo condition met
+pod/logs-demo condition met
+pod/web-7f98c7b879-gz4x2 condition met
+pod/web-7f98c7b879-hh5wj condition met

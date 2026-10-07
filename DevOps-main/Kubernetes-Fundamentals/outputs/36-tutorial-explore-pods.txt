@@ -1,0 +1,29 @@
+$ kubectl get pods -n s09-tutorial -o wide; kubectl describe pods -n s09-tutorial | sed -n "1,9p;/^Containers:/,/Ready:/p;/^Events:/,\$p"
+NAME                                   READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+kubernetes-bootcamp-5bcf65bf6d-2llhl   1/1     Running   0          58s   10.244.0.76   minikube   <none>           <none>
+Name:             kubernetes-bootcamp-5bcf65bf6d-2llhl
+Namespace:        s09-tutorial
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 07 Oct 2026 23:17:20 +0530
+Labels:           app=kubernetes-bootcamp
+                  pod-template-hash=5bcf65bf6d
+Annotations:      <none>
+Containers:
+  whoami:
+    Container ID:   containerd://760638e81222d8b10fe1ec5bd8e636004df71cd9415d1f14a109a89fd772e383
+    Image:          traefik/whoami:v1.10.1
+    Image ID:       docker.io/traefik/whoami@sha256:6956a30c7d33f61bb7fdf1c14dcb3192fca4093cd5b91b5f9b38862862072fe9
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Wed, 07 Oct 2026 23:17:47 +0530
+    Ready:          True
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  60s   default-scheduler  Successfully assigned s09-tutorial/kubernetes-bootcamp-5bcf65bf6d-2llhl to minikube
+  Normal  Pulled     48s   kubelet            spec.containers{whoami}: Container image "traefik/whoami:v1.10.1" already present on machine and can be accessed by the pod
+  Normal  Created    36s   kubelet            spec.containers{whoami}: Container created
+  Normal  Started    32s   kubelet            spec.containers{whoami}: Container started

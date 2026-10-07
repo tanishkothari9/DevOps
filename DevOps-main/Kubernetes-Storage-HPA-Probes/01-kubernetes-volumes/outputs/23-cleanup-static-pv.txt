@@ -1,0 +1,4 @@
+$ kubectl delete pv s13-static-pv && kubectl get pv
+persistentvolume "s13-static-pv" deleted
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS     CLAIM                     STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+pvc-a370513e-0f76-495d-9e63-35798a271258   500Mi      RWO            Delete           Released   s13-volumes/dynamic-pvc   standard       <unset>                          5m27s

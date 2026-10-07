@@ -16,6 +16,9 @@ prometheus:
   prometheusSpec:
     retention: 6h
     scrapeInterval: 30s
+    # the kubelet /metrics endpoint answers slowly on a busy single-node minikube;
+    # the default 10s timeout marked it DOWN, so allow up to 25s
+    scrapeTimeout: 25s
     evaluationInterval: 30s
     # Pick up ServiceMonitors / PodMonitors / PrometheusRules from ANY namespace and with ANY labels
     serviceMonitorSelectorNilUsesHelmValues: false

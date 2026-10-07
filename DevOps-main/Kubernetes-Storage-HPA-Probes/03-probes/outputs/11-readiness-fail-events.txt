@@ -1,0 +1,5 @@
+$ kubectl events -n s13-probes --for pod/readiness-fail-demo | tail -4
+3m12s                   Normal    Created     Pod/readiness-fail-demo   Container created
+3m10s                   Normal    Started     Pod/readiness-fail-demo   Container started
+2m30s (x6 over 3m5s)    Warning   Unhealthy   Pod/readiness-fail-demo   Readiness probe failed: HTTP probe failed with statuscode: 404
+2m21s (x3 over 2m53s)   Warning   Unhealthy   Pod/readiness-fail-demo   Readiness probe failed: Get "http://10.244.0.64:80/not-ready": context deadline exceeded (Client.Timeout exceeded while awaiting headers)

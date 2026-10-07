@@ -1,0 +1,9 @@
+$ kubectl describe pvc dynamic-pvc -n s13-volumes | tail -8
+  ----     ------  -----------------                 ------------------                ------           -------
+  Unused   True    Mon, 01 Jan 0001 00:00:00 +0000   Wed, 07 Oct 2026 22:43:18 +0530   NoPodsUsingPVC   No pods are currently referencing this PVC
+Events:
+  Type    Reason                 Age                From                                                                    Message
+  ----    ------                 ----               ----                                                                    -------
+  Normal  ExternalProvisioning   13s (x2 over 14s)  persistentvolume-controller                                             Waiting for a volume to be created either by the external provisioner 'k8s.io/minikube-hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+  Normal  Provisioning           13s                k8s.io/minikube-hostpath_minikube_207c33e7-bc0f-4eb0-97ab-2877f7bfd995  External provisioner is provisioning volume for claim "s13-volumes/dynamic-pvc"
+  Normal  ProvisioningSucceeded  8s                 k8s.io/minikube-hostpath_minikube_207c33e7-bc0f-4eb0-97ab-2877f7bfd995  Successfully provisioned volume pvc-a370513e-0f76-495d-9e63-35798a271258

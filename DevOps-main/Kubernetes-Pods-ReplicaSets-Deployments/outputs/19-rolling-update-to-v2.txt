@@ -1,0 +1,98 @@
+$ (kubectl get pods -n s10-rolling -l app=app-rolling -L version -w --output-watch-events --request-timeout=120s | while IFS= read -r l; do echo "$(date +%T) $l"; done) > $W/roll-watch.txt 2>&1 &
+(kubectl exec curl-client -n s10-rolling -- sh -c "for i in \$(seq 1 70); do curl -s -m 1 http://app-rolling-service || echo FAILED; sleep 0.5; done") > $W/roll-curl.txt 2>&1 &
+CURL=$!; sleep 3
+kubectl apply -f 01-rolling-update/deployment-v2.yaml -n s10-rolling
+kubectl rollout status deployment/app-rolling -n s10-rolling --timeout=180s
+wait $CURL
+echo; echo "===== pod watch (timestamped) ====="; cat $W/roll-watch.txt
+echo; echo "===== 70 requests sent DURING the rollout (consecutive runs) ====="; cut -d"|" -f1 $W/roll-curl.txt | uniq -c
+echo "FAILED requests: $(grep -c FAILED $W/roll-curl.txt)"
+deployment.apps/app-rolling configured
+Waiting for deployment spec update to be observed...
+Waiting for deployment "app-rolling" rollout to finish: 0 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "app-rolling" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "app-rolling" rollout to finish: 1 old replicas are pending termination...
+deployment "app-rolling" successfully rolled out
+
+===== pod watch (timestamped) =====
+23:32:34 EVENT      NAME                           READY   STATUS    RESTARTS   AGE   VERSION
+23:32:34 ADDED      app-rolling-65597c5cf5-4t74d   1/1     Running   0          47s   v1
+23:32:34 ADDED      app-rolling-65597c5cf5-fm4m8   1/1     Running   0          47s   v1
+23:32:34 ADDED      app-rolling-65597c5cf5-txht8   1/1     Running   0          47s   v1
+23:32:34 ADDED      app-rolling-65597c5cf5-wckw6   1/1     Running   0          48s   v1
+23:32:37 ADDED      app-rolling-69bb799997-nm2fz   0/1     Pending   0          0s    v2
+23:32:37 MODIFIED   app-rolling-69bb799997-nm2fz   0/1     Pending   0          0s    v2
+23:32:38 MODIFIED   app-rolling-69bb799997-nm2fz   0/1     ContainerCreating   0          1s    v2
+23:32:39 MODIFIED   app-rolling-69bb799997-nm2fz   0/1     ContainerCreating   0          2s    v2
+23:32:41 MODIFIED   app-rolling-69bb799997-nm2fz   0/1     Running             0          4s    v2
+23:32:47 MODIFIED   app-rolling-69bb799997-nm2fz   1/1     Running             0          10s   v2
+23:32:47 MODIFIED   app-rolling-69bb799997-nm2fz   1/1     Running             0          10s   v2
+23:32:47 MODIFIED   app-rolling-65597c5cf5-4t74d   1/1     Terminating         0          60s   v1
+23:32:47 ADDED      app-rolling-69bb799997-gl456   0/1     Pending             0          0s    v2
+23:32:47 MODIFIED   app-rolling-65597c5cf5-4t74d   1/1     Terminating         0          60s   v1
+23:32:47 MODIFIED   app-rolling-69bb799997-gl456   0/1     Pending             0          0s    v2
+23:32:48 MODIFIED   app-rolling-69bb799997-gl456   0/1     ContainerCreating   0          1s    v2
+23:32:50 MODIFIED   app-rolling-65597c5cf5-4t74d   0/1     Completed           0          63s   v1
+23:32:50 MODIFIED   app-rolling-69bb799997-gl456   0/1     ContainerCreating   0          3s    v2
+23:32:51 MODIFIED   app-rolling-65597c5cf5-4t74d   0/1     Completed           0          64s   v1
+23:32:51 DELETED    app-rolling-65597c5cf5-4t74d   0/1     Completed           0          64s   v1
+23:32:55 MODIFIED   app-rolling-69bb799997-gl456   0/1     Running             0          8s    v2
+23:33:00 MODIFIED   app-rolling-69bb799997-gl456   0/1     Running             0          13s   v2
+23:33:00 MODIFIED   app-rolling-69bb799997-gl456   1/1     Running             0          13s   v2
+23:33:00 MODIFIED   app-rolling-65597c5cf5-wckw6   1/1     Terminating         0          74s   v1
+23:33:00 ADDED      app-rolling-69bb799997-98j8x   0/1     Pending             0          0s    v2
+23:33:00 MODIFIED   app-rolling-69bb799997-98j8x   0/1     Pending             0          0s    v2
+23:33:01 MODIFIED   app-rolling-65597c5cf5-wckw6   1/1     Terminating         0          75s   v1
+23:33:01 MODIFIED   app-rolling-69bb799997-98j8x   0/1     ContainerCreating   0          1s    v2
+23:33:04 MODIFIED   app-rolling-65597c5cf5-wckw6   0/1     Completed           0          78s   v1
+23:33:04 MODIFIED   app-rolling-69bb799997-98j8x   0/1     ContainerCreating   0          4s    v2
+23:33:04 MODIFIED   app-rolling-65597c5cf5-wckw6   0/1     Completed           0          78s   v1
+23:33:04 DELETED    app-rolling-65597c5cf5-wckw6   0/1     Completed           0          78s   v1
+23:33:06 MODIFIED   app-rolling-69bb799997-98j8x   0/1     Running             0          6s    v2
+23:33:12 MODIFIED   app-rolling-69bb799997-98j8x   1/1     Running             0          12s   v2
+23:33:12 MODIFIED   app-rolling-69bb799997-98j8x   1/1     Running             0          12s   v2
+23:33:12 MODIFIED   app-rolling-65597c5cf5-txht8   1/1     Terminating         0          85s   v1
+23:33:12 MODIFIED   app-rolling-65597c5cf5-txht8   1/1     Terminating         0          85s   v1
+23:33:12 ADDED      app-rolling-69bb799997-km6gc   0/1     Pending             0          0s    v2
+23:33:12 MODIFIED   app-rolling-69bb799997-km6gc   0/1     Pending             0          0s    v2
+23:33:13 MODIFIED   app-rolling-69bb799997-km6gc   0/1     ContainerCreating   0          1s    v2
+23:33:13 MODIFIED   app-rolling-65597c5cf5-txht8   0/1     Completed           0          86s   v1
+23:33:14 MODIFIED   app-rolling-69bb799997-km6gc   0/1     ContainerCreating   0          2s    v2
+23:33:14 MODIFIED   app-rolling-65597c5cf5-txht8   0/1     Completed           0          87s   v1
+23:33:14 DELETED    app-rolling-65597c5cf5-txht8   0/1     Completed           0          87s   v1
+23:33:15 MODIFIED   app-rolling-69bb799997-km6gc   0/1     Running             0          3s    v2
+23:33:20 MODIFIED   app-rolling-69bb799997-km6gc   1/1     Running             0          8s    v2
+23:33:20 MODIFIED   app-rolling-69bb799997-km6gc   1/1     Running             0          8s    v2
+23:33:20 MODIFIED   app-rolling-65597c5cf5-fm4m8   1/1     Terminating         0          93s   v1
+
+===== 70 requests sent DURING the rollout (consecutive runs) =====
+  27 VERSION: v1 
+   1 VERSION: v2 
+  13 VERSION: v1 
+   1 VERSION: v2 
+   5 VERSION: v1 
+   3 VERSION: v2 
+   2 VERSION: v1 
+   1 VERSION: v2 
+   5 VERSION: v1 
+   2 VERSION: v2 
+   3 VERSION: v1 
+   1 VERSION: v2 
+   2 VERSION: v1 
+   1 VERSION: v2 
+   1 FAILED
+   1 VERSION: v2 
+   1 VERSION: v1 
+FAILED requests: 1

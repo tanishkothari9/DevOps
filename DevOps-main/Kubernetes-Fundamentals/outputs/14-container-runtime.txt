@@ -1,0 +1,14 @@
+$ minikube ssh -- sudo crictl ps | head -14
+CONTAINER           IMAGE               CREATED              STATE               NAME                      ATTEMPT             POD ID              POD                                        NAMESPACE
+e168a8d6611ff       7791402a0bf56       17 seconds ago       Running             web                       0                   b8c4130b92185       emptydir-demo                              s13-volumes
+b257babca7bd2       b7c873bd97bdc       22 seconds ago       Running             writer                    0                   b8c4130b92185       emptydir-demo                              s13-volumes
+8ceec1280e7e4       ba04bb24b9575       About a minute ago   Running             storage-provisioner       4                   f7d720a9c5cf2       storage-provisioner                        kube-system
+912bb788fa3a7       37ceda8805d2e       About a minute ago   Running             metrics-server            1                   65d846bff7add       metrics-server-768f9f6999-2ss5q            kube-system
+9ead1f45de05c       fd161fb3d80d4       2 minutes ago        Running             controller                0                   5ffcc403a9b18       ingress-nginx-controller-d7cd8c989-mj2cs   ingress-nginx
+b393538992e5b       fbccbf70a429f       8 minutes ago        Running             coredns                   0                   c30cafd06f81d       coredns-559f6c778d-dfnhj                   kube-system
+55d903d809f47       8e13ccc0aaa68       8 minutes ago        Running             kindnet-cni               0                   0bd026550d614       kindnet-5txqx                              kube-system
+9303e477e74e1       550b682d81d41       9 minutes ago        Running             kube-proxy                0                   155182abea041       kube-proxy-l74bq                           kube-system
+ee2b9c0268c42       b1ad0e33c9012       9 minutes ago        Running             kube-controller-manager   0                   26b7d70b9330a       kube-controller-manager-minikube           kube-system
+108e428994af8       c2e426bbd1cd6       9 minutes ago        Running             etcd                      0                   d1448925ad1f8       etcd-minikube                              kube-system
+0905e7cf768cb       384eabc4fe526       9 minutes ago        Running             kube-scheduler            0                   f6e1df5b4a194       kube-scheduler-minikube                    kube-system
+e6d437d44ae8b       6003d52023b9d       9 minutes ago        Running             kube-apiserver            0                   1d2ede22834e5       kube-apiserver-minikube                    kube-system

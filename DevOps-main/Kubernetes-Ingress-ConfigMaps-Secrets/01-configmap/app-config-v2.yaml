@@ -1,0 +1,18 @@
+# Same ConfigMap with changed values - used to show that a MOUNTED ConfigMap updates live,
+# while environment variables keep the old value until the Pod restarts.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: yatri-app-config
+  labels:
+    app: yatri-backend
+data:
+  ENVIRONMENT: "production"
+  LOG_LEVEL: "DEBUG"              # changed from INFO
+  PORT: "5000"
+  DEFAULT_CURRENCY: "INR"
+  MAX_BOOKING_DAYS: "45"          # changed from 30
+  app.properties: |
+    app.name=yatri
+    feature.new-booking-ui=true
+    cache.ttl.seconds=60

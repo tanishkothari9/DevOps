@@ -1,0 +1,3 @@
+$ kubectl create namespace s09-tutorial && kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1 -n s09-tutorial
+namespace/s09-tutorial created
+deployment.apps/kubernetes-bootcamp created

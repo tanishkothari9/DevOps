@@ -1,0 +1,7 @@
+$ kubectl delete pod emptydir-demo -n s13-volumes && kubectl apply -f 01-emptydir-pod.yaml && kubectl wait --for=condition=Ready pod/emptydir-demo -n s13-volumes --timeout=120s && sleep 3 && kubectl exec emptydir-demo -n s13-volumes -c web -- cat /usr/share/nginx/html/index.html
+pod "emptydir-demo" deleted from s13-volumes namespace
+pod/emptydir-demo created
+pod/emptydir-demo condition met
+written by writer at Wed Oct  7 17:09:01 UTC 2026
+written by writer at Wed Oct  7 17:09:06 UTC 2026
+written by writer at Wed Oct  7 17:09:11 UTC 2026

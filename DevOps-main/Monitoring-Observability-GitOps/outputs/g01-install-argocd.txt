@@ -1,0 +1,27 @@
+$ kubectl create namespace argocd && kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml | tail -25
+namespace/argocd created
+configmap/argocd-tls-certs-cm serverside-applied
+secret/argocd-notifications-secret serverside-applied
+secret/argocd-secret serverside-applied
+service/argocd-applicationset-controller serverside-applied
+service/argocd-dex-server serverside-applied
+service/argocd-metrics serverside-applied
+service/argocd-notifications-controller-metrics serverside-applied
+service/argocd-redis serverside-applied
+service/argocd-repo-server serverside-applied
+service/argocd-server serverside-applied
+service/argocd-server-metrics serverside-applied
+deployment.apps/argocd-applicationset-controller serverside-applied
+deployment.apps/argocd-dex-server serverside-applied
+deployment.apps/argocd-notifications-controller serverside-applied
+deployment.apps/argocd-redis serverside-applied
+deployment.apps/argocd-repo-server serverside-applied
+deployment.apps/argocd-server serverside-applied
+statefulset.apps/argocd-application-controller serverside-applied
+networkpolicy.networking.k8s.io/argocd-application-controller-network-policy serverside-applied
+networkpolicy.networking.k8s.io/argocd-applicationset-controller-network-policy serverside-applied
+networkpolicy.networking.k8s.io/argocd-dex-server-network-policy serverside-applied
+networkpolicy.networking.k8s.io/argocd-notifications-controller-network-policy serverside-applied
+networkpolicy.networking.k8s.io/argocd-redis-network-policy serverside-applied
+networkpolicy.networking.k8s.io/argocd-repo-server-network-policy serverside-applied
+networkpolicy.networking.k8s.io/argocd-server-network-policy serverside-applied

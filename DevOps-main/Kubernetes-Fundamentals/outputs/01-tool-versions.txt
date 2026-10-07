@@ -1,0 +1,7 @@
+$ kubectl version && minikube version && docker version --format "Docker server: {{.Server.Version}}"
+Client Version: v1.37.1
+Kustomize Version: v5.8.1
+Server Version: v1.37.0
+minikube version: v1.39.0
+commit: 7a9f6a841470a207de8cf4bafcccee0969d8ba10
+Docker server: 29.1.5

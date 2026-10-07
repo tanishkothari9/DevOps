@@ -1,0 +1,44 @@
+# Blue-Green - GREEN environment (v2)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-green
+  labels:
+    app: myapp
+    slot: green
+    version: v2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+      slot: green
+  template:
+    metadata:
+      labels:
+        app: myapp
+        slot: green
+        version: v2
+    spec:
+      containers:
+        - name: web
+          image: nginx:1.25-alpine
+          ports:
+            - containerPort: 80
+          lifecycle:
+            postStart:
+              exec:
+                command: ["sh", "-c", "echo \"GREEN ENVIRONMENT | version: v2 | pod: $(hostname)\" > /usr/share/nginx/html/index.html"]
+          resources:
+            requests:
+              cpu: "30m"
+              memory: "32Mi"
+            limits:
+              cpu: "100m"
+              memory: "64Mi"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 5

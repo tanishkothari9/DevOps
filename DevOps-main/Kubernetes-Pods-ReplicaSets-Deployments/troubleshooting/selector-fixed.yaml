@@ -1,0 +1,23 @@
+# ==============================================================================
+# FIXED VERSION OF selector-mismatch.yaml
+# selector.matchLabels and template.metadata.labels now agree, so the API server accepts it
+# ==============================================================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selector-error-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: correct-app-name
+  template:
+    metadata:
+      labels:
+        # FIXED: template label now matches selector.matchLabels
+        app: correct-app-name
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25-alpine

@@ -1,0 +1,23 @@
+$ kubectl top nodes
+NAME       CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+minikube   3730m        37%      4294Mi          54%         
+$ kubectl top pods -n s20-monitoring
+NAME                              CPU(cores)   MEMORY(bytes)   
+s20-cpu-burner-57747c7cff-l6x5k   100m         0Mi             
+s20-loadgen-6d674c86b7-lzgbr      7m           0Mi             
+s20-podinfo-684bf75754-92tql      7m           24Mi            
+s20-podinfo-684bf75754-hxglt      6m           22Mi            
+$ kubectl top pods -n s20-monitoring --containers --sort-by=cpu
+POD                               NAME      CPU(cores)   MEMORY(bytes)   
+s20-cpu-burner-57747c7cff-l6x5k   burner    100m         0Mi             
+s20-loadgen-6d674c86b7-lzgbr      loadgen   7m           0Mi             
+s20-podinfo-684bf75754-92tql      podinfo   7m           24Mi            
+s20-podinfo-684bf75754-hxglt      podinfo   6m           22Mi            
+$ kubectl top pods -n monitoring --sort-by=memory
+NAME                                                    CPU(cores)   MEMORY(bytes)   
+kps-grafana-747c9f84fb-57zbj                            58m          428Mi           
+prometheus-kps-kube-prometheus-stack-prometheus-0       93m          410Mi           
+alertmanager-kps-kube-prometheus-stack-alertmanager-0   6m           52Mi            
+kps-kube-state-metrics-5f69fb89b6-z9nlw                 10m          33Mi            
+kps-kube-prometheus-stack-operator-75f5758b65-cgcv8     12m          23Mi            
+kps-prometheus-node-exporter-psdvp                      8m           13Mi            

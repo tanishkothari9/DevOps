@@ -1,0 +1,12 @@
+$ gh run view 37659698688 -R tanishkothari9/DevOps --log | grep -E '##\[warning\]Building|image.tar \(alpine|Total: [0-9]+ \(|All findings|Blocking|Z (HIGH|CRITICAL)	CVE|Security gate FAILED|no longer supported' | grep -v '36;1m' | cut -f1,3- | sed -E 's/\t[0-9T:.-]+Z / | /' | cut -c1-170
+6. Docker Build | ##[warning]Building on outdated base python:3.12.0-alpine3.18 for the image gate demo
+7. Container Image Scan (Trivy) | 2026-10-07T17:33:51Z	WARN	This OS version is no longer supported by the distribution	family="alpine" version="3.18.5"
+7. Container Image Scan (Trivy) | │ image.tar (alpine 3.18.5)                                                   │   alpine   │        0        │    -    │
+7. Container Image Scan (Trivy) | Total: 4 (UNKNOWN: 0, LOW: 0, MEDIUM: 1, HIGH: 3, CRITICAL: 0)
+7. Container Image Scan (Trivy) | 2026-10-07T17:33:54Z	WARN	This OS version is no longer supported by the distribution	family="alpine" version="3.18.5"
+8. Security Gate | All findings by severity: HIGH=3 MEDIUM=1
+8. Security Gate | Blocking (HIGH+CRITICAL): 3
+8. Security Gate | HIGH	CVE-2024-6345	setuptools 69.0.2 -> 70.0.0
+8. Security Gate | HIGH	CVE-2025-47273	setuptools 69.0.2 -> 78.1.1
+8. Security Gate | HIGH	CVE-2026-24049	wheel 0.42.0 -> 0.46.2
+8. Security Gate | ##[error]Security gate FAILED - 3 HIGH/CRITICAL vulnerabilities in the image

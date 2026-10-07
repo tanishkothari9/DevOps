@@ -1,0 +1,8 @@
+$ kubectl logs nginx-pod -n s09-basics --tail=5 && kubectl exec nginx-pod -n s09-basics -- nginx -v && kubectl exec nginx-pod -n s09-basics -- hostname
+2026/10/07 17:09:02 [notice] 1#1: start worker process 35
+2026/10/07 17:09:02 [notice] 1#1: start worker process 36
+2026/10/07 17:09:02 [notice] 1#1: start worker process 37
+2026/10/07 17:09:02 [notice] 1#1: start worker process 38
+2026/10/07 17:09:02 [notice] 1#1: start worker process 39
+nginx version: nginx/1.25.5
+nginx-pod

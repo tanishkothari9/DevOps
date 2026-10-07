@@ -1,0 +1,5 @@
+$ NODE_PORT=$(kubectl get services/kubernetes-bootcamp -n s09-tutorial -o go-template="{{(index .spec.ports 0).nodePort}}"); minikube ssh -- "for i in \$(seq 1 12); do curl -s http://192.168.49.2:$NODE_PORT | grep Hostname; done" | sort | uniq -c
+   5 Hostname: kubernetes-bootcamp-5bcf65bf6d-2llhl
+   1 Hostname: kubernetes-bootcamp-5bcf65bf6d-5n6qh
+   5 Hostname: kubernetes-bootcamp-5bcf65bf6d-9s295
+   1 Hostname: kubernetes-bootcamp-5bcf65bf6d-zn429

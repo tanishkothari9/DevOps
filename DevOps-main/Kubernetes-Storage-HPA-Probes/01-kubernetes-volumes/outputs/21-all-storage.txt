@@ -1,0 +1,13 @@
+$ kubectl get pv && kubectl get pvc,pods -n s13-volumes -o wide
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                     STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+pvc-a370513e-0f76-495d-9e63-35798a271258   500Mi      RWO            Delete           Bound    s13-volumes/dynamic-pvc   standard       <unset>                          116s
+s13-static-pv                              1Gi        RWO            Retain           Bound    s13-volumes/static-pvc    manual         <unset>                          4m44s
+NAME                                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE     VOLUMEMODE
+persistentvolumeclaim/dynamic-pvc   Bound    pvc-a370513e-0f76-495d-9e63-35798a271258   500Mi      RWO            standard       <unset>                 2m4s    Filesystem
+persistentvolumeclaim/static-pvc    Bound    s13-static-pv                              1Gi        RWO            manual         <unset>                 4m39s   Filesystem
+
+NAME                                       READY   STATUS    RESTARTS   AGE     IP            NODE       NOMINATED NODE   READINESS GATES
+pod/dynamic-storage-app-7dd7fffb76-6ptlz   1/1     Running   0          41s     10.244.0.49   minikube   <none>           <none>
+pod/emptydir-demo                          2/2     Running   0          6m20s   10.244.0.23   minikube   <none>           <none>
+pod/hostpath-demo                          1/1     Running   0          5m16s   10.244.0.29   minikube   <none>           <none>
+pod/static-storage-demo                    1/1     Running   0          2m47s   10.244.0.43   minikube   <none>           <none>

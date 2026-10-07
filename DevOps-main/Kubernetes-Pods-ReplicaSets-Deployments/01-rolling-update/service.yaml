@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-rolling-service
+  labels:
+    app: app-rolling
+spec:
+  type: NodePort        # nodePort left for Kubernetes to assign (cluster is shared)
+  selector:
+    app: app-rolling
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP

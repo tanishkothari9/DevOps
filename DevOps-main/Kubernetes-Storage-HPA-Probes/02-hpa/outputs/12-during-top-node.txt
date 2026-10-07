@@ -1,0 +1,15 @@
+$ kubectl top pods -n s13-hpa-demo; kubectl get deploy yatri-backend -n s13-hpa-demo
+NAME                             CPU(cores)   MEMORY(bytes)   
+load-generator-df8dd555-9gw7d    50m          0Mi             
+load-generator-df8dd555-hb9sr    52m          1Mi             
+load-generator-df8dd555-kmg2s    53m          0Mi             
+yatri-backend-68b645bcdb-6g75p   218m         11Mi            
+yatri-backend-68b645bcdb-849nz   207m         12Mi            
+yatri-backend-68b645bcdb-96drk   212m         11Mi            
+yatri-backend-68b645bcdb-cg7xl   205m         11Mi            
+yatri-backend-68b645bcdb-d5bqj   209m         11Mi            
+yatri-backend-68b645bcdb-ghg26   200m         11Mi            
+yatri-backend-68b645bcdb-lzb4w   196m         11Mi            
+yatri-backend-68b645bcdb-qlxdc   208m         14Mi            
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+yatri-backend   10/10   10           10          18m

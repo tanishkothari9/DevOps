@@ -1,0 +1,4 @@
+$ kubectl apply -f 03-pv.yaml && kubectl get pv s13-static-pv
+persistentvolume/s13-static-pv created
+NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM   STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+s13-static-pv   1Gi        RWO            Retain           Pending           manual         <unset>                          1s

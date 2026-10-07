@@ -1,0 +1,4 @@
+$ kubectl logs logs-demo -n s14-commands --tail=3 --timestamps
+2026-10-07T18:02:52.408710959Z Application is healthy
+2026-10-07T18:02:57.409741753Z Application is healthy
+2026-10-07T18:03:02.409462381Z Application is healthy

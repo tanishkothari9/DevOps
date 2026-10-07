@@ -1,0 +1,4 @@
+$ kubectl get endpointslices -n s13-probes -o custom-columns=NAME:.metadata.name,SERVICE:.metadata.labels.kubernetes\.io/service-name,IP:.endpoints[*].addresses[0],READY:.endpoints[*].conditions.ready
+NAME                       SERVICE   IP            READY
+readiness-demo-svc-gxbk7   <none>    10.244.0.62   true
+readiness-fail-svc-ckwwz   <none>    10.244.0.64   false

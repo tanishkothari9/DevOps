@@ -1,0 +1,58 @@
+# The database, provisioned with the CORRECT (dummy) password.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-admin-secret
+type: Opaque
+stringData:                    # stringData = plain text, Kubernetes base64-encodes it for us
+  POSTGRES_USER: yatri_admin
+  POSTGRES_PASSWORD: dummy-pass-123
+  POSTGRES_DB: yatri_db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          envFrom:
+            - secretRef:
+                name: postgres-admin-secret
+          ports:
+            - containerPort: 5432
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "yatri_admin", "-d", "yatri_db"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+      targetPort: 5432

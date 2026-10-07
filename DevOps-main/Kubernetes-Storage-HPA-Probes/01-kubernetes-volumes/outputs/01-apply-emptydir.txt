@@ -1,0 +1,3 @@
+$ kubectl apply -f 00-namespace.yaml -f 01-emptydir-pod.yaml
+namespace/s13-volumes created
+pod/emptydir-demo created

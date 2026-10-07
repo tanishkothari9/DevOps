@@ -1,0 +1,4 @@
+$ kubectl config current-context && kubectl config get-contexts
+minikube
+CURRENT   NAME       CLUSTER    AUTHINFO   NAMESPACE
+*         minikube   minikube   minikube   default

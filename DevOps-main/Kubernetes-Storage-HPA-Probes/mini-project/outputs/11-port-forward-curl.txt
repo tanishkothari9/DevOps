@@ -1,0 +1,10 @@
+$ (kubectl port-forward -n production-webapp svc/web-service 18080:80 >/tmp/pf-s13.log 2>&1 &) ; sleep 4; curl -s http://localhost:18080 | head -6; pkill -f "port-forward -n production-webapp svc/web-service 18080:80"; cat /tmp/pf-s13.log
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+Forwarding from 127.0.0.1:18080 -> 80
+Forwarding from [::1]:18080 -> 80
+Handling connection for 18080

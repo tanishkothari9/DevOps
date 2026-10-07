@@ -1,0 +1,20 @@
+$ gh run view 37659659275 -R tanishkothari9/DevOps | sed '/ANNOTATIONS/,/ARTIFACTS/{/ARTIFACTS/!d;}'
+
+✓ main Session 16 - CI/CD Pipeline · 37659659275
+Triggered via push about 22 minutes ago
+
+JOBS
+✓ CI - Lint & Unit Tests in 17s (ID 112923619746)
+✓ CI - Build Application in 4s (ID 112923883752)
+✓ CI - Security Check in 4s (ID 112923884692)
+✓ CI - Docker Build & Smoke Test in 18s (ID 112923939820)
+✓ CD - Push Image to GHCR in 25s (ID 112924097834)
+✓ CD - Deploy to Kubernetes (kind) in 56s (ID 112924310290)
+
+ARTIFACTS
+test-reports
+docker-image
+calculator-build
+
+For more information about a job, try: gh run view --job=<job-id>
+View this run on GitHub: https://github.com/tanishkothari9/DevOps/actions/runs/37659659275

@@ -1,0 +1,9 @@
+$ kubectl get pod slow-startup-demo -n s13-probes; kubectl events -n s13-probes --for pod/slow-startup-demo
+NAME                READY   STATUS    RESTARTS   AGE
+slow-startup-demo   1/1     Running   0          4m35s
+LAST SEEN   TYPE      REASON         OBJECT                  MESSAGE
+4m35s       Normal    Scheduled      Pod/slow-startup-demo   Successfully assigned s13-probes/slow-startup-demo to minikube
+4m20s       Normal    Pulled         Pod/slow-startup-demo   Container image "busybox:1.36" already present on machine and can be accessed by the pod
+4m19s       Normal    Created        Pod/slow-startup-demo   Container created
+4m16s       Normal    Started        Pod/slow-startup-demo   Container started
+18s         Warning   NodeNotReady   Pod/slow-startup-demo   Node is not ready

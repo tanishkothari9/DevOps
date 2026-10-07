@@ -1,0 +1,9 @@
+# ExternalName: no selector, no endpoints, no ClusterIP.
+# CoreDNS simply answers with a CNAME -> example.com
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-database-service
+spec:
+  type: ExternalName
+  externalName: example.com

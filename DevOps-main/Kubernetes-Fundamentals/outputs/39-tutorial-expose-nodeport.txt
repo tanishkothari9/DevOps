@@ -1,0 +1,22 @@
+$ kubectl expose deployment/kubernetes-bootcamp --type="NodePort" --port 8080 --target-port 80 -n s09-tutorial && kubectl get services -n s09-tutorial && kubectl describe services/kubernetes-bootcamp -n s09-tutorial
+service/kubernetes-bootcamp exposed
+NAME                  TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+kubernetes-bootcamp   NodePort   10.106.225.171   <none>        8080:30473/TCP   4s
+Name:                     kubernetes-bootcamp
+Namespace:                s09-tutorial
+Labels:                   app=kubernetes-bootcamp
+Annotations:              <none>
+Selector:                 app=kubernetes-bootcamp
+Type:                     NodePort
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.106.225.171
+IPs:                      10.106.225.171
+Port:                     <unset>  8080/TCP
+TargetPort:               80/TCP
+NodePort:                 <unset>  30473/TCP
+Endpoints:                10.244.0.76:80
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Internal Traffic Policy:  Cluster
+Events:                   <none>

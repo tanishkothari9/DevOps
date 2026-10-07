@@ -1,0 +1,29 @@
+$ kubectl get pods -n s09-tutorial -o wide; kubectl describe pods -n s09-tutorial | sed -n "1,8p;/^Containers:/,/Ready:/p"
+NAME                                   READY   STATUS   RESTARTS      AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+kubernetes-bootcamp-5cc66bcc9b-gtqzw   0/1     Error    2 (15s ago)   65s   10.244.0.53   minikube   <none>           <none>
+Name:             kubernetes-bootcamp-5cc66bcc9b-gtqzw
+Namespace:        s09-tutorial
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 07 Oct 2026 22:46:20 +0530
+Labels:           app=kubernetes-bootcamp
+                  pod-template-hash=5cc66bcc9b
+Containers:
+  kubernetes-bootcamp:
+    Container ID:   containerd://5c042ac6859edd33b4ef3a2fd10fd2b4b6ec0a8f2a5f188c17e42628a186186f
+    Image:          gcr.io/google-samples/kubernetes-bootcamp:v1
+    Image ID:       gcr.io/google-samples/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af
+    Port:           <none>
+    Host Port:      <none>
+    State:          Terminated
+      Reason:       Error
+      Exit Code:    255
+      Started:      Wed, 07 Oct 2026 22:47:17 +0530
+      Finished:     Wed, 07 Oct 2026 22:47:17 +0530
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    255
+      Started:      Wed, 07 Oct 2026 22:47:05 +0530
+      Finished:     Wed, 07 Oct 2026 22:47:04 +0530
+    Ready:          False

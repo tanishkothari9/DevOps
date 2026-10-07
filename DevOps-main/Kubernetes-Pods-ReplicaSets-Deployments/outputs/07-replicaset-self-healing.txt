@@ -1,0 +1,16 @@
+$ POD=$(kubectl get pods -l app=yatri-backend -n s10-core -o jsonpath="{.items[0].metadata.name}"); echo "deleting $POD ..."; kubectl delete pod $POD -n s10-core --wait=false; sleep 2; kubectl get pods -l app=yatri-backend -n s10-core; echo; kubectl describe rs yatri-backend-rs -n s10-core | sed -n "/^Events:/,\$p"
+deleting yatri-backend-rs-6pcsb ...
+pod "yatri-backend-rs-6pcsb" deleted from s10-core namespace
+NAME                     READY   STATUS              RESTARTS   AGE
+yatri-backend-rs-6pcsb   1/1     Terminating         0          10s
+yatri-backend-rs-8r5nd   0/1     ContainerCreating   0          2s
+yatri-backend-rs-jcgwt   1/1     Running             0          9s
+yatri-backend-rs-qf42m   1/1     Running             0          9s
+
+Events:
+  Type    Reason            Age   From                   Message
+  ----    ------            ----  ----                   -------
+  Normal  SuccessfulCreate  10s   replicaset-controller  Created pod: yatri-backend-rs-6pcsb
+  Normal  SuccessfulCreate  10s   replicaset-controller  Created pod: yatri-backend-rs-qf42m
+  Normal  SuccessfulCreate  10s   replicaset-controller  Created pod: yatri-backend-rs-jcgwt
+  Normal  SuccessfulCreate  3s    replicaset-controller  Created pod: yatri-backend-rs-8r5nd

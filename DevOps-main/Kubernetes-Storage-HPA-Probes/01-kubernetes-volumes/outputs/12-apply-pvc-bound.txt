@@ -1,0 +1,6 @@
+$ kubectl apply -f 04-pvc.yaml && sleep 3 && kubectl get pv s13-static-pv && kubectl get pvc static-pvc -n s13-volumes
+persistentvolumeclaim/static-pvc created
+NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                    STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+s13-static-pv   1Gi        RWO            Retain           Bound    s13-volumes/static-pvc   manual         <unset>                          11s
+NAME         STATUS   VOLUME          CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+static-pvc   Bound    s13-static-pv   1Gi        RWO            manual         <unset>                 5s

@@ -1,0 +1,23 @@
+$ kubectl apply -f 01-rolling-update/deployment-v1.yaml -f 01-rolling-update/service.yaml -f curl-client.yaml -n s10-rolling && kubectl rollout status deployment/app-rolling -n s10-rolling --timeout=180s && kubectl wait --for=condition=Ready pod/curl-client -n s10-rolling --timeout=120s >/dev/null && kubectl get deploy,rs,svc -n s10-rolling && kubectl get pods -n s10-rolling -l app=app-rolling -L version
+deployment.apps/app-rolling created
+service/app-rolling-service created
+pod/curl-client created
+Waiting for deployment "app-rolling" rollout to finish: 0 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 0 of 4 updated replicas are available...
+Waiting for deployment "app-rolling" rollout to finish: 1 of 4 updated replicas are available...
+Waiting for deployment "app-rolling" rollout to finish: 2 of 4 updated replicas are available...
+Waiting for deployment "app-rolling" rollout to finish: 3 of 4 updated replicas are available...
+deployment "app-rolling" successfully rolled out
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/app-rolling   4/4     4            4           28s
+
+NAME                                     DESIRED   CURRENT   READY   AGE
+replicaset.apps/app-rolling-65597c5cf5   4         4         4       28s
+
+NAME                          TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+service/app-rolling-service   NodePort   10.106.174.166   <none>        80:32186/TCP   28s
+NAME                           READY   STATUS    RESTARTS   AGE   VERSION
+app-rolling-65597c5cf5-4t74d   1/1     Running   0          27s   v1
+app-rolling-65597c5cf5-fm4m8   1/1     Running   0          27s   v1
+app-rolling-65597c5cf5-txht8   1/1     Running   0          27s   v1
+app-rolling-65597c5cf5-wckw6   1/1     Running   0          28s   v1

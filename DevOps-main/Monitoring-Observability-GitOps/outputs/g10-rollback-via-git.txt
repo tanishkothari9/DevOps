@@ -1,0 +1,54 @@
+$ sed -i '' -e 's/replicas: 3/replicas: 2/' -e 's/nginx:1.28-alpine/nginx:1.27-alpine/' gitops/app/deployment.yaml
+$ git diff -- gitops/app/deployment.yaml
+diff --git a/DevOps-main/Monitoring-Observability-GitOps/gitops/app/deployment.yaml b/DevOps-main/Monitoring-Observability-GitOps/gitops/app/deployment.yaml
+index 541bc76..12ce12a 100644
+--- a/DevOps-main/Monitoring-Observability-GitOps/gitops/app/deployment.yaml
++++ b/DevOps-main/Monitoring-Observability-GitOps/gitops/app/deployment.yaml
+@@ -6,7 +6,7 @@ metadata:
+   labels:
+     app: s20-gitops-app
+ spec:
+-  replicas: 3
++  replicas: 2
+   selector:
+     matchLabels:
+       app: s20-gitops-app
+@@ -17,7 +17,7 @@ spec:
+     spec:
+       containers:
+         - name: app
+-          image: nginx:1.28-alpine
++          image: nginx:1.27-alpine
+           ports:
+             - containerPort: 80
+           resources:
+$ /private/tmp/claude-501/-Users-tanishkothari-Code-learning-sst-devops-devops-2/e68a0ffe-ac42-4077-9a09-92e41c2ade38/scratchpad/tools/gitpush.sh "revert: roll s20-gitops-app back to 2 replicas and nginx 1.27-alpine" DevOps-main/Monitoring-Observability-GitOps/gitops/app
+dca89a6 revert: roll s20-gitops-app back to 2 replicas and nginx 1.27-alpine
+$ kubectl annotate application s20-gitops-app -n argocd argocd.argoproj.io/refresh=hard --overwrite
+application.argoproj.io/s20-gitops-app annotated
+$ for i in $(seq 1 60); do r=$(kubectl get deploy s20-gitops-app -n s20-gitops -o jsonpath='{.spec.replicas} {.spec.template.spec.containers[0].image}'); echo "t+$((i*5))s  spec=$r"; [ "$r" = "2 nginx:1.27-alpine" ] && break; sleep 5; done
+t+5s  spec=3 nginx:1.28-alpine
+t+10s  spec=3 nginx:1.28-alpine
+t+15s  spec=3 nginx:1.28-alpine
+t+20s  spec=3 nginx:1.28-alpine
+t+25s  spec=3 nginx:1.28-alpine
+t+30s  spec=3 nginx:1.28-alpine
+t+35s  spec=3 nginx:1.28-alpine
+t+40s  spec=3 nginx:1.28-alpine
+t+45s  spec=3 nginx:1.28-alpine
+t+50s  spec=2 nginx:1.27-alpine
+$ kubectl rollout status deployment/s20-gitops-app -n s20-gitops --timeout=180s
+Waiting for deployment spec update to be observed...
+Waiting for deployment "s20-gitops-app" rollout to finish: 0 out of 2 new replicas have been updated...
+Waiting for deployment "s20-gitops-app" rollout to finish: 0 out of 2 new replicas have been updated...
+Waiting for deployment "s20-gitops-app" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "s20-gitops-app" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "s20-gitops-app" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "s20-gitops-app" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "s20-gitops-app" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "s20-gitops-app" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "s20-gitops-app" rollout to finish: 1 old replicas are pending termination...
+deployment "s20-gitops-app" successfully rolled out
+$ kubectl get deploy s20-gitops-app -n s20-gitops -o wide
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+s20-gitops-app   2/2     2            2           33m   app          nginx:1.27-alpine   app=s20-gitops-app

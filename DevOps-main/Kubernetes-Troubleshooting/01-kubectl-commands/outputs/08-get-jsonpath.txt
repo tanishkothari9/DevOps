@@ -1,0 +1,6 @@
+$ kubectl get pods -n s14-commands -o custom-columns=NAME:.metadata.name,STATUS:.status.phase,IP:.status.podIP,NODE:.spec.nodeName,IMAGE:.spec.containers[0].image
+NAME                   STATUS    IP             NODE       IMAGE
+get-demo               Running   10.244.0.140   minikube   nginx:1.27
+logs-demo              Running   10.244.0.142   minikube   busybox:1.36
+web-7f98c7b879-gz4x2   Running   10.244.0.143   minikube   nginx:1.27
+web-7f98c7b879-hh5wj   Running   10.244.0.141   minikube   nginx:1.27

@@ -1,0 +1,10 @@
+$ date +%T; kubectl get hpa -n s13-hpa-demo; echo; kubectl top pods -n s13-hpa-demo -l app=yatri-backend; echo; kubectl get pods -n s13-hpa-demo -l app=yatri-backend
+23:18:50
+NAME                REFERENCE                  TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+yatri-backend-hpa   Deployment/yatri-backend   cpu: <unknown>/50%   2         10        2          8m9s
+
+Error from server (ServiceUnavailable): the server is currently unable to handle the request (get pods.metrics.k8s.io)
+
+NAME                             READY   STATUS    RESTARTS   AGE
+yatri-backend-68b645bcdb-96drk   1/1     Running   0          8m15s
+yatri-backend-68b645bcdb-qlxdc   1/1     Running   0          8m16s

@@ -1,0 +1,8 @@
+$ kubectl run curl-test -n s13-hpa-demo --rm -i --restart=Never --image=curlimages/curl:8.6.0 -- sh -c "time curl -s http://yatri-backend-service"
+All commands and output from this session will be recorded in container logs, including credentials and sensitive information passed through the command prompt.
+If you don't see a command prompt, try pressing enter.
+OK!
+real	0m 0.64s
+user	0m 0.00s
+sys	0m 0.04s
+pod "curl-test" deleted from s13-hpa-demo namespace

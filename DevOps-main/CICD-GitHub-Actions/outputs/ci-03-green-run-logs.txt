@@ -1,0 +1,20 @@
+$ gh run view 37659659275 -R tanishkothari9/DevOps --log | grep -E 'Runner name|Runner OS|Event  |passed in|TOTAL|Build Status|Artifact .* successfully finalized|Secret (available|length)|Printing secret|digest: sha256|Deploying ghcr|successfully rolled out|status.:.ok|result.:42' | grep -vE '36;1m|##\[group' | cut -f1,3- | sed -E 's/\t[0-9T:.-]+Z / | /' | cut -c1-170
+CI - Lint & Unit Tests | Runner name : GitHub Actions 1000000141
+CI - Lint & Unit Tests | Runner OS   : Linux (X64)
+CI - Lint & Unit Tests | Event       : push by tanishkothari9
+CI - Lint & Unit Tests | TOTAL                  39      0   100%
+CI - Lint & Unit Tests | ============================== 15 passed in 0.36s ==============================
+CI - Lint & Unit Tests | Artifact test-reports.zip successfully finalized. Artifact ID 11500351927
+CI - Build Application | Build Status: SUCCESS
+CI - Build Application | Artifact calculator-build.zip successfully finalized. Artifact ID 11499668547
+CI - Docker Build & Smoke Test | {"status":"ok","version":"03e2987506924a0a4beaae0230987b993c4d67fc"}
+CI - Docker Build & Smoke Test | Artifact docker-image.zip successfully finalized. Artifact ID 11500332143
+CD - Push Image to GHCR | Secret available : yes
+CD - Push Image to GHCR | Secret length    : 377 characters
+CD - Push Image to GHCR | Printing secret  : ***
+CD - Push Image to GHCR | 03e2987506924a0a4beaae0230987b993c4d67fc: digest: sha256:ccf1aa93fc29716f4dcb6087dd3cb817371f92a0baa3020601b9def36fd1e522 size: 2198
+CD - Push Image to GHCR | latest: digest: sha256:ccf1aa93fc29716f4dcb6087dd3cb817371f92a0baa3020601b9def36fd1e522 size: 2198
+CD - Deploy to Kubernetes (kind) | Deploying ghcr.io/tanishkothari9/session16-calculator:03e2987506924a0a4beaae0230987b993c4d67fc
+CD - Deploy to Kubernetes (kind) | deployment "session16-calculator" successfully rolled out
+CD - Deploy to Kubernetes (kind) | {"status":"ok","version":"03e2987506924a0a4beaae0230987b993c4d67fc"}
+CD - Deploy to Kubernetes (kind) | {"a":6.0,"b":7.0,"operation":"multiply","result":42.0}

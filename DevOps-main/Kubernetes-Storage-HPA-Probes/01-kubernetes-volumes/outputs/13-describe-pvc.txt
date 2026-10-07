@@ -1,0 +1,19 @@
+$ kubectl describe pvc static-pvc -n s13-volumes
+Name:          static-pvc
+Namespace:     s13-volumes
+StorageClass:  manual
+Status:        Bound
+Volume:        s13-static-pv
+Labels:        <none>
+Annotations:   pv.kubernetes.io/bind-completed: yes
+               pv.kubernetes.io/bound-by-controller: yes
+Finalizers:    [kubernetes.io/pvc-protection]
+Capacity:      1Gi
+Access Modes:  RWO
+VolumeMode:    Filesystem
+Used By:       <none>
+Conditions:
+  Type     Status  LastProbeTime                     LastTransitionTime                Reason           Message
+  ----     ------  -----------------                 ------------------                ------           -------
+  Unused   True    Mon, 01 Jan 0001 00:00:00 +0000   Wed, 07 Oct 2026 22:40:36 +0530   NoPodsUsingPVC   No pods are currently referencing this PVC
+Events:    <none>

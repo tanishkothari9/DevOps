@@ -1,0 +1,7 @@
+$ kubectl get endpointslices -n s13-probes; echo; kubectl describe svc readiness-fail-svc -n s13-probes | grep -i endpoints; kubectl describe svc readiness-demo-svc -n s13-probes | grep -i endpoints
+NAME                       ADDRESSTYPE   PORTS   ENDPOINTS     AGE
+readiness-demo-svc-gxbk7   IPv4          80      10.244.0.62   3m35s
+readiness-fail-svc-ckwwz   IPv4          80      10.244.0.64   3m38s
+
+Endpoints:                
+Endpoints:                10.244.0.62:80

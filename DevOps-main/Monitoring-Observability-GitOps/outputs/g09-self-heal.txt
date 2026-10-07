@@ -1,0 +1,30 @@
+$ kubectl get applications -n argocd
+NAME             SYNC STATUS   HEALTH STATUS
+s20-gitops-app   Synced        Healthy
+$ kubectl scale deployment s20-gitops-app -n s20-gitops --replicas=1
+deployment.apps/s20-gitops-app scaled
+$ kubectl get deploy s20-gitops-app -n s20-gitops
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+s20-gitops-app   3/1     3            3           31m
+$ for i in $(seq 1 60); do r=$(kubectl get deploy s20-gitops-app -n s20-gitops -o jsonpath='{.spec.replicas}'); echo "t+$((i*2))s  spec.replicas=$r"; [ "$r" = "3" ] && break; sleep 2; done
+t+2s  spec.replicas=1
+t+4s  spec.replicas=1
+t+6s  spec.replicas=1
+t+8s  spec.replicas=1
+t+10s  spec.replicas=1
+t+12s  spec.replicas=1
+t+14s  spec.replicas=1
+t+16s  spec.replicas=1
+t+18s  spec.replicas=3
+$ kubectl rollout status deployment/s20-gitops-app -n s20-gitops --timeout=120s
+Waiting for deployment "s20-gitops-app" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "s20-gitops-app" rollout to finish: 2 of 3 updated replicas are available...
+deployment "s20-gitops-app" successfully rolled out
+$ kubectl get deploy s20-gitops-app -n s20-gitops
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+s20-gitops-app   3/3     3            3           32m
+$ kubectl get events -n argocd --field-selector involvedObject.name=s20-gitops-app --sort-by=.lastTimestamp -o custom-columns='TIME:.lastTimestamp,REASON:.reason,MESSAGE:.message' | tail -4
+2026-10-07T17:56:04Z   ResourceUpdated      Updated sync status: Synced -> OutOfSync
+2026-10-07T17:56:05Z   OperationCompleted   Partial sync operation to b03556fe52578f312872e4a77d1676aae9479358 succeeded
+2026-10-07T17:56:06Z   ResourceUpdated      Updated sync status: OutOfSync -> Synced
+2026-10-07T17:56:06Z   ResourceUpdated      Updated health status: Healthy -> Progressing

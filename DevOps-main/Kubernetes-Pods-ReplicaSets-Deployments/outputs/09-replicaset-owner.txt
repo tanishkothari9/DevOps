@@ -1,0 +1,8 @@
+$ kubectl get pods -l app=yatri-backend -n s10-core -o custom-columns=POD:.metadata.name,OWNER-KIND:.metadata.ownerReferences[0].kind,OWNER:.metadata.ownerReferences[0].name
+POD                      OWNER-KIND   OWNER
+yatri-backend-rs-6pcsb   ReplicaSet   yatri-backend-rs
+yatri-backend-rs-8r5nd   ReplicaSet   yatri-backend-rs
+yatri-backend-rs-crbvf   ReplicaSet   yatri-backend-rs
+yatri-backend-rs-jcgwt   ReplicaSet   yatri-backend-rs
+yatri-backend-rs-qf42m   ReplicaSet   yatri-backend-rs
+yatri-backend-rs-qntjp   ReplicaSet   yatri-backend-rs

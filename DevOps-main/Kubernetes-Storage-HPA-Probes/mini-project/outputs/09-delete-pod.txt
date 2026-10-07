@@ -1,0 +1,5 @@
+$ POD_NAME=$(kubectl get pods -n production-webapp -l app=web-app -o jsonpath="{.items[0].metadata.name}"); kubectl delete pod -n production-webapp "$POD_NAME"; sleep 3; kubectl get pods -n production-webapp
+pod "web-app-d45775485-tqzgh" deleted from production-webapp namespace
+NAME                      READY   STATUS    RESTARTS   AGE
+web-app-d45775485-79ppb   0/1     Running   0          4s
+web-app-d45775485-z92fs   1/1     Running   0          34s

@@ -1,0 +1,4 @@
+$ kubectl apply -f pvc.yaml && sleep 5 && kubectl get pvc -n production-webapp
+persistentvolumeclaim/web-data created
+NAME       STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+web-data   Bound    pvc-46143c7e-ae75-4a7b-af80-74426243ba79   500Mi      RWO            standard       <unset>                 5s

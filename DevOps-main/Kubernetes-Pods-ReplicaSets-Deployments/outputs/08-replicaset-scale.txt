@@ -1,0 +1,12 @@
+$ kubectl scale rs yatri-backend-rs --replicas=5 -n s10-core && sleep 4 && kubectl get rs yatri-backend-rs -n s10-core && kubectl scale rs yatri-backend-rs --replicas=2 -n s10-core && sleep 4 && kubectl get pods -l app=yatri-backend -n s10-core
+replicaset.apps/yatri-backend-rs scaled
+NAME               DESIRED   CURRENT   READY   AGE
+yatri-backend-rs   5         5         3       18s
+replicaset.apps/yatri-backend-rs scaled
+NAME                     READY   STATUS        RESTARTS   AGE
+yatri-backend-rs-6pcsb   1/1     Terminating   0          22s
+yatri-backend-rs-8r5nd   1/1     Terminating   0          14s
+yatri-backend-rs-crbvf   0/1     Terminating   0          9s
+yatri-backend-rs-jcgwt   1/1     Running       0          21s
+yatri-backend-rs-qf42m   1/1     Running       0          21s
+yatri-backend-rs-qntjp   0/1     Terminating   0          8s

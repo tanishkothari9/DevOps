@@ -1,0 +1,8 @@
+$ kubectl describe pods -n s09-tutorial -l app=kubernetes-bootcamp | grep -E "^Name:|Image:|Reason:|Failed|BackOff" | head -20
+Name:             kubernetes-bootcamp-5888b75678-4ggt6
+    Image:          traefik/whoami:v1.10.3
+Name:             kubernetes-bootcamp-5888b75678-9kws2
+    Image:          traefik/whoami:v1.10.3
+Name:             kubernetes-bootcamp-7648ff76c4-9d9z2
+    Image:          traefik/whoami:v10
+      Reason:       ImagePullBackOff

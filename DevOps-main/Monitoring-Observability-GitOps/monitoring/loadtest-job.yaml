@@ -1,0 +1,39 @@
+# Short burst of traffic against podinfo: 8 parallel workers for 3 minutes.
+# Used to show the Grafana dashboard "under load" (request rate + CPU go up).
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: s20-loadtest
+  namespace: s20-monitoring
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 600
+  template:
+    metadata:
+      labels:
+        app: s20-loadtest
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: loadtest
+          image: busybox:1.36
+          command:
+            - /bin/sh
+            - -c
+            - |
+              end=$(( $(date +%s) + 180 ))
+              echo "loadtest: 8 workers -> http://s20-podinfo:9898 for 180s"
+              for w in 1 2 3 4 5 6 7 8; do
+                ( n=0; while [ "$(date +%s)" -lt "$end" ]; do
+                    wget -q -O /dev/null http://s20-podinfo:9898/ && n=$((n+1))
+                  done; echo "worker $w finished: $n requests" ) &
+              done
+              wait
+              echo "loadtest complete"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 16Mi
+            limits:
+              cpu: 300m
+              memory: 64Mi

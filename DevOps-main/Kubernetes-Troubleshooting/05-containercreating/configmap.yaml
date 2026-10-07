@@ -1,0 +1,8 @@
+# The fix: create the ConfigMap the Pod is waiting for.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: site-content
+data:
+  index.html: |
+    <h1>Served from the site-content ConfigMap</h1>

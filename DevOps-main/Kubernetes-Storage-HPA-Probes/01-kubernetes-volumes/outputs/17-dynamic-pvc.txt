@@ -1,0 +1,7 @@
+$ kubectl apply -f 06-dynamic-pvc.yaml && sleep 5 && kubectl get pvc dynamic-pvc -n s13-volumes && kubectl get pv
+persistentvolumeclaim/dynamic-pvc created
+NAME          STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+dynamic-pvc   Pending                                      standard       <unset>                 7s
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                     STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+pvc-a370513e-0f76-495d-9e63-35798a271258   500Mi      RWO            Delete           Bound    s13-volumes/dynamic-pvc   standard       <unset>                          1s
+s13-static-pv                              1Gi        RWO            Retain           Bound    s13-volumes/static-pvc    manual         <unset>                          2m49s

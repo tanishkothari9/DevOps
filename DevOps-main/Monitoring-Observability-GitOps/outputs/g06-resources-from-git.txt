@@ -1,0 +1,17 @@
+$ kubectl get all -n s20-gitops -o wide
+NAME                                  READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+pod/s20-gitops-app-5995d84f59-7p9ch   1/1     Running   0          29m   10.244.0.59   minikube   <none>           <none>
+pod/s20-gitops-app-5995d84f59-bv88v   1/1     Running   0          29m   10.244.0.58   minikube   <none>           <none>
+
+NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/s20-gitops-app   ClusterIP   10.106.141.132   <none>        80/TCP    30m   app=s20-gitops-app
+
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/s20-gitops-app   2/2     2            2           29m   app          nginx:1.27-alpine   app=s20-gitops-app
+
+NAME                                        DESIRED   CURRENT   READY   AGE   CONTAINERS   IMAGES              SELECTOR
+replicaset.apps/s20-gitops-app-5995d84f59   2         2         2       29m   app          nginx:1.27-alpine   app=s20-gitops-app,pod-template-hash=5995d84f59
+$ kubectl get deploy s20-gitops-app -n s20-gitops -o jsonpath='tracking-id annotation set by Argo CD: {.metadata.annotations.argocd\.argoproj\.io/tracking-id}{"\n"}'
+tracking-id annotation set by Argo CD: s20-gitops-app:apps/Deployment:s20-gitops/s20-gitops-app
+$ kubectl exec -n s20-gitops deploy/s20-gitops-app -- wget -qO- http://localhost | grep -i "<title>"
+<title>Welcome to nginx!</title>

@@ -1,0 +1,4 @@
+$ kubectl wait --for=condition=Ready pod/emptydir-demo -n s13-volumes --timeout=180s && kubectl get pod emptydir-demo -n s13-volumes -o wide
+pod/emptydir-demo condition met
+NAME            READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+emptydir-demo   2/2     Running   0          14s   10.244.0.16   minikube   <none>           <none>

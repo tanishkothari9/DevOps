@@ -1,0 +1,18 @@
+$ kubectl get rs -n s10-rolling -L version; kubectl get pods -n s10-rolling -l app=app-rolling -L version; kubectl get events -n s10-rolling --sort-by=.lastTimestamp | grep ScalingReplicaSet
+NAME                     DESIRED   CURRENT   READY   AGE     VERSION
+app-rolling-65597c5cf5   0         0         0       9m28s   v1
+app-rolling-69bb799997   4         4         4       8m36s   v2
+NAME                           READY   STATUS    RESTARTS   AGE     VERSION
+app-rolling-69bb799997-98j8x   1/1     Running   0          8m21s   v2
+app-rolling-69bb799997-gl456   1/1     Running   0          8m34s   v2
+app-rolling-69bb799997-km6gc   1/1     Running   0          8m9s    v2
+app-rolling-69bb799997-nm2fz   1/1     Running   0          8m44s   v2
+9m44s       Normal    ScalingReplicaSet   deployment/app-rolling              Scaled up replica set app-rolling-65597c5cf5 from 0 to 4
+8m53s       Normal    ScalingReplicaSet   deployment/app-rolling              Scaled up replica set app-rolling-69bb799997 from 0 to 1
+8m43s       Normal    ScalingReplicaSet   deployment/app-rolling              Scaled down replica set app-rolling-65597c5cf5 from 4 to 3
+8m43s       Normal    ScalingReplicaSet   deployment/app-rolling              Scaled up replica set app-rolling-69bb799997 from 1 to 2
+8m30s       Normal    ScalingReplicaSet   deployment/app-rolling              Scaled down replica set app-rolling-65597c5cf5 from 3 to 2
+8m30s       Normal    ScalingReplicaSet   deployment/app-rolling              Scaled up replica set app-rolling-69bb799997 from 2 to 3
+8m18s       Normal    ScalingReplicaSet   deployment/app-rolling              Scaled down replica set app-rolling-65597c5cf5 from 2 to 1
+8m18s       Normal    ScalingReplicaSet   deployment/app-rolling              Scaled up replica set app-rolling-69bb799997 from 3 to 4
+8m10s       Normal    ScalingReplicaSet   deployment/app-rolling              Scaled down replica set app-rolling-65597c5cf5 from 1 to 0

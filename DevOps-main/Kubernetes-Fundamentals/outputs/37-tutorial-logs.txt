@@ -1,0 +1,3 @@
+$ POD_NAME=$(kubectl get pods -n s09-tutorial -o go-template --template "{{range .items}}{{.metadata.name}}{{\"\n\"}}{{end}}"); echo "POD_NAME=$POD_NAME"; kubectl logs $POD_NAME -n s09-tutorial
+POD_NAME=kubernetes-bootcamp-5bcf65bf6d-2llhl
+2026/10/07 17:47:48 Starting up on port 80

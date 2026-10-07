@@ -1,0 +1,8 @@
+$ POD_NAME=$(kubectl get pods -n s09-tutorial -o jsonpath="{.items[0].metadata.name}"); kubectl label pods $POD_NAME version=v1 -n s09-tutorial && kubectl describe pods $POD_NAME -n s09-tutorial | grep -A3 "^Labels" && kubectl get pods -l version=v1 -n s09-tutorial
+pod/kubernetes-bootcamp-5bcf65bf6d-2llhl labeled
+Labels:           app=kubernetes-bootcamp
+                  pod-template-hash=5bcf65bf6d
+                  version=v1
+Annotations:      <none>
+NAME                                   READY   STATUS    RESTARTS   AGE
+kubernetes-bootcamp-5bcf65bf6d-2llhl   1/1     Running   0          118s

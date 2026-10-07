@@ -1,0 +1,24 @@
+$ echo "### CPU (cores) used per pod - rate(container_cpu_usage_seconds_total[2m])"
+### CPU (cores) used per pod - rate(container_cpu_usage_seconds_total[2m])
+$ curl -s localhost:19090/api/v1/query --data-urlencode 'query=sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="s20-monitoring",container!=""}[2m]))' | jq -r '.data.result[] | "\(.metric.pod)\t\(.value[1] | tonumber * 1000 | floor)m"'
+s20-cpu-burner-57747c7cff-l6x5k	97m
+s20-loadgen-6d674c86b7-lzgbr	9m
+s20-podinfo-684bf75754-92tql	8m
+$ echo "### CPU used as % of the CPU limit"
+### CPU used as % of the CPU limit
+$ curl -s localhost:19090/api/v1/query --data-urlencode 'query=100 * sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="s20-monitoring",container!=""}[2m])) / sum by (pod) (kube_pod_container_resource_limits{namespace="s20-monitoring",resource="cpu"})' | jq -r '.data.result[] | "\(.metric.pod)\t\(.value[1] | tonumber | floor)%"'
+s20-cpu-burner-57747c7cff-l6x5k	97%
+s20-loadgen-6d674c86b7-lzgbr	18%
+s20-podinfo-684bf75754-92tql	4%
+$ echo "### Memory working set per pod (MiB)"
+### Memory working set per pod (MiB)
+$ curl -s localhost:19090/api/v1/query --data-urlencode 'query=sum by (pod) (container_memory_working_set_bytes{namespace="s20-monitoring",container!=""}) / 1024 / 1024' | jq -r '.data.result[] | "\(.metric.pod)\t\(.value[1] | tonumber * 10 | floor / 10) MiB"'
+s20-cpu-burner-57747c7cff-l6x5k	0.3 MiB
+s20-loadgen-6d674c86b7-lzgbr	0.6 MiB
+s20-podinfo-684bf75754-92tql	24.7 MiB
+$ echo "### Node CPU and memory utilisation (%)"
+### Node CPU and memory utilisation (%)
+$ curl -s localhost:19090/api/v1/query --data-urlencode 'query=100 * (1 - avg(rate(node_cpu_seconds_total{mode="idle"}[2m])))' | jq -r '.data.result[] | "node CPU used\t\(.value[1] | tonumber | floor)%"'
+node CPU used	60%
+$ curl -s localhost:19090/api/v1/query --data-urlencode 'query=100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)' | jq -r '.data.result[] | "node memory used\t\(.value[1] | tonumber | floor)%"'
+node memory used	72%

@@ -1,0 +1,27 @@
+$ docker pull --platform linux/amd64 ghcr.io/tanishkothari9/session16-calculator:03e2987506924a0a4beaae0230987b993c4d67fc && echo && docker image inspect ghcr.io/tanishkothari9/session16-calculator:03e2987506924a0a4beaae0230987b993c4d67fc --format 'Platform : {{.Os}}/{{.Architecture}}{{println}}Created  : {{.Created}}{{println}}Source   : {{index .Config.Labels "org.opencontainers.image.source"}}{{println}}Env      : {{json .Config.Env}}{{println}}Cmd      : {{json .Config.Cmd}}{{println}}User     : {{.Config.User}}'
+03e2987506924a0a4beaae0230987b993c4d67fc: Pulling from tanishkothari9/session16-calculator
+ed2f3e09221a: Pulling fs layer
+af4ef015c790: Pulling fs layer
+283ba733ecb7: Pulling fs layer
+8b3a77d5ef3f: Pulling fs layer
+46d45e61fb1a: Pulling fs layer
+af4ef015c790: Download complete
+ed2f3e09221a: Download complete
+283ba733ecb7: Download complete
+46d45e61fb1a: Download complete
+283ba733ecb7: Pull complete
+af4ef015c790: Pull complete
+8b3a77d5ef3f: Download complete
+8b3a77d5ef3f: Pull complete
+46d45e61fb1a: Pull complete
+ed2f3e09221a: Pull complete
+Digest: sha256:ccf1aa93fc29716f4dcb6087dd3cb817371f92a0baa3020601b9def36fd1e522
+Status: Downloaded newer image for ghcr.io/tanishkothari9/session16-calculator:03e2987506924a0a4beaae0230987b993c4d67fc
+ghcr.io/tanishkothari9/session16-calculator:03e2987506924a0a4beaae0230987b993c4d67fc
+
+Platform : linux/amd64
+Created  : 2026-10-07T17:31:53.741025873Z
+Source   : https://github.com/tanishkothari9/DevOps
+Env      : ["PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin","LANG=C.UTF-8","GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305","PYTHON_VERSION=3.12.15","PYTHON_SHA256=c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a","PYTHONDONTWRITEBYTECODE=1","PYTHONUNBUFFERED=1","APP_VERSION=03e2987506924a0a4beaae0230987b993c4d67fc"]
+Cmd      : ["gunicorn","--bind","0.0.0.0:8000","--workers","2","app.main:app"]
+User     : 10001

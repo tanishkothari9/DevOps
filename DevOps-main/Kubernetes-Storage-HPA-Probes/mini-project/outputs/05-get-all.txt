@@ -1,0 +1,19 @@
+$ kubectl get all,pvc -n production-webapp
+NAME                          READY   STATUS    RESTARTS   AGE
+pod/web-app-d45775485-tqzgh   1/1     Running   0          24s
+pod/web-app-d45775485-z92fs   1/1     Running   0          24s
+
+NAME                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+service/web-service   ClusterIP   10.101.127.248   <none>        80/TCP    24s
+
+NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/web-app   2/2     2            2           24s
+
+NAME                                DESIRED   CURRENT   READY   AGE
+replicaset.apps/web-app-d45775485   2         2         2       24s
+
+NAME                                              REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          13s
+
+NAME                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/web-data   Bound    pvc-46143c7e-ae75-4a7b-af80-74426243ba79   500Mi      RWO            standard       <unset>                 30s

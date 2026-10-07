@@ -1,0 +1,6 @@
+$ kubectl create namespace s14-commands && kubectl apply -n s14-commands -f web-pod.yaml -f logs-pod.yaml -f deployment.yaml && kubectl expose deployment web --port=80 -n s14-commands
+namespace/s14-commands created
+pod/get-demo created
+pod/logs-demo created
+deployment.apps/web created
+service/web exposed

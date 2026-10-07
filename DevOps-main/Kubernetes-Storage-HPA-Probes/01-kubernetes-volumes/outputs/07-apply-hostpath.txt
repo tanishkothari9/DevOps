@@ -1,0 +1,5 @@
+$ kubectl apply -f 02-hostpath-pod.yaml && kubectl wait --for=condition=Ready pod/hostpath-demo -n s13-volumes --timeout=120s && kubectl get pod hostpath-demo -n s13-volumes -o wide
+pod/hostpath-demo created
+pod/hostpath-demo condition met
+NAME            READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+hostpath-demo   1/1     Running   0          2s    10.244.0.24   minikube   <none>           <none>

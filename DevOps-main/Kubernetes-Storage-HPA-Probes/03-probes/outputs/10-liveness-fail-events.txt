@@ -1,0 +1,9 @@
+$ kubectl events -n s13-probes --for pod/liveness-fail-demo | tail -8
+LAST SEEN               TYPE      REASON      OBJECT                   MESSAGE
+3m39s                   Normal    Scheduled   Pod/liveness-fail-demo   Successfully assigned s13-probes/liveness-fail-demo to minikube
+2m53s                   Warning   Unhealthy   Pod/liveness-fail-demo   Liveness probe failed: Get "http://10.244.0.63:80/healthz-does-not-exist": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2m39s                   Normal    Killing     Pod/liveness-fail-demo   Container nginx failed liveness probe, will be restarted
+2m35s (x2 over 3m10s)   Normal    Pulled      Pod/liveness-fail-demo   Container image "nginx:1.27" already present on machine and can be accessed by the pod
+2m34s (x2 over 3m8s)    Normal    Created     Pod/liveness-fail-demo   Container created
+2m33s (x2 over 3m6s)    Normal    Started     Pod/liveness-fail-demo   Container started
+2m16s (x4 over 3m)      Warning   Unhealthy   Pod/liveness-fail-demo   Liveness probe failed: HTTP probe failed with statuscode: 404

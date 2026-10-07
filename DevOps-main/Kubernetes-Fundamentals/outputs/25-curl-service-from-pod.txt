@@ -1,0 +1,5 @@
+$ kubectl exec nginx-pod -n s09-basics -- wget -qO- http://web-svc | head -4
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>

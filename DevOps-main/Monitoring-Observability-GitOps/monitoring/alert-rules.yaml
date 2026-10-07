@@ -49,16 +49,20 @@ spec:
             summary: "High memory in {{ $labels.namespace }}/{{ $labels.pod }}"
             description: "Container {{ $labels.container }} is using {{ $value | humanizePercentage }} of its memory limit."
 
-        - alert: S20AppTargetDown
+        - alert: S20AppDown
+          # absent(... == 1) is true both when every target reports up=0 AND when the
+          # target disappeared completely (e.g. deployment scaled to 0 / all pods crashed)
           expr: |
-            up{namespace="s20-monitoring", service="s20-podinfo"} == 0
+            absent(up{namespace="s20-monitoring", job="s20-podinfo"} == 1)
           for: 1m
           labels:
             severity: critical
             session: "20"
+            namespace: s20-monitoring
+            service: s20-podinfo
           annotations:
-            summary: "podinfo target {{ $labels.instance }} is down"
-            description: "Prometheus cannot scrape {{ $labels.pod }} - the application is unhealthy or not running."
+            summary: "s20-podinfo application is DOWN"
+            description: "No healthy s20-podinfo target has been scraped by Prometheus for more than 1 minute."
 
         - alert: S20PodNotReady
           expr: |

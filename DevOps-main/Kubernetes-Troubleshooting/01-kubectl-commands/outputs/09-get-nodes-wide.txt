@@ -1,0 +1,10 @@
+$ kubectl get nodes -o wide; echo; kubectl get svc,endpoints -n s14-commands -o wide
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION             CONTAINER-RUNTIME
+minikube   Ready    control-plane   67m   v1.37.0   192.168.49.2   <none>        Debian GNU/Linux 12 (bookworm)   6.12.65-linuxkit (arm64)   containerd://2.3.4
+
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/web   ClusterIP   10.102.169.5   <none>        80/TCP    15s   app=web
+
+NAME            ENDPOINTS                         AGE
+endpoints/web   10.244.0.141:80,10.244.0.143:80   15s

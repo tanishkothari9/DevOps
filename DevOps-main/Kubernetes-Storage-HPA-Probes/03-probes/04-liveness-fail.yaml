@@ -1,0 +1,20 @@
+# Broken liveness probe: path does not exist -> nginx returns 404 -> kubelet restarts the container.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-fail-demo
+  namespace: s13-probes
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.27
+      ports:
+        - containerPort: 80
+      livenessProbe:
+        httpGet:
+          path: /healthz-does-not-exist
+          port: 80
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        timeoutSeconds: 2
+        failureThreshold: 3

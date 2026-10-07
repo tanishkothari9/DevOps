@@ -1,0 +1,9 @@
+$ kubectl describe deployments/kubernetes-bootcamp -n s09-tutorial | sed -n "/^Replicas:/p;/^Events:/,\$p"; kubectl get endpointslices -n s09-tutorial
+Replicas:               4 desired | 4 updated | 4 total | 4 available | 0 unavailable
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  2m46s  deployment-controller  Scaled up replica set kubernetes-bootcamp-5bcf65bf6d from 0 to 1
+  Normal  ScalingReplicaSet  8s     deployment-controller  Scaled up replica set kubernetes-bootcamp-5bcf65bf6d from 1 to 4
+NAME                        ADDRESSTYPE   PORTS   ENDPOINTS                                         AGE
+kubernetes-bootcamp-t9hdj   IPv4          80      10.244.0.76,10.244.0.77,10.244.0.78 + 1 more...   12s

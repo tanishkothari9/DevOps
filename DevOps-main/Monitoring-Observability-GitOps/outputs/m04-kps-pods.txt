@@ -1,0 +1,25 @@
+$ helm list -n monitoring
+NAME	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART                       	APP VERSION
+kps 	monitoring	3       	2026-10-07 23:24:38.590631 +0530 IST	deployed	kube-prometheus-stack-92.1.0	v0.94.1    
+$ kubectl get pods -n monitoring
+NAME                                                    READY   STATUS    RESTARTS        AGE
+alertmanager-kps-kube-prometheus-stack-alertmanager-0   2/2     Running   0               42m
+kps-grafana-747c9f84fb-57zbj                            3/3     Running   2 (7m29s ago)   49m
+kps-kube-prometheus-stack-operator-75f5758b65-cgcv8     1/1     Running   13 (10m ago)    49m
+kps-kube-state-metrics-5f69fb89b6-z9nlw                 1/1     Running   3 (18m ago)     49m
+kps-prometheus-node-exporter-psdvp                      1/1     Running   2 (17m ago)     49m
+prometheus-kps-kube-prometheus-stack-prometheus-0       2/2     Running   0               42m
+$ kubectl get svc -n monitoring
+NAME                                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+alertmanager-operated                    ClusterIP   None             <none>        9093/TCP,9094/TCP,9094/UDP   42m
+kps-grafana                              ClusterIP   10.110.151.201   <none>        80/TCP                       49m
+kps-kube-prometheus-stack-alertmanager   ClusterIP   10.107.190.156   <none>        9093/TCP,8080/TCP            49m
+kps-kube-prometheus-stack-operator       ClusterIP   10.98.173.172    <none>        443/TCP                      49m
+kps-kube-prometheus-stack-prometheus     ClusterIP   10.101.70.2      <none>        9090/TCP,8080/TCP            49m
+kps-kube-state-metrics                   ClusterIP   10.105.224.27    <none>        8080/TCP                     49m
+kps-prometheus-node-exporter             ClusterIP   10.99.56.216     <none>        9100/TCP                     49m
+prometheus-operated                      ClusterIP   None             <none>        9090/TCP                     42m
+$ kubectl get prometheus,alertmanager -n monitoring -o custom-columns='KIND:.kind,NAME:.metadata.name,RETENTION:.spec.retention,VERSION:.spec.version'
+KIND           NAME                                     RETENTION   VERSION
+Prometheus     kps-kube-prometheus-stack-prometheus     6h          v3.15.0-distroless
+Alertmanager   kps-kube-prometheus-stack-alertmanager   120h        v0.34.1

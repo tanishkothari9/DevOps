@@ -1,0 +1,6 @@
+$ sleep 20; kubectl get pods -n s13-hpa-demo -l app=load-generator; kubectl logs -n s13-hpa-demo deploy/load-generator --tail=3
+NAME                            READY   STATUS    RESTARTS   AGE
+load-generator-df8dd555-9gw7d   1/1     Running   0          24s
+load-generator-df8dd555-hb9sr   1/1     Running   0          25s
+load-generator-df8dd555-kmg2s   1/1     Running   0          24s
+Found 3 pods, using pod/load-generator-df8dd555-hb9sr

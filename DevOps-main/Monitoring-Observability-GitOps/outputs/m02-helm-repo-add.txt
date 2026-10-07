@@ -1,0 +1,7 @@
+$ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts && helm repo update prometheus-community && helm search repo prometheus-community/kube-prometheus-stack
+"prometheus-community" has been added to your repositories
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "prometheus-community" chart repository
+Update Complete. ⎈Happy Helming!⎈
+NAME                                      	CHART VERSION	APP VERSION	DESCRIPTION                                       
+prometheus-community/kube-prometheus-stack	92.1.0       	v0.94.1    	kube-prometheus-stack collects Kubernetes manif...

@@ -1,0 +1,12 @@
+$ kubectl get prometheusrule s20-demo-alerts -n s20-monitoring -o jsonpath='{range .spec.groups[0].rules[*]}{.alert}{"\n"}{end}'
+S20PodCrashLooping
+S20HighCPUUsage
+S20HighMemoryUsage
+S20AppDown
+S20PodNotReady
+$ curl -s localhost:19090/api/v1/rules | jq -r '.data.groups[] | select(.name=="s20-demo.rules") | .rules[] | "\(.name)\tstate=\(.state)\thealth=\(.health)\tactive=\(.alerts | length)"'
+S20PodCrashLooping	state=firing	health=ok	active=1
+S20HighCPUUsage	state=firing	health=ok	active=1
+S20HighMemoryUsage	state=inactive	health=ok	active=0
+S20AppDown	state=inactive	health=ok	active=0
+S20PodNotReady	state=firing	health=ok	active=1

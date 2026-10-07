@@ -1,0 +1,12 @@
+# BUG 1: selector does not match the Pod labels (app=web) -> Service has NO endpoints.
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  selector:
+    app: web-ahsgdf
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP

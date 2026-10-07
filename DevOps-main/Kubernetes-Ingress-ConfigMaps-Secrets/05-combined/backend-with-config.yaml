@@ -1,0 +1,34 @@
+# ConfigMap + Secret injected together with envFrom
+# (adapted from devops-heros/session-12-ingress-configmaps-secrets/app/backend-with-config.yaml)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yatri-backend-combined
+  labels:
+    app: yatri-backend-combined
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yatri-backend-combined
+  template:
+    metadata:
+      labels:
+        app: yatri-backend-combined
+    spec:
+      containers:
+        - name: backend
+          image: python:3.11-alpine3.19
+          command: ["python3", "-u", "-c", "import os, time; print(f'Running with ENV={os.getenv(\"ENVIRONMENT\")} LOG_LEVEL={os.getenv(\"LOG_LEVEL\")} and USER={os.getenv(\"POSTGRES_USER\")} DB={os.getenv(\"POSTGRES_DB\")}'); time.sleep(36000)"]
+          envFrom:
+            - configMapRef:
+                name: yatri-app-config     # all non-sensitive keys
+            - secretRef:
+                name: yatri-db-secret      # all sensitive keys
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "32Mi"
+            limits:
+              cpu: "150m"
+              memory: "64Mi"

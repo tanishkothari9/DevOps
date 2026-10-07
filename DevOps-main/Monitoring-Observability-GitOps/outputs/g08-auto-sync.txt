@@ -1,0 +1,33 @@
+$ git log --oneline -1 origin/main -- gitops/app
+b03556f feat(gitops): scale s20-gitops-app to 3 replicas and bump nginx to 1.28-alpine
+$ kubectl get deploy s20-gitops-app -n s20-gitops -o wide
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+s20-gitops-app   2/2     2            2           30m   app          nginx:1.27-alpine   app=s20-gitops-app
+$ kubectl annotate application s20-gitops-app -n argocd argocd.argoproj.io/refresh=hard --overwrite
+application.argoproj.io/s20-gitops-app annotated
+$ for i in $(seq 1 60); do r=$(kubectl get deploy s20-gitops-app -n s20-gitops -o jsonpath='{.status.readyReplicas}/{.spec.replicas} {.spec.template.spec.containers[0].image}'); echo "t+$((i*5))s  ready/desired=$r"; [ "$r" = "3/3 nginx:1.28-alpine" ] && [ "$(kubectl get deploy s20-gitops-app -n s20-gitops -o jsonpath='{.status.updatedReplicas}')" = "3" ] && break; sleep 5; done
+t+5s  ready/desired=2/2 nginx:1.27-alpine
+t+10s  ready/desired=2/2 nginx:1.27-alpine
+t+15s  ready/desired=2/2 nginx:1.27-alpine
+t+20s  ready/desired=2/2 nginx:1.27-alpine
+t+25s  ready/desired=2/3 nginx:1.28-alpine
+t+30s  ready/desired=2/3 nginx:1.28-alpine
+t+35s  ready/desired=3/3 nginx:1.28-alpine
+t+40s  ready/desired=3/3 nginx:1.28-alpine
+t+45s  ready/desired=3/3 nginx:1.28-alpine
+t+50s  ready/desired=3/3 nginx:1.28-alpine
+t+55s  ready/desired=3/3 nginx:1.28-alpine
+t+60s  ready/desired=3/3 nginx:1.28-alpine
+$ kubectl get applications -n argocd -o custom-columns='NAME:.metadata.name,SYNC:.status.sync.status,HEALTH:.status.health.status,REVISION:.status.sync.revision'
+NAME             SYNC     HEALTH        REVISION
+s20-gitops-app   Synced   Progressing   b03556fe52578f312872e4a77d1676aae9479358
+$ kubectl get deploy,pods -n s20-gitops -o wide
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/s20-gitops-app   3/3     3            3           31m   app          nginx:1.28-alpine   app=s20-gitops-app
+
+NAME                                  READY   STATUS              RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+pod/s20-gitops-app-5995d84f59-7p9ch   1/1     Running             0          31m   10.244.0.59    minikube   <none>           <none>
+pod/s20-gitops-app-5995d84f59-bv88v   1/1     Terminating         0          31m   10.244.0.58    minikube   <none>           <none>
+pod/s20-gitops-app-dc6c8cf4-7g6wb     1/1     Running             0          15s   10.244.0.106   minikube   <none>           <none>
+pod/s20-gitops-app-dc6c8cf4-b5jsm     1/1     Running             0          43s   10.244.0.104   minikube   <none>           <none>
+pod/s20-gitops-app-dc6c8cf4-d7rg7     0/1     ContainerCreating   0          2s    <none>         minikube   <none>           <none>

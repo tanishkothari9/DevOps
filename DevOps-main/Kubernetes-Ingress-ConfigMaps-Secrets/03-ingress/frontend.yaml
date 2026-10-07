@@ -1,0 +1,59 @@
+# Frontend: nginx serving an index.html that comes from a ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: yatri-frontend-html
+data:
+  index.html: |
+    Yatri FRONTEND (nginx) - served via Ingress path "/"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yatri-frontend
+  labels:
+    app: yatri-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: yatri-frontend
+  template:
+    metadata:
+      labels:
+        app: yatri-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: nginx:1.25-alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "32Mi"
+            limits:
+              cpu: "100m"
+              memory: "64Mi"
+      volumes:
+        - name: html
+          configMap:
+            name: yatri-frontend-html
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yatri-frontend-service
+  labels:
+    app: yatri-frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: yatri-frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80

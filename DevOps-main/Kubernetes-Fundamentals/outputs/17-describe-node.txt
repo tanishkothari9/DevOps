@@ -1,0 +1,32 @@
+$ kubectl describe node minikube | sed -n "/^Capacity:/,/^Non-terminated/p"
+Capacity:
+  cpu:                10
+  ephemeral-storage:  485473984512
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  hugepages-32Mi:     0
+  hugepages-64Ki:     0
+  memory:             8024788Ki
+  pods:               110
+Allocatable:
+  cpu:                10
+  ephemeral-storage:  485473984512
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  hugepages-32Mi:     0
+  hugepages-64Ki:     0
+  memory:             8024788Ki
+  pods:               110
+System Info:
+  Machine ID:                 c7552358bf1aab9f1f21b3de6a971616
+  System UUID:                c7552358bf1aab9f1f21b3de6a971616
+  Boot ID:                    3ea24698-de53-4cad-811f-c12340cab4af
+  Kernel Version:             6.12.65-linuxkit
+  OS Image:                   Debian GNU/Linux 12 (bookworm)
+  Operating System:           linux
+  Architecture:               arm64
+  Container Runtime Version:  containerd://2.3.4
+  Kubelet Version:            v1.37.0
+PodCIDR:                      10.244.0.0/24
+PodCIDRs:                     10.244.0.0/24
+Non-terminated Pods:          (19 in total)

@@ -1,0 +1,15 @@
+$ kubectl get all -n s14-commands
+NAME                       READY   STATUS    RESTARTS   AGE
+pod/get-demo               1/1     Running   0          8s
+pod/logs-demo              1/1     Running   0          8s
+pod/web-7f98c7b879-gz4x2   1/1     Running   0          8s
+pod/web-7f98c7b879-hh5wj   1/1     Running   0          8s
+
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+service/web   ClusterIP   10.102.169.5   <none>        80/TCP    8s
+
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/web   2/2     2            2           8s
+
+NAME                             DESIRED   CURRENT   READY   AGE
+replicaset.apps/web-7f98c7b879   2         2         2       8s

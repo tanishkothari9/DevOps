@@ -1,0 +1,5 @@
+$ kubectl describe pod startup-demo -n s13-probes | grep -E "Liveness|Readiness|Startup|Restart Count"
+    Restart Count:  0
+    Liveness:       http-get http://:80/ delay=0s timeout=1s period=5s successThreshold=1 failureThreshold=3
+    Readiness:      http-get http://:80/ delay=0s timeout=1s period=5s successThreshold=1 failureThreshold=3
+    Startup:        http-get http://:80/ delay=0s timeout=1s period=2s successThreshold=1 failureThreshold=30

@@ -1,0 +1,5 @@
+$ cd /Users/tanishkothari/Code/learning/sst/devops/DevOps-main/Monitoring-Observability-GitOps && helm upgrade --install kps prometheus-community/kube-prometheus-stack -n monitoring --create-namespace -f monitoring/kps-values.yaml --wait --timeout 10m
+Release "kps" does not exist. Installing it now.
+Error: resource Deployment/monitoring/kps-grafana not ready. status: InProgress, message: Available: 0/1
+resource Deployment/monitoring/kps-kube-state-metrics not ready. status: InProgress, message: Available: 0/1
+context deadline exceeded

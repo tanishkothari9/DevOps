@@ -1,0 +1,37 @@
+$ kubectl describe deployment web -n s14-commands
+Name:                   web
+Namespace:              s14-commands
+CreationTimestamp:      Wed, 07 Oct 2026 23:32:31 +0530
+Labels:                 <none>
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=web
+Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=web
+  Containers:
+   nginx:
+    Image:      nginx:1.27
+    Port:       80/TCP
+    Host Port:  0/TCP
+    Requests:
+      cpu:         50m
+      memory:      32Mi
+    Environment:   <none>
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   web-7f98c7b879 (2/2 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  27s   deployment-controller  Scaled up replica set web-7f98c7b879 from 0 to 2

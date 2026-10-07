@@ -1,0 +1,10 @@
+$ kubectl get pods -n s14-commands --show-labels; echo; kubectl get pods -n s14-commands -l app=web
+NAME                   READY   STATUS    RESTARTS   AGE   LABELS
+get-demo               1/1     Running   0          9s    app=get-demo
+logs-demo              1/1     Running   0          9s    <none>
+web-7f98c7b879-gz4x2   1/1     Running   0          9s    app=web,pod-template-hash=7f98c7b879
+web-7f98c7b879-hh5wj   1/1     Running   0          9s    app=web,pod-template-hash=7f98c7b879
+
+NAME                   READY   STATUS    RESTARTS   AGE
+web-7f98c7b879-gz4x2   1/1     Running   0          9s
+web-7f98c7b879-hh5wj   1/1     Running   0          9s

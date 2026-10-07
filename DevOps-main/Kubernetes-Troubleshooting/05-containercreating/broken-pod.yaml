@@ -1,0 +1,17 @@
+# Stuck in ContainerCreating: the Pod mounts a ConfigMap that does not exist,
+# so the kubelet cannot set up the volume and never starts the container.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: config-volume-demo
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.27
+      volumeMounts:
+        - name: site-config
+          mountPath: /usr/share/nginx/html
+  volumes:
+    - name: site-config
+      configMap:
+        name: site-content

@@ -1,0 +1,5 @@
+$ kubectl delete pod static-storage-demo -n s13-volumes && kubectl apply -f 05-pvc-pod.yaml && kubectl wait --for=condition=Ready pod/static-storage-demo -n s13-volumes --timeout=120s && kubectl exec static-storage-demo -n s13-volumes -- cat /data/student.txt
+pod "static-storage-demo" deleted from s13-volumes namespace
+pod/static-storage-demo created
+pod/static-storage-demo condition met
+student-data-on-static-pv

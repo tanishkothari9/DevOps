@@ -1,0 +1,20 @@
+# ReplicaSet keeps N identical pods alive (self-healing)
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-rs
+  template:
+    metadata:
+      labels:
+        app: nginx-rs
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25-alpine
+          ports:
+            - containerPort: 80

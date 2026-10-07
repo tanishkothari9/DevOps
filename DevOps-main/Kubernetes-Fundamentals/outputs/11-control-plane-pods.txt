@@ -1,0 +1,6 @@
+$ kubectl get pods -n kube-system -l tier=control-plane -L component
+NAME                               READY   STATUS    RESTARTS   AGE     COMPONENT
+etcd-minikube                      1/1     Running   0          9m11s   etcd
+kube-apiserver-minikube            1/1     Running   0          9m5s    kube-apiserver
+kube-controller-manager-minikube   1/1     Running   0          9m10s   kube-controller-manager
+kube-scheduler-minikube            1/1     Running   0          9m3s    kube-scheduler

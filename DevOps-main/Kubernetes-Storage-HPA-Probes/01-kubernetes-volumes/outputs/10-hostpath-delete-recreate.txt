@@ -1,0 +1,5 @@
+$ kubectl delete pod hostpath-demo -n s13-volumes && kubectl apply -f 02-hostpath-pod.yaml && kubectl wait --for=condition=Ready pod/hostpath-demo -n s13-volumes --timeout=120s && kubectl exec hostpath-demo -n s13-volumes -- cat /data/hello.txt
+pod "hostpath-demo" deleted from s13-volumes namespace
+pod/hostpath-demo created
+pod/hostpath-demo condition met
+hello-from-hostpath-pod

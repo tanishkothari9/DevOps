@@ -1,0 +1,52 @@
+$ kubectl describe pod get-demo -n s14-commands
+Name:             get-demo
+Namespace:        s14-commands
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 07 Oct 2026 23:32:31 +0530
+Labels:           app=get-demo
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.140
+IPs:
+  IP:  10.244.0.140
+Containers:
+  nginx:
+    Container ID:   containerd://1e05c928a27c0460c7433d66242bbfb4408c00daec0006c01967e993ba4bf51a
+    Image:          nginx:1.27
+    Image ID:       docker.io/library/nginx@sha256:6784fb0834aa7dbbe12e3d7471e69c290df3e6ba810dc38b34ae33d3c1c05f7d
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Wed, 07 Oct 2026 23:32:32 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-q87bd (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-q87bd:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  25s   default-scheduler  Successfully assigned s14-commands/get-demo to minikube
+  Normal  Pulled     24s   kubelet            spec.containers{nginx}: Container image "nginx:1.27" already present on machine and can be accessed by the pod
+  Normal  Created    24s   kubelet            spec.containers{nginx}: Container created
+  Normal  Started    24s   kubelet            spec.containers{nginx}: Container started

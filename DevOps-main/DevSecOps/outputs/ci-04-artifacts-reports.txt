@@ -1,0 +1,31 @@
+$ gh api repos/tanishkothari9/DevOps/actions/runs/37662397193/artifacts --jq '.artifacts[] | "\(.name)\t\(.size_in_bytes) bytes"'; echo; for a in sast-reports image-scan-reports gitleaks-report test-reports; do gh run download 37662397193 -R tanishkothari9/DevOps -n $a -D $a; done; find . -type f | sort; echo; echo -n 'bandit.json  -> issues: '; jq '.results | length' sast-reports/bandit.json; echo -n 'semgrep.json -> results: '; jq '.results | length' sast-reports/semgrep.json; echo -n 'gitleaks.json -> leaks: '; jq 'length' gitleaks-report/gitleaks.json; echo -n 'trivy-image.json -> vulnerabilities: '; jq '[.Results[]?.Vulnerabilities[]?] | length' image-scan-reports/trivy-image.json; echo -n 'sbom.cdx.json -> '; jq -r '"\(.bomFormat) \(.specVersion), components: \(.components | length)"' image-scan-reports/sbom.cdx.json; echo 'Python packages listed in the SBOM:'; jq -r '.components[] | select(.purl // "" | startswith("pkg:pypi")) | "  \(.name)==\(.version)"' image-scan-reports/sbom.cdx.json
+app-build	16753 bytes
+test-reports	1411 bytes
+sast-reports	1001 bytes
+image-scan-reports	21431 bytes
+docker-image	22430213 bytes
+gitleaks-report	145 bytes
+
+./gitleaks-report/gitleaks.json
+./image-scan-reports/sbom.cdx.json
+./image-scan-reports/trivy-image.json
+./sast-reports/bandit.json
+./sast-reports/semgrep.json
+./test-reports/coverage.xml
+./test-reports/junit.xml
+
+bandit.json  -> issues: 0
+semgrep.json -> results: 0
+gitleaks.json -> leaks: 0
+trivy-image.json -> vulnerabilities: 0
+sbom.cdx.json -> CycloneDX 1.7, components: 48
+Python packages listed in the SBOM:
+  blinker==1.9.0
+  click==8.5.0
+  Flask==3.1.3
+  gunicorn==23.0.0
+  itsdangerous==2.2.0
+  Jinja2==3.1.6
+  MarkupSafe==3.0.4
+  packaging==26.3
+  Werkzeug==3.1.9

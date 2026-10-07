@@ -1,0 +1,3 @@
+$ sleep 8; kubectl get pod slow-startup-demo -n s13-probes; kubectl describe pod slow-startup-demo -n s13-probes | grep -E "Startup probe failed" | tail -2
+NAME                READY   STATUS              RESTARTS   AGE
+slow-startup-demo   0/1     ContainerCreating   0          20s

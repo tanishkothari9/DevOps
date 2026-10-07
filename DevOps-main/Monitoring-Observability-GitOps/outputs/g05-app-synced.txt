@@ -1,0 +1,10 @@
+$ kubectl get applications -n argocd
+NAME             SYNC STATUS   HEALTH STATUS
+s20-gitops-app   Synced        Healthy
+$ kubectl get application s20-gitops-app -n argocd -o custom-columns='SYNC:.status.sync.status,HEALTH:.status.health.status,REVISION:.status.sync.revision,PHASE:.status.operationState.phase,PATH:.spec.source.path'
+SYNC     HEALTH    REVISION                                   PHASE       PATH
+Synced   Healthy   66a4d97784d2412df1f5f349a6cd0abb934e2947   Succeeded   DevOps-main/Monitoring-Observability-GitOps/gitops/app
+$ kubectl get application s20-gitops-app -n argocd -o jsonpath='{range .status.resources[*]}{.kind}/{.name} -> {.status}{"\n"}{end}'
+Namespace/s20-gitops -> Synced
+Service/s20-gitops-app -> Synced
+Deployment/s20-gitops-app -> Synced

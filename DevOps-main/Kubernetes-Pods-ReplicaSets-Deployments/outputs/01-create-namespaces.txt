@@ -1,0 +1,8 @@
+$ for ns in s10-core s10-rolling s10-bluegreen s10-canary s10-recreate s10-lifecycle s10-troubleshoot; do kubectl create namespace $ns; done
+namespace/s10-core created
+namespace/s10-rolling created
+namespace/s10-bluegreen created
+namespace/s10-canary created
+namespace/s10-recreate created
+namespace/s10-lifecycle created
+namespace/s10-troubleshoot created

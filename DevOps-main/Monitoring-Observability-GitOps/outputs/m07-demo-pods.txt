@@ -1,0 +1,25 @@
+$ kubectl get pods -n s20-monitoring -o wide
+NAME                              READY   STATUS    RESTARTS         AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+s20-cpu-burner-57747c7cff-l6x5k   1/1     Running   0                38m   10.244.0.57   minikube   <none>           <none>
+s20-crashloop-7dfdbfddf5-zx9zv    0/1     Error     13 (5m10s ago)   47m   10.244.0.39   minikube   <none>           <none>
+s20-loadgen-6d674c86b7-lzgbr      1/1     Running   0                47m   10.244.0.37   minikube   <none>           <none>
+s20-podinfo-684bf75754-92tql      1/1     Running   4 (11m ago)      47m   10.244.0.36   minikube   <none>           <none>
+s20-podinfo-684bf75754-hxglt      1/1     Running   3 (18m ago)      47m   10.244.0.35   minikube   <none>           <none>
+$ kubectl get deploy,svc,endpointslices -n s20-monitoring
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/s20-cpu-burner   1/1     1            1           47m
+deployment.apps/s20-crashloop    0/1     1            0           47m
+deployment.apps/s20-loadgen      1/1     1            1           47m
+deployment.apps/s20-podinfo      2/2     2            2           47m
+
+NAME                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/s20-podinfo   ClusterIP   10.104.140.190   <none>        9898/TCP   47m
+
+NAME                                               ADDRESSTYPE   PORTS   ENDPOINTS                 AGE
+endpointslice.discovery.k8s.io/s20-podinfo-6vlt4   IPv4          9898    10.244.0.35,10.244.0.36   47m
+$ kubectl get servicemonitor,prometheusrule -n s20-monitoring
+NAME                                               AGE
+servicemonitor.monitoring.coreos.com/s20-podinfo   47m
+
+NAME                                                   AGE
+prometheusrule.monitoring.coreos.com/s20-demo-alerts   47m

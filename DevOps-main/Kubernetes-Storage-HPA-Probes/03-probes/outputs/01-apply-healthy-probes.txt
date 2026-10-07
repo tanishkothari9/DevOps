@@ -1,0 +1,5 @@
+$ kubectl apply -f 00-namespace.yaml -f 01-liveness.yaml -f 02-readiness.yaml -f 03-startup.yaml
+namespace/s13-probes created
+pod/liveness-demo created
+pod/readiness-demo created
+pod/startup-demo created

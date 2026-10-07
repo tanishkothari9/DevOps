@@ -1,0 +1,4 @@
+$ kubectl get pods liveness-fail-demo readiness-fail-demo -n s13-probes
+NAME                  READY   STATUS    RESTARTS      AGE
+liveness-fail-demo    1/1     Running   1 (33s ago)   96s
+readiness-fail-demo   0/1     Running   0             95s

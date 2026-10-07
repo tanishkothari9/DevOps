@@ -1,0 +1,14 @@
+# Dynamic provisioning: no PV is created by hand.
+# The "standard" StorageClass (provisioner k8s.io/minikube-hostpath) creates one automatically.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dynamic-pvc
+  namespace: s13-volumes
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 500Mi

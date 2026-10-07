@@ -1,0 +1,10 @@
+$ cd /Users/tanishkothari/Code/learning/sst/devops/DevOps-main/Monitoring-Observability-GitOps && kubectl apply -f monitoring/demo-app.yaml -f monitoring/servicemonitor.yaml -f monitoring/alert-rules.yaml -f monitoring/grafana-dashboard.yaml
+namespace/s20-monitoring created
+deployment.apps/s20-podinfo created
+service/s20-podinfo created
+deployment.apps/s20-loadgen created
+deployment.apps/s20-cpu-burner created
+deployment.apps/s20-crashloop created
+servicemonitor.monitoring.coreos.com/s20-podinfo created
+prometheusrule.monitoring.coreos.com/s20-demo-alerts created
+configmap/s20-podinfo-dashboard created

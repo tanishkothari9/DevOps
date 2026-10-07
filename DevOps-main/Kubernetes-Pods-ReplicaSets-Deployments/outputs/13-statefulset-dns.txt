@@ -1,0 +1,8 @@
+$ kubectl exec web-0 -n s10-core -- nslookup web-2.web-sts.s10-core.svc.cluster.local
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+
+Name:	web-2.web-sts.s10-core.svc.cluster.local
+Address: 10.244.0.119
+

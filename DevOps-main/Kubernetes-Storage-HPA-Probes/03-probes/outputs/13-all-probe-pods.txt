@@ -1,0 +1,8 @@
+$ kubectl get pods -n s13-probes -o wide
+NAME                  READY   STATUS    RESTARTS        AGE     IP            NODE       NOMINATED NODE   READINESS GATES
+liveness-demo         1/1     Running   0               7m17s   10.244.0.60   minikube   <none>           <none>
+liveness-fail-demo    1/1     Running   1 (3m31s ago)   4m34s   10.244.0.63   minikube   <none>           <none>
+readiness-demo        1/1     Running   0               7m16s   10.244.0.62   minikube   <none>           <none>
+readiness-fail-demo   0/1     Running   0               4m31s   10.244.0.64   minikube   <none>           <none>
+slow-startup-demo     1/1     Running   0               4m18s   10.244.0.65   minikube   <none>           <none>
+startup-demo          1/1     Running   1 (4m13s ago)   7m13s   10.244.0.61   minikube   <none>           <none>

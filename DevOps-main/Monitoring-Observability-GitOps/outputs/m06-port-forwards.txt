@@ -1,0 +1,14 @@
+$ ps -eo command | grep "^kubectl --context minikube port-forward"
+kubectl --context minikube port-forward -n monitoring svc/kps-kube-prometheus-stack-alertmanager 19093:9093
+kubectl --context minikube port-forward -n monitoring svc/kps-kube-prometheus-stack-prometheus 19090:9090
+kubectl --context minikube port-forward -n monitoring svc/kps-grafana 13000:80
+$ curl -s http://localhost:19090/-/ready
+Prometheus Server is Ready.
+$ curl -s http://localhost:19093/-/ready
+OK
+$ curl -s http://localhost:13000/api/health
+{
+  "database": "ok",
+  "version": "13.2.3",
+  "commit": "90ffed056f0884267356c12a0eeb72a022af53f1"
+}

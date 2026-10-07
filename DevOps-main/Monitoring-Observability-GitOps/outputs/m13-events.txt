@@ -1,0 +1,16 @@
+$ kubectl get events -n s20-monitoring --field-selector reason=BackOff -o custom-columns='LAST:.lastTimestamp,COUNT:.count,OBJECT:.involvedObject.name,MESSAGE:.message' | tail -3
+LAST                   COUNT   OBJECT                           MESSAGE
+2026-10-07T17:59:07Z   34      s20-crashloop-7dfdbfddf5-zx9zv   Back-off restarting failed container app in pod s20-crashloop-7dfdbfddf5-zx9zv_s20-monitoring(1986b44a-16ed-4b3c-b576-3d9c6ffa1efb)
+$ kubectl get events -n s20-monitoring --field-selector reason=Unhealthy -o custom-columns='LAST:.lastTimestamp,COUNT:.count,OBJECT:.involvedObject.name,MESSAGE:.message' | tail -4
+2026-10-07T17:27:51Z   9       s20-podinfo-684bf75754-92tql   Liveness probe failed: Get "http://10.244.0.36:9898/healthz": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-07T17:28:21Z   8       s20-podinfo-684bf75754-hxglt   Liveness probe failed: Get "http://10.244.0.35:9898/healthz": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-07T17:56:56Z   72      s20-podinfo-684bf75754-hxglt   Readiness probe failed: Get "http://10.244.0.35:9898/readyz": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+2026-10-07T17:36:34Z   11      s20-podinfo-684bf75754-hxglt   Readiness probe failed: Get "http://10.244.0.35:9898/readyz": dial tcp 10.244.0.35:9898: connect: connection refused
+$ kubectl describe pod -n s20-monitoring -l app=s20-crashloop | grep -A6 "Last State"
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Wed, 07 Oct 2026 23:29:04 +0530
+      Finished:     Wed, 07 Oct 2026 23:29:06 +0530
+    Ready:          False
+    Restart Count:  13

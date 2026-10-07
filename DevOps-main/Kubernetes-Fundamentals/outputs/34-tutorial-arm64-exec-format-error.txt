@@ -1,0 +1,7 @@
+$ kubectl get pods -n s09-tutorial; kubectl logs deploy/kubernetes-bootcamp -n s09-tutorial; echo "node arch: $(kubectl get node minikube -o jsonpath={.status.nodeInfo.architecture})"; echo "image arch:"; docker manifest inspect -v gcr.io/google-samples/kubernetes-bootcamp:v1 | grep architecture
+NAME                                   READY   STATUS             RESTARTS      AGE
+kubernetes-bootcamp-5cc66bcc9b-gtqzw   0/1     CrashLoopBackOff   3 (63s ago)   3m22s
+exec /bin/sh: exec format error
+node arch: arm64
+image arch:
+			"architecture": "amd64",

@@ -1,0 +1,5 @@
+$ minikube addons list | grep -E "ADDON NAME|enabled"
+│         ADDON NAME          │ PROFILE  │   STATUS   │               MAINTAINER               │
+│ default-storageclass        │ minikube │ enabled ✅ │ Kubernetes                             │
+│ metrics-server              │ minikube │ enabled ✅ │ Kubernetes                             │
+│ storage-provisioner         │ minikube │ enabled ✅ │ minikube                               │

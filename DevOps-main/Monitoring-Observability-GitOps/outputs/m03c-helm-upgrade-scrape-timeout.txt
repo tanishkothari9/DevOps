@@ -1,0 +1,12 @@
+$ helm upgrade kps prometheus-community/kube-prometheus-stack -n monitoring -f monitoring/kps-values.yaml --wait --timeout 10m | head -8
+Release "kps" has been upgraded. Happy Helming!
+NAME: kps
+LAST DEPLOYED: Wed Oct  7 23:32:46 2026
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 4
+DESCRIPTION: Upgrade complete
+NOTES:
+$ kubectl get prometheus -n monitoring -o custom-columns='NAME:.metadata.name,SCRAPE_INTERVAL:.spec.scrapeInterval,SCRAPE_TIMEOUT:.spec.scrapeTimeout,RETENTION:.spec.retention'
+NAME                                   SCRAPE_INTERVAL   SCRAPE_TIMEOUT   RETENTION
+kps-kube-prometheus-stack-prometheus   30s               25s              6h

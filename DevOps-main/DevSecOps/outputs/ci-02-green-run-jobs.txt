@@ -1,27 +1,27 @@
-$ gh run view 37659659277 -R tanishkothari9/DevOps | sed '/ANNOTATIONS/,/ARTIFACTS/{/ARTIFACTS/!d;}'
+$ gh run view 37662397193 -R tanishkothari9/DevOps | sed '/ANNOTATIONS/,/ARTIFACTS/{/ARTIFACTS/!d;}'
 
-✓ main Session 17 - DevSecOps Pipeline · 37659659277
-Triggered via push about 16 minutes ago
+✓ main Session 17 - DevSecOps Pipeline · 37662397193
+Triggered via push about 21 minutes ago
 
 JOBS
-✓ 1. Build in 11s (ID 112923620478)
-✓ 2. Unit Test in 12s (ID 112923843796)
-✓ 3. SAST (Bandit + Semgrep) in 26s (ID 112923970824)
-✓ 4. SCA (pip-audit + Trivy fs) in 39s (ID 112924190858)
-✓ 5. Secret Scan (Gitleaks) in 13s (ID 112924502787)
-✓ 6. Docker Build in 26s (ID 112924636676)
-✓ 7. Container Image Scan (Trivy) in 20s (ID 112924852504)
-✓ 8. Security Gate in 16s (ID 112925023902)
-✓ 9. Push Image (GHCR) in 20s (ID 112925166305)
-✓ 10. Deploy to Kubernetes in 56s (ID 112925337321)
+✓ 1. Build in 9s (ID 112932946969)
+✓ 2. Unit Test in 13s (ID 112933040747)
+✓ 3. SAST (Bandit + Semgrep) in 32s (ID 112933160643)
+✓ 4. SCA (pip-audit + Trivy fs) in 32s (ID 112933423798)
+✓ 5. Secret Scan (Gitleaks) in 10s (ID 112933685778)
+✓ 6. Docker Build in 28s (ID 112933783735)
+✓ 7. Container Image Scan (Trivy) in 32s (ID 112934017683)
+✓ 8. Security Gate in 18s (ID 112934271617)
+✓ 9. Push Image (GHCR) in 14s (ID 112934431900)
+✓ 10. Deploy to Kubernetes in 1m7s (ID 112934555977)
 
 ARTIFACTS
-docker-image
-sast-reports
-image-scan-reports
 app-build
 test-reports
+sast-reports
+image-scan-reports
+docker-image
 gitleaks-report
 
 For more information about a job, try: gh run view --job=<job-id>
-View this run on GitHub: https://github.com/tanishkothari9/DevOps/actions/runs/37659659277
+View this run on GitHub: https://github.com/tanishkothari9/DevOps/actions/runs/37662397193

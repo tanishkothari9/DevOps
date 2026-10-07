@@ -1,0 +1,8 @@
+$ kubectl describe pod liveness-demo -n s13-probes | grep -E "Liveness|Readiness|Startup|State|Ready|Restart Count"
+    State:          Running
+    Ready:          True
+    Restart Count:  0
+    Liveness:       http-get http://:80/ delay=5s timeout=2s period=5s successThreshold=1 failureThreshold=3
+  PodReadyToStartContainers   True 
+  Ready                       True 
+  ContainersReady             True 

@@ -1,0 +1,4 @@
+$ kubectl delete namespace s09-tutorial s09-basics && kubectl get namespaces | grep s09- || echo "no s09- namespaces left"
+namespace "s09-tutorial" deleted
+namespace "s09-basics" deleted
+no s09- namespaces left

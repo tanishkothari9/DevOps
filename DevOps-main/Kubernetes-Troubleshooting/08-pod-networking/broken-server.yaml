@@ -1,0 +1,15 @@
+# The app only listens on 127.0.0.1 (loopback) inside its container.
+# It works from inside the Pod, but other Pods cannot reach it on the Pod IP.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: api-server
+  labels:
+    app: api-server
+spec:
+  containers:
+    - name: api
+      image: python:3.11-alpine
+      command: ["python3", "-m", "http.server", "8080", "--bind", "127.0.0.1"]
+      ports:
+        - containerPort: 8080

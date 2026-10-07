@@ -1,0 +1,10 @@
+$ echo "BEFORE:"; kubectl get pod web-1 -n s10-core -o wide | tail -1; kubectl delete pod web-1 -n s10-core; kubectl wait --for=condition=Ready pod/web-1 -n s10-core --timeout=120s >/dev/null; echo "AFTER (same name, same PVC, new IP):"; kubectl get pod web-1 -n s10-core -o wide | tail -1; kubectl get pod web-1 -n s10-core -o jsonpath="volume claim: {.spec.volumes[0].persistentVolumeClaim.claimName}{\"\n\"}"; echo "--- /data/history.log on web-1 survived the restart:"; kubectl exec web-1 -n s10-core -- cat /data/history.log
+BEFORE:
+web-1   1/1     Running   0          22s   10.244.0.118   minikube   <none>           <none>
+pod "web-1" deleted from s10-core namespace
+AFTER (same name, same PVC, new IP):
+web-1   1/1     Running   0          3s    10.244.0.127   minikube   <none>           <none>
+volume claim: data-web-1
+--- /data/history.log on web-1 survived the restart:
+Wed Oct  7 17:59:13 UTC 2026 started as web-1
+Wed Oct  7 18:00:06 UTC 2026 started as web-1

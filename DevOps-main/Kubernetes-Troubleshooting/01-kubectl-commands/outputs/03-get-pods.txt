@@ -1,0 +1,6 @@
+$ kubectl get pods -n s14-commands
+NAME                   READY   STATUS    RESTARTS   AGE
+get-demo               1/1     Running   0          4s
+logs-demo              1/1     Running   0          4s
+web-7f98c7b879-gz4x2   1/1     Running   0          4s
+web-7f98c7b879-hh5wj   1/1     Running   0          4s

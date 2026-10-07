@@ -1,0 +1,5 @@
+$ kubectl get events -n s09-tutorial --sort-by=.lastTimestamp | grep -E "Failed|BackOff" | tail -4
+31s         Warning   Failed                 pod/kubernetes-bootcamp-7648ff76c4-9d9z2    Error: ImagePullBackOff
+31s         Normal    BackOff                pod/kubernetes-bootcamp-7648ff76c4-9d9z2    Back-off pulling image "traefik/whoami:v10"
+16s         Warning   Failed                 pod/kubernetes-bootcamp-7648ff76c4-9d9z2    Error: ErrImagePull
+16s         Warning   Failed                 pod/kubernetes-bootcamp-7648ff76c4-9d9z2    Failed to pull image "traefik/whoami:v10": rpc error: code = NotFound desc = failed to pull and unpack image "docker.io/traefik/whoami:v10": failed to resolve reference "docker.io/traefik/whoami:v10": docker.io/traefik/whoami:v10: not found

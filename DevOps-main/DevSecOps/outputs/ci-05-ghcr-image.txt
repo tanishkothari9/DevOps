@@ -1,0 +1,20 @@
+$ docker pull --platform linux/amd64 ghcr.io/tanishkothari9/session17-devsecops:dedab6e5c73389ef7a96f5df06578813c8df7628 2>&1 | grep -vE 'Pulling fs|Download complete|Pull complete|Waiting|Verifying' && echo && docker image inspect ghcr.io/tanishkothari9/session17-devsecops:dedab6e5c73389ef7a96f5df06578813c8df7628 --format 'Platform : {{.Os}}/{{.Architecture}}{{println}}Created  : {{.Created}}{{println}}Source   : {{index .Config.Labels "org.opencontainers.image.source"}}{{println}}User     : {{.Config.User}}{{println}}Cmd      : {{json .Config.Cmd}}' && echo && echo 'Re-scan of the image pulled from the registry (gate policy from trivy.yaml):' && trivy image -q --table-mode summary ghcr.io/tanishkothari9/session17-devsecops:dedab6e5c73389ef7a96f5df06578813c8df7628 | grep -E 'Target|alpine|flask|gunicorn|werkzeug'; echo "trivy exit code: ${PIPESTATUS[0]}"
+dedab6e5c73389ef7a96f5df06578813c8df7628: Pulling from tanishkothari9/session17-devsecops
+Digest: sha256:3923276a3068341759619c93ad952d1810193acbfa05e05b4337fcfa788cc165
+Status: Image is up to date for ghcr.io/tanishkothari9/session17-devsecops:dedab6e5c73389ef7a96f5df06578813c8df7628
+ghcr.io/tanishkothari9/session17-devsecops:dedab6e5c73389ef7a96f5df06578813c8df7628
+
+Platform : linux/amd64
+Created  : 2026-10-07T17:54:25.32911383Z
+Source   : https://github.com/tanishkothari9/DevOps
+User     : 10001:10001
+Cmd      : ["gunicorn","--bind","0.0.0.0:5001","--workers","2","--worker-tmp-dir","/tmp","--access-logfile","-","app.app:app"]
+
+Re-scan of the image pulled from the registry (gate policy from trivy.yaml):
+│                                      Target                                      │    Type    │ Vulnerabilities │ Secrets │
+│ ghcr.io/tanishkothari9/session17-devsecops:dedab6e5c73389ef7a96f5df06578813c8df- │   alpine   │        0        │    -    │
+│ 7628 (alpine 3.24.2)                                                             │            │                 │         │
+│ opt/venv/lib/python3.12/site-packages/flask-3.1.3.dist-info/METADATA             │ python-pkg │        0        │    -    │
+│ opt/venv/lib/python3.12/site-packages/gunicorn-23.0.0.dist-info/METADATA         │ python-pkg │        0        │    -    │
+│ opt/venv/lib/python3.12/site-packages/werkzeug-3.1.9.dist-info/METADATA          │ python-pkg │        0        │    -    │
+trivy exit code: 0

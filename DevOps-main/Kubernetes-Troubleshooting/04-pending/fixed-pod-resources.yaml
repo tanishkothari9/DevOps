@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pending-resources-demo
+spec:
+  containers:
+    - name: hungry-app
+      image: nginx:alpine
+      resources:
+        requests:
+          cpu: 100m
+          memory: 64Mi
+        limits:
+          cpu: 200m
+          memory: 128Mi

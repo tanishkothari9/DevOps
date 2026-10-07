@@ -1,0 +1,9 @@
+# Image repository does not exist on Docker Hub (from scenarios/scenario-2-imagepull).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: image-repo-demo
+spec:
+  containers:
+    - name: web-app
+      image: yatri-api-service:v999-invalid-tag-does-not-exist

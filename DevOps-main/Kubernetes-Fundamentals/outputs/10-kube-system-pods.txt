@@ -1,0 +1,11 @@
+$ kubectl get pods -n kube-system -o wide
+NAME                               READY   STATUS    RESTARTS      AGE     IP             NODE       NOMINATED NODE   READINESS GATES
+coredns-559f6c778d-dfnhj           1/1     Running   0             8m47s   10.244.0.2     minikube   <none>           <none>
+etcd-minikube                      1/1     Running   0             9m7s    192.168.49.2   minikube   <none>           <none>
+kindnet-5txqx                      1/1     Running   0             8m46s   192.168.49.2   minikube   <none>           <none>
+kube-apiserver-minikube            1/1     Running   0             9m1s    192.168.49.2   minikube   <none>           <none>
+kube-controller-manager-minikube   1/1     Running   0             9m6s    192.168.49.2   minikube   <none>           <none>
+kube-proxy-l74bq                   1/1     Running   0             8m47s   192.168.49.2   minikube   <none>           <none>
+kube-scheduler-minikube            1/1     Running   0             8m59s   192.168.49.2   minikube   <none>           <none>
+metrics-server-768f9f6999-2ss5q    0/1     Running   1 (66s ago)   8m41s   10.244.0.3     minikube   <none>           <none>
+storage-provisioner                1/1     Running   4 (78s ago)   8m40s   192.168.49.2   minikube   <none>           <none>

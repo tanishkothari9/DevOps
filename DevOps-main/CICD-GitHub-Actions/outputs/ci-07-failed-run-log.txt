@@ -1,0 +1,35 @@
+$ gh run view 37659678309 -R tanishkothari9/DevOps | sed -n '1,3p;/JOBS/,/ANNOTATIONS/p' | grep -v ANNOTATIONS; echo '--- job log excerpt ---'; gh run view 37659678309 -R tanishkothari9/DevOps --log | grep -E '##\[warning\]break_tests|return a \+ b \+ 1|FAILED|assert [0-9]|[0-9]+ passed|exit code 1' | grep -vE '36;1m|sed -i' | cut -f2,3- | sed -E 's/\t[0-9T:.-]+Z / | /' | cut -c1-150
+
+X main Session 16 - CI/CD Pipeline · 37659678309
+Triggered via workflow_dispatch about 31 minutes ago
+JOBS
+X CI - Lint & Unit Tests in 15s (ID 112923695049)
+  ✓ Set up job
+  ✓ Checkout source code
+  ✓ Setup Python 3.12
+  ✓ Show runner details
+  ✓ Install dependencies
+  ✓ Lint (flake8)
+  ✓ Inject bug (break_tests=true)
+  X Run unit tests (pytest + coverage)
+  ✓ Upload test reports (artifact)
+  - Post Setup Python 3.12
+  ✓ Post Checkout source code
+  ✓ Complete job
+- CI - Security Check (ID 112923875158)
+- CI - Build Application (ID 112923875285)
+- CI - Docker Build & Smoke Test (ID 112923876246)
+- CD - Push Image to GHCR in 0s (ID 112923877687)
+- CD - Deploy to Kubernetes (kind) in 0s (ID 112923878730)
+
+--- job log excerpt ---
+Inject bug (break_tests=true) | ##[warning]break_tests=true -> add() now returns a + b + 1
+Inject bug (break_tests=true) | 5-    return a + b + 1
+Run unit tests (pytest + coverage) | tests/test_api.py::test_operations[add-15] FAILED                        [ 20%]
+Run unit tests (pytest + coverage) | tests/test_calculator.py::test_add FAILED                                [ 73%]
+Run unit tests (pytest + coverage) | E       assert 16.0 == 15
+Run unit tests (pytest + coverage) | E       assert 16 == 15
+Run unit tests (pytest + coverage) | FAILED tests/test_api.py::test_operations[add-15] - assert 16.0 == 15
+Run unit tests (pytest + coverage) | FAILED tests/test_calculator.py::test_add - assert 16 == 15
+Run unit tests (pytest + coverage) | ========================= 2 failed, 13 passed in 0.64s =========================
+Run unit tests (pytest + coverage) | ##[error]Process completed with exit code 1.

@@ -1,0 +1,12 @@
+$ kubectl logs logs-demo -n s14-commands
+Application started
+Connecting to database...
+Database connection successful
+Application is running
+Application is healthy
+Application is healthy
+Application is healthy
+Application is healthy
+Application is healthy
+Application is healthy
+Application is healthy

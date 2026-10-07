@@ -1,0 +1,6 @@
+$ minikube ssh -- sudo ls -l /etc/kubernetes/manifests
+total 20
+-rw------- 1 root root 2655 Oct  7 16:55 etcd.yaml
+-rw------- 1 root root 4171 Oct  7 16:55 kube-apiserver.yaml
+-rw------- 1 root root 3254 Oct  7 16:55 kube-controller-manager.yaml
+-rw------- 1 root root 1727 Oct  7 16:55 kube-scheduler.yaml

@@ -1,0 +1,9 @@
+$ kubectl apply -f deployment.yaml && kubectl apply -f service.yaml && kubectl rollout status deployment/web-app -n production-webapp --timeout=240s && kubectl get pods -n production-webapp -o wide
+deployment.apps/web-app created
+service/web-service created
+Waiting for deployment "web-app" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "web-app" rollout to finish: 1 of 2 updated replicas are available...
+deployment "web-app" successfully rolled out
+NAME                      READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+web-app-d45775485-tqzgh   1/1     Running   0          10s   10.244.0.125   minikube   <none>           <none>
+web-app-d45775485-z92fs   1/1     Running   0          10s   10.244.0.126   minikube   <none>           <none>

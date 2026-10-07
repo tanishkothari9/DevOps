@@ -1,0 +1,22 @@
+$ gh run view 37661496486 -R tanishkothari9/DevOps | sed '/ANNOTATIONS/,/ARTIFACTS/{/ARTIFACTS/!d;}'; gh run view 37661496486 -R tanishkothari9/DevOps --log | grep -E 'Inject bug|[0-9]+ passed in|successfully rolled out' | grep -v '36;1m' | cut -f1,3- | sed -E 's/\t[0-9T:.-]+Z / | /'
+
+✓ main Session 16 - CI/CD Pipeline · 37661496486
+Triggered via workflow_dispatch about 17 minutes ago
+
+JOBS
+✓ CI - Lint & Unit Tests in 16s (ID 112929895181)
+✓ CI - Security Check in 7s (ID 112930043378)
+✓ CI - Build Application in 7s (ID 112930043380)
+✓ CI - Docker Build & Smoke Test in 25s (ID 112930120411)
+✓ CD - Push Image to GHCR in 24s (ID 112930335964)
+✓ CD - Deploy to Kubernetes (kind) in 1m57s (ID 112930544690)
+
+ARTIFACTS
+test-reports
+docker-image
+calculator-build
+
+For more information about a job, try: gh run view --job=<job-id>
+View this run on GitHub: https://github.com/tanishkothari9/DevOps/actions/runs/37661496486
+CI - Lint & Unit Tests | ============================== 15 passed in 0.44s ==============================
+CD - Deploy to Kubernetes (kind) | deployment "session16-calculator" successfully rolled out

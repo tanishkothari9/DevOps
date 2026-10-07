@@ -1,21 +1,21 @@
-$ gh run view 37659659277 -R tanishkothari9/DevOps --log | grep -E 'passed in|Total coverage|No issues identified|Ran [0-9]+ rules|No known vulnerabilities|requirements.txt │|no leaks found|uid=10001|image.tar \(alpine|Blocking \(HIGH|All findings by|Gate [12] passed|digest: sha256|Deploying ghcr|successfully rolled out|status.:.healthy|result.:42' | grep -v '36;1m' | cut -f1,3- | sed -E 's/\t[0-9T:.-]+Z / | /'
+$ gh run view 37662397193 -R tanishkothari9/DevOps --log | grep -E 'passed in|Total coverage|No issues identified|Ran [0-9]+ rules|No known vulnerabilities|requirements.txt │|no leaks found|uid=10001|image.tar \(alpine|Blocking \(HIGH|All findings by|Gate [12] passed|digest: sha256|Deploying ghcr|successfully rolled out|status.:.healthy|result.:42' | grep -v '36;1m' | cut -f1,3- | sed -E 's/\t[0-9T:.-]+Z / | /'
 2. Unit Test | Required test coverage of 80% reached. Total coverage: 88.29%
-2. Unit Test | ============================== 15 passed in 0.39s ==============================
+2. Unit Test | ============================== 15 passed in 0.40s ==============================
 3. SAST (Bandit + Semgrep) | 	No issues identified.
 3. SAST (Bandit + Semgrep) | Ran 155 rules on 2 files: 0 findings.
 4. SCA (pip-audit + Trivy fs) | No known vulnerabilities found
 4. SCA (pip-audit + Trivy fs) | │ requirements.txt │ pip  │        0        │
-5. Secret Scan (Gitleaks) | ^[[90m5:33PM^[[0m ^[[32mINF^[[0m ^[[1mno leaks found^[[0m
-6. Docker Build | {"status":"healthy","timestamp":"2026-10-07T17:33:36.473761Z","uptime_seconds":0.19}
+5. Secret Scan (Gitleaks) | ^[[90m5:54PM^[[0m ^[[32mINF^[[0m ^[[1mno leaks found^[[0m
+6. Docker Build | {"status":"healthy","timestamp":"2026-10-07T17:54:27.271985Z","uptime_seconds":0.34}
 6. Docker Build | uid=10001(app) gid=10001(app) groups=10001(app)
 7. Container Image Scan (Trivy) | │ image.tar (alpine 3.24.2)                                                   │   alpine   │        0        │    -    │
 8. Security Gate | All findings by severity: none
 8. Security Gate | Blocking (HIGH+CRITICAL): 0
 8. Security Gate | Gate 1 passed
 8. Security Gate | Gate 2 passed
-9. Push Image (GHCR) | 03e2987506924a0a4beaae0230987b993c4d67fc: digest: sha256:0b7747322b285cc3f21e34dc8b0ae01bc704c1edc6544e170ae0852189b2499a size: 1993
-9. Push Image (GHCR) | latest: digest: sha256:0b7747322b285cc3f21e34dc8b0ae01bc704c1edc6544e170ae0852189b2499a size: 1993
-10. Deploy to Kubernetes | Deploying ghcr.io/tanishkothari9/session17-devsecops:03e2987506924a0a4beaae0230987b993c4d67fc
+9. Push Image (GHCR) | dedab6e5c73389ef7a96f5df06578813c8df7628: digest: sha256:3923276a3068341759619c93ad952d1810193acbfa05e05b4337fcfa788cc165 size: 1993
+9. Push Image (GHCR) | latest: digest: sha256:3923276a3068341759619c93ad952d1810193acbfa05e05b4337fcfa788cc165 size: 1993
+10. Deploy to Kubernetes | Deploying ghcr.io/tanishkothari9/session17-devsecops:dedab6e5c73389ef7a96f5df06578813c8df7628
 10. Deploy to Kubernetes | deployment "devsecops-dashboard" successfully rolled out
-10. Deploy to Kubernetes | {"status":"healthy","timestamp":"2026-10-07T17:35:43.549150Z","uptime_seconds":4.76}
+10. Deploy to Kubernetes | {"status":"healthy","timestamp":"2026-10-07T17:56:50.701370Z","uptime_seconds":4.22}
 10. Deploy to Kubernetes | {"a":6.0,"b":7.0,"expression":"6.0 \u00d7 7.0 = 42.0","operation":"multiply","result":42.0,"symbol":"\u00d7"}

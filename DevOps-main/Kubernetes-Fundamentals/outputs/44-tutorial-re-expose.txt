@@ -1,0 +1,4 @@
+$ kubectl expose deployment/kubernetes-bootcamp --type="NodePort" --port 8080 --target-port 80 -n s09-tutorial && kubectl get rs -n s09-tutorial
+service/kubernetes-bootcamp exposed
+NAME                             DESIRED   CURRENT   READY   AGE
+kubernetes-bootcamp-5bcf65bf6d   1         1         1       2m34s

@@ -1,0 +1,6 @@
+$ kubectl delete -f basic-objects/ -n s09-basics && kubectl get all -n s09-basics
+deployment.apps "web" deleted from s09-basics namespace
+pod "nginx-pod" deleted from s09-basics namespace
+replicaset.apps "nginx-rs" deleted from s09-basics namespace
+service "web-svc" deleted from s09-basics namespace
+No resources found in s09-basics namespace.

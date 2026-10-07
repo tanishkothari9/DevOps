@@ -1,0 +1,5 @@
+$ kubectl apply -f basic-objects/pod.yaml -n s09-basics && kubectl wait --for=condition=Ready pod/nginx-pod -n s09-basics --timeout=180s && kubectl get pods -n s09-basics -o wide --show-labels
+pod/nginx-pod created
+pod/nginx-pod condition met
+NAME        READY   STATUS    RESTARTS   AGE     IP            NODE       NOMINATED NODE   READINESS GATES   LABELS
+nginx-pod   1/1     Running   0          2m25s   10.244.0.17   minikube   <none>           <none>            app=nginx-pod

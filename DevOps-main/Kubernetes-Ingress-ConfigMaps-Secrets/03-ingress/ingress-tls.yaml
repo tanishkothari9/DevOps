@@ -1,0 +1,34 @@
+# HTTPS Ingress: the controller terminates TLS with the certificate stored in Secret "yatri-tls"
+# (type kubernetes.io/tls, created from a self-signed cert - see README; key NOT committed to git)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: yatri-ingress-tls
+  labels:
+    app: yatri-app
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"   # plain HTTP -> 308 redirect to HTTPS
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - secure.yatri.local
+      secretName: yatri-tls
+  rules:
+    - host: secure.yatri.local
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: yatri-backend-service
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: yatri-frontend-service
+                port:
+                  number: 80

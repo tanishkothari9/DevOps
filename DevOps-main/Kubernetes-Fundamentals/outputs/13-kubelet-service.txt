@@ -1,0 +1,12 @@
+$ minikube ssh -- "sudo SYSTEMD_URLIZE=0 systemctl status kubelet --no-pager | head -11"
+● kubelet.service - kubelet: The Kubernetes Node Agent
+     Loaded: loaded (/lib/systemd/system/kubelet.service; disabled; preset: enabled)
+    Drop-In: /etc/systemd/system/kubelet.service.d
+             └─10-kubeadm.conf
+     Active: active (running) since Wed 2026-10-07 16:55:34 UTC; 10min ago
+       Docs: http://kubernetes.io/docs/
+   Main PID: 1408 (kubelet)
+      Tasks: 23 (limit: 9396)
+     Memory: 62.6M
+        CPU: 3min 38.875s
+     CGroup: /system.slice/kubelet.service

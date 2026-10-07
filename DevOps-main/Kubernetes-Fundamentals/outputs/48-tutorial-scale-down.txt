@@ -1,0 +1,8 @@
+$ kubectl scale deployments/kubernetes-bootcamp --replicas=2 -n s09-tutorial && sleep 5 && kubectl get deployments -n s09-tutorial && kubectl get pods -o wide -n s09-tutorial
+deployment.apps/kubernetes-bootcamp scaled
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+kubernetes-bootcamp   2/2     2            2           2m58s
+NAME                                   READY   STATUS    RESTARTS   AGE     IP            NODE       NOMINATED NODE   READINESS GATES
+kubernetes-bootcamp-5bcf65bf6d-2llhl   1/1     Running   0          2m59s   10.244.0.76   minikube   <none>           <none>
+kubernetes-bootcamp-5bcf65bf6d-5n6qh   0/1     Error     0          21s     10.244.0.77   minikube   <none>           <none>
+kubernetes-bootcamp-5bcf65bf6d-9s295   1/1     Running   0          21s     10.244.0.78   minikube   <none>           <none>

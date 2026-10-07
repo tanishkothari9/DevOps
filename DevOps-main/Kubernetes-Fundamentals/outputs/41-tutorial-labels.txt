@@ -1,0 +1,7 @@
+$ kubectl describe deployment kubernetes-bootcamp -n s09-tutorial | grep -E "^Labels|^Selector"; kubectl get pods -l app=kubernetes-bootcamp -n s09-tutorial; kubectl get services -l app=kubernetes-bootcamp -n s09-tutorial
+Labels:                 app=kubernetes-bootcamp
+Selector:               app=kubernetes-bootcamp
+NAME                                   READY   STATUS    RESTARTS   AGE
+kubernetes-bootcamp-5bcf65bf6d-2llhl   1/1     Running   0          112s
+NAME                  TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+kubernetes-bootcamp   NodePort   10.106.225.171   <none>        8080:30473/TCP   14s

@@ -1,0 +1,12 @@
+$ kubectl get pods -l app=web-sts -n s10-core -o custom-columns=POD:.metadata.name,CREATED:.metadata.creationTimestamp,IP:.status.podIP; echo; kubectl get events -n s10-core --sort-by=.lastTimestamp | grep "statefulset/web"
+POD     CREATED                IP
+web-0   2026-10-07T17:54:31Z   10.244.0.117
+web-1   2026-10-07T18:00:03Z   10.244.0.127
+web-2   2026-10-07T17:59:13Z   10.244.0.119
+
+6m7s        Normal    SuccessfulCreate        statefulset/web                    Create Pod web-0 in StatefulSet web successful
+6m7s        Normal    SuccessfulCreate        statefulset/web                    Create Claim data-web-0 Pod web-0 in StatefulSet web success
+88s         Normal    SuccessfulCreate        statefulset/web                    Create Claim data-web-1 Pod web-1 in StatefulSet web success
+85s         Normal    SuccessfulCreate        statefulset/web                    Create Claim data-web-2 Pod web-2 in StatefulSet web success
+85s         Normal    SuccessfulCreate        statefulset/web                    Create Pod web-2 in StatefulSet web successful
+35s         Normal    SuccessfulCreate        statefulset/web                    Create Pod web-1 in StatefulSet web successful

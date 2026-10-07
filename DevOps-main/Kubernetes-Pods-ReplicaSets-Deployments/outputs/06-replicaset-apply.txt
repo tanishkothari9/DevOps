@@ -1,0 +1,9 @@
+$ kubectl apply -f 00-core-objects/replicaset.yaml -n s10-core && sleep 3 && kubectl wait --for=condition=Ready pod -l app=yatri-backend -n s10-core --timeout=180s >/dev/null && kubectl get rs,pods -n s10-core -o wide
+replicaset.apps/yatri-backend-rs created
+NAME                               DESIRED   CURRENT   READY   AGE   CONTAINERS   IMAGES                   SELECTOR
+replicaset.apps/yatri-backend-rs   3         3         3       6s    backend      python:3.11-alpine3.19   app=yatri-backend
+
+NAME                         READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+pod/yatri-backend-rs-6pcsb   1/1     Running   0          6s    10.244.0.97   minikube   <none>           <none>
+pod/yatri-backend-rs-jcgwt   1/1     Running   0          5s    10.244.0.98   minikube   <none>           <none>
+pod/yatri-backend-rs-qf42m   1/1     Running   0          5s    10.244.0.96   minikube   <none>           <none>
