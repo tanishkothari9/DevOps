@@ -1,0 +1,5 @@
+$ for img in python:3.12-slim python:3.12.15-alpine3.24; do echo "== $img"; trivy image -q --severity HIGH,CRITICAL --exit-code 0 --format json $img | jq -r "\"OS: \(.Metadata.OS.Family) \(.Metadata.OS.Name)   HIGH+CRITICAL vulnerabilities: \([.Results[]?.Vulnerabilities[]?] | length)\""; done
+== python:3.12-slim
+OS: debian 13.7   HIGH+CRITICAL vulnerabilities: 44
+== python:3.12.15-alpine3.24
+OS: alpine 3.24.2   HIGH+CRITICAL vulnerabilities: 0
