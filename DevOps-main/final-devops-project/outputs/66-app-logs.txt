@@ -1,0 +1,22 @@
+$ kubectl logs -n taskboard -l app.kubernetes.io/component=backend -c backend --tail=-1 --prefix | grep -E '"logger":"stockpilot"|alembic.runtime|Uvicorn running' | tail -16 | cut -c1-210; echo '--- access log sample'; kubectl logs -n taskboard deploy/stockpilot-backend -c backend --tail=3 | cut -c1-160
+[pod/stockpilot-backend-5466465799-bsxg8/backend] INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[pod/stockpilot-backend-5466465799-bsxg8/backend] {"ts":"2026-10-07 19:32:08,571","level":"INFO","logger":"stockpilot","msg":"stock adjusted sku=KB-1042 delta=-1 qty=36"}
+[pod/stockpilot-backend-5466465799-bsxg8/backend] {"ts":"2026-10-07 19:32:13,743","level":"INFO","logger":"stockpilot","msg":"stock adjusted sku=CB-0100 delta=5 qty=210"}
+[pod/stockpilot-backend-5466465799-bsxg8/backend] {"ts":"2026-10-07 19:32:15,730","level":"INFO","logger":"stockpilot","msg":"stock adjusted sku=KB-1042 delta=-1 qty=35"}
+[pod/stockpilot-backend-5466465799-bsxg8/backend] {"ts":"2026-10-07 19:32:18,821","level":"INFO","logger":"stockpilot","msg":"stock adjusted sku=CB-0100 delta=5 qty=215"}
+[pod/stockpilot-backend-5466465799-bsxg8/backend] {"ts":"2026-10-07 19:32:26,956","level":"INFO","logger":"stockpilot","msg":"stock adjusted sku=KB-1042 delta=-1 qty=34"}
+[pod/stockpilot-backend-5466465799-bsxg8/backend] {"ts":"2026-10-07 19:32:30,257","level":"INFO","logger":"stockpilot","msg":"stock adjusted sku=CB-0100 delta=5 qty=225"}
+[pod/stockpilot-backend-5466465799-w4cmq/backend] INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+[pod/stockpilot-backend-5466465799-w4cmq/backend] INFO  [alembic.runtime.migration] Will assume transactional DDL.
+[pod/stockpilot-backend-5466465799-w4cmq/backend] INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[pod/stockpilot-backend-5466465799-w4cmq/backend] {"ts":"2026-10-07 19:32:01,036","level":"INFO","logger":"stockpilot","msg":"stock adjusted sku=CB-0100 delta=5 qty=205"}
+[pod/stockpilot-backend-5466465799-w4cmq/backend] {"ts":"2026-10-07 19:32:28,349","level":"INFO","logger":"stockpilot","msg":"stock adjusted sku=CB-0100 delta=5 qty=220"}
+[pod/stockpilot-backend-5466465799-w4cmq/backend] {"ts":"2026-10-07 19:32:28,812","level":"INFO","logger":"stockpilot","msg":"stock adjusted sku=KB-1042 delta=-1 qty=33"}
+[pod/stockpilot-backend-5466465799-w4cmq/backend] {"ts":"2026-10-07 19:32:31,907","level":"INFO","logger":"stockpilot","msg":"stock adjusted sku=KB-1042 delta=-1 qty=32"}
+[pod/stockpilot-backend-5466465799-w4cmq/backend] {"ts":"2026-10-07 19:32:38,017","level":"INFO","logger":"stockpilot","msg":"stock adjusted sku=CB-0100 delta=5 qty=230"}
+[pod/stockpilot-backend-5466465799-w4cmq/backend] {"ts":"2026-10-07 19:32:39,318","level":"INFO","logger":"stockpilot","msg":"stock adjusted sku=KB-1042 delta=-1 qty=31"}
+--- access log sample
+Found 2 pods, using pod/stockpilot-backend-5466465799-bsxg8
+INFO:     10.244.0.1:49282 - "GET /health HTTP/1.1" 200 OK
+INFO:     10.244.0.52:60972 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.244.0.1:49292 - "GET /ready HTTP/1.1" 200 OK

@@ -1,0 +1,35 @@
+$ kubectl describe hpa stockpilot-backend -n taskboard | sed -n '/Metrics:/,$p' | cut -c1-220; kubectl get apiservice v1beta1.metrics.k8s.io; kubectl get pods -n kube-system -l k8s-app=metrics-server; kubectl top pods -n taskboard; docker exec minikube cat /proc/loadavg
+Metrics:                                               ( current / target )
+  resource cpu on pods  (as a percentage of request):  <unknown> / 60%
+Min replicas:                                          1
+Max replicas:                                          3
+Behavior:
+  Scale Up:
+    Stabilization Window: 0 seconds
+    Select Policy: Max
+    Policies:
+      - Type: Pods  Value: 2  Period: 30 seconds
+  Scale Down:
+    Stabilization Window: 120 seconds
+    Select Policy: Max
+    Policies:
+      - Type: Pods  Value: 1  Period: 60 seconds
+Deployment pods:    2 current / 2 desired
+Conditions:
+  Type            Status  Reason                   Message
+  ----            ------  ------                   -------
+  AbleToScale     True    SucceededGetScale        the HPA controller was able to get the target's current scale
+  ScaledToZero    False   NotScaledToZero          the HPA controller did not scale the workload to zero
+  ScalingActive   False   FailedGetResourceMetric  the HPA was unable to compute the replica count: failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource metrics API
+  ScalingLimited  False   DesiredWithinRange       the desired count is within the acceptable range
+Events:
+  Type     Reason                        Age                  From                       Message
+  ----     ------                        ----                 ----                       -------
+  Warning  FailedComputeMetricsReplicas  51m (x125 over 88m)  horizontal-pod-autoscaler  invalid metrics (1 invalid out of 1), first error is: failed to get cpu resource metric value: failed to get cpu utilization: unabl
+  Warning  FailedGetResourceMetric       73s (x286 over 88m)  horizontal-pod-autoscaler  failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource metrics API: the serve
+NAME                     SERVICE                      AVAILABLE                  AGE
+v1beta1.metrics.k8s.io   kube-system/metrics-server   False (MissingEndpoints)   155m
+NAME                              READY   STATUS    RESTARTS         AGE
+metrics-server-768f9f6999-2ss5q   0/1     Running   22 (6m51s ago)   155m
+error: Metrics API not available
+75.85 84.68 104.40 37/3428 251244

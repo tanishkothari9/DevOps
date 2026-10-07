@@ -1,0 +1,32 @@
+$ kubectl get servicemonitor,prometheusrule,configmap -n taskboard -l app.kubernetes.io/instance=stockpilot && kubectl get servicemonitor stockpilot-backend -n taskboard -o jsonpath='{.spec}' | jq . && kubectl get configmap stockpilot-grafana-dashboard -n taskboard -o jsonpath='{.metadata.labels.grafana_dashboard}' | xargs echo 'grafana_dashboard label ='
+NAME                                                      AGE
+servicemonitor.monitoring.coreos.com/stockpilot-backend   92m
+
+NAME                                                     AGE
+prometheusrule.monitoring.coreos.com/stockpilot-alerts   92m
+
+NAME                                     DATA   AGE
+configmap/stockpilot-config              5      92m
+configmap/stockpilot-grafana-dashboard   1      92m
+{
+  "endpoints": [
+    {
+      "interval": "15s",
+      "path": "/metrics",
+      "port": "http"
+    }
+  ],
+  "namespaceSelector": {
+    "matchNames": [
+      "taskboard"
+    ]
+  },
+  "selector": {
+    "matchLabels": {
+      "app.kubernetes.io/component": "backend",
+      "app.kubernetes.io/instance": "stockpilot",
+      "app.kubernetes.io/name": "stockpilot"
+    }
+  }
+}
+grafana_dashboard label = 1

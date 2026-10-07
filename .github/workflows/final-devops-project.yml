@@ -192,46 +192,57 @@ jobs:
           path: ${{ env.PROJECT_DIR }}/security/reports/
 
   # ---------------------------------------------------------------- 5. docker build + image scan
+  # Built natively on an amd64 and an arm64 runner (minikube on Apple Silicon is arm64) and
+  # combined into one multi-arch tag by the push job.
   docker-build-scan:
-    name: "5. Docker build + Trivy image scan"
+    name: "5. Docker build + Trivy image scan (${{ matrix.arch }})"
     needs: build-test
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {arch: amd64, runner: ubuntu-latest}
+          - {arch: arm64, runner: ubuntu-24.04-arm}
+    runs-on: ${{ matrix.runner }}
     defaults:
       run:
         working-directory: ${{ env.PROJECT_DIR }}
+    env:
+      TAG: ${{ github.sha }}-${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v7
-      - name: Build images (tag = commit SHA)
+      - name: Build images (tag = commit SHA + arch)
         run: |
-          docker build -t "$BACKEND_IMAGE:${{ github.sha }}" application/backend
-          docker build -t "$FRONTEND_IMAGE:${{ github.sha }}" application/frontend
-          docker image ls | grep stockpilot
+          docker build -t "$BACKEND_IMAGE:$TAG" application/backend
+          docker build -t "$FRONTEND_IMAGE:$TAG" application/frontend
+          docker image ls --format '{{.Repository}}:{{.Tag}} {{.Size}}' | grep stockpilot
+          docker image inspect --format '{{.Architecture}}' "$BACKEND_IMAGE:$TAG"
       - name: Trivy image scan - backend
         run: |
           mkdir -p security/reports
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$HOME/.cache/trivy:/root/.cache/trivy" -v "$PWD/security/reports:/reports" \
             "$TRIVY_IMAGE" image --quiet --severity HIGH,CRITICAL --ignore-unfixed \
-            --format json --output /reports/trivy-backend.json "$BACKEND_IMAGE:${{ github.sha }}"
+            --format json --output "/reports/trivy-backend-${{ matrix.arch }}.json" "$BACKEND_IMAGE:$TAG"
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$HOME/.cache/trivy:/root/.cache/trivy" \
-            "$TRIVY_IMAGE" image --quiet --severity HIGH,CRITICAL --ignore-unfixed "$BACKEND_IMAGE:${{ github.sha }}"
+            "$TRIVY_IMAGE" image --quiet --severity HIGH,CRITICAL --ignore-unfixed "$BACKEND_IMAGE:$TAG"
       - name: Trivy image scan - frontend
         run: |
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$HOME/.cache/trivy:/root/.cache/trivy" -v "$PWD/security/reports:/reports" \
             "$TRIVY_IMAGE" image --quiet --severity HIGH,CRITICAL --ignore-unfixed \
-            --format json --output /reports/trivy-frontend.json "$FRONTEND_IMAGE:${{ github.sha }}"
+            --format json --output "/reports/trivy-frontend-${{ matrix.arch }}.json" "$FRONTEND_IMAGE:$TAG"
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$HOME/.cache/trivy:/root/.cache/trivy" \
-            "$TRIVY_IMAGE" image --quiet --severity HIGH,CRITICAL --ignore-unfixed "$FRONTEND_IMAGE:${{ github.sha }}"
+            "$TRIVY_IMAGE" image --quiet --severity HIGH,CRITICAL --ignore-unfixed "$FRONTEND_IMAGE:$TAG"
       - name: Save images for the push job (what was scanned is what gets pushed)
-        run: docker save "$BACKEND_IMAGE:${{ github.sha }}" "$FRONTEND_IMAGE:${{ github.sha }}" | gzip > /tmp/images.tar.gz
+        run: docker save "$BACKEND_IMAGE:$TAG" "$FRONTEND_IMAGE:$TAG" | gzip > "/tmp/images-${{ matrix.arch }}.tar.gz"
       - uses: actions/upload-artifact@v7
         with:
-          name: images
-          path: /tmp/images.tar.gz
+          name: images-${{ matrix.arch }}
+          path: /tmp/images-${{ matrix.arch }}.tar.gz
           retention-days: 1
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: image-scan-reports
+          name: image-scan-reports-${{ matrix.arch }}
           path: ${{ env.PROJECT_DIR }}/security/reports/
 
   # ---------------------------------------------------------------- 6. security gate
@@ -244,7 +255,8 @@ jobs:
       - uses: actions/download-artifact@v8
         if: needs.docker-build-scan.result == 'success'
         with:
-          name: image-scan-reports
+          pattern: image-scan-reports-*
+          merge-multiple: true
           path: reports
       - name: Evaluate gate
         run: |
@@ -261,7 +273,7 @@ jobs:
           for r in "${{ needs.sast.result }}" "${{ needs.sca.result }}" "${{ needs.secret-scan.result }}" "${{ needs.docker-build-scan.result }}"; do
             [ "$r" = "success" ] || status=1
           done
-          for f in reports/trivy-backend.json reports/trivy-frontend.json; do
+          for f in reports/trivy-backend-amd64.json reports/trivy-frontend-amd64.json reports/trivy-backend-arm64.json reports/trivy-frontend-arm64.json; do
             [ -f "$f" ] || { echo "missing $f"; status=1; continue; }
             n=$(jq '[.Results[]? | (.Vulnerabilities // [])[] | select(.Severity=="HIGH" or .Severity=="CRITICAL")] | length' "$f")
             echo "| $(basename "$f" .json) fixable HIGH/CRITICAL | $n |" >> "$GITHUB_STEP_SUMMARY"
@@ -288,18 +300,26 @@ jobs:
     steps:
       - uses: actions/download-artifact@v8
         with:
-          name: images
+          pattern: images-*
+          merge-multiple: true
           path: /tmp
+      - uses: docker/setup-buildx-action@v4
       - uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Load and push SHA-tagged images
+      - name: Push the scanned per-arch images, then one multi-arch SHA tag
         run: |
-          gunzip -c /tmp/images.tar.gz | docker load
-          docker push "$BACKEND_IMAGE:${{ github.sha }}"
-          docker push "$FRONTEND_IMAGE:${{ github.sha }}"
+          for arch in amd64 arm64; do
+            gunzip -c "/tmp/images-$arch.tar.gz" | docker load
+            docker push "$BACKEND_IMAGE:${{ github.sha }}-$arch"
+            docker push "$FRONTEND_IMAGE:${{ github.sha }}-$arch"
+          done
+          for img in "$BACKEND_IMAGE" "$FRONTEND_IMAGE"; do
+            docker buildx imagetools create -t "$img:${{ github.sha }}" \
+              "$img:${{ github.sha }}-amd64" "$img:${{ github.sha }}-arm64"
+          done
       - name: Verify the SHA tags exist in GHCR
         env:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -307,7 +327,7 @@ jobs:
           for img in stockpilot-backend stockpilot-frontend; do
             ref="ghcr.io/${{ github.repository_owner }}/$img:${{ github.sha }}"
             echo "== $ref"
-            docker buildx imagetools inspect "$ref" | head -4
+            docker buildx imagetools inspect "$ref" | grep -E '^(Name|MediaType|Digest):|Platform:'
             curl -fsS -H "Authorization: Bearer $(printf '%s' "$GHCR_TOKEN" | base64 -w0)" \
               "https://ghcr.io/v2/${{ github.repository_owner }}/$img/tags/list" | jq -c '{name, tags: (.tags | length), latest_tags: (.tags[-5:])}'
           done

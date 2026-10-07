@@ -1,0 +1,16 @@
+$ P=localhost:9091/api/v1/query; q() { echo "PromQL> $1"; curl -s -G $P --data-urlencode "query=$1" | jq -r '.data.result[] | "   \(.metric | del(.__name__) | to_entries | map("\(.key)=\(.value)") | join(","))  =>  \(.value[1])"' | cut -c1-200; }; q 'up{namespace="taskboard",service="stockpilot-backend"}'; q 'sum by (handler) (increase(http_requests_total{namespace="taskboard",handler!="/metrics"}[15m]))'; q 'histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{namespace="taskboard",handler!="/metrics"}[15m])))'; q 'sum by (direction) (stockpilot_stock_movements_total{namespace="taskboard"})'; q 'sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="taskboard",container="backend"}[5m]))'
+PromQL> up{namespace="taskboard",service="stockpilot-backend"}
+   container=backend,endpoint=http,instance=10.244.0.199:8000,job=stockpilot-backend,namespace=taskboard,pod=stockpilot-backend-5466465799-bsxg8,service=stockpilot-backend  =>  1
+   container=backend,endpoint=http,instance=10.244.0.223:8000,job=stockpilot-backend,namespace=taskboard,pod=stockpilot-backend-5466465799-w4cmq,service=stockpilot-backend  =>  1
+PromQL> sum by (handler) (increase(http_requests_total{namespace="taskboard",handler!="/metrics"}[15m]))
+   handler=/health  =>  72.29596472892236
+   handler=/ready  =>  101.22108871235947
+   handler=/api/stats  =>  664.8944747914339
+   handler=/api/items  =>  670.0263513917225
+   handler=/api/items/{item_id}/adjust  =>  11.288160883641261
+PromQL> histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{namespace="taskboard",handler!="/metrics"}[15m])))
+     =>  1
+PromQL> sum by (direction) (stockpilot_stock_movements_total{namespace="taskboard"})
+   direction=in  =>  5
+   direction=out  =>  5
+PromQL> sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="taskboard",container="backend"}[5m]))

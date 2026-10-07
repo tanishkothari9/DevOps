@@ -1,0 +1,15 @@
+$ kubectl exec -n taskboard deploy/stockpilot-backend -c backend -- python -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:8000/metrics').read().decode())" | grep -E '^(# (HELP|TYPE) (http_requests_total|stockpilot_stock_movements_total|http_request_duration_seconds) |http_requests_total\{|stockpilot_stock_movements_total|http_request_duration_seconds_count)' | head -25
+# HELP stockpilot_stock_movements_total Stock adjustments applied, by direction
+# TYPE stockpilot_stock_movements_total counter
+# HELP http_requests_total Total number of requests by method, status and handler.
+# TYPE http_requests_total counter
+http_requests_total{handler="/health",method="GET",status="2xx"} 47.0
+http_requests_total{handler="/ready",method="GET",status="2xx"} 65.0
+http_requests_total{handler="/api/stats",method="GET",status="2xx"} 326.0
+http_requests_total{handler="/api/items",method="GET",status="2xx"} 346.0
+# HELP http_request_duration_seconds Latency with only few buckets by handler. Made to be only used if aggregation by handler is important. 
+# TYPE http_request_duration_seconds histogram
+http_request_duration_seconds_count{handler="/health",method="GET"} 47.0
+http_request_duration_seconds_count{handler="/ready",method="GET"} 65.0
+http_request_duration_seconds_count{handler="/api/stats",method="GET"} 326.0
+http_request_duration_seconds_count{handler="/api/items",method="GET"} 346.0

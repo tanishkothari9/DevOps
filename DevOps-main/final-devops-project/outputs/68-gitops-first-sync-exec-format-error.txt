@@ -1,0 +1,10 @@
+$ kubectl get applications.argoproj.io -n argocd stockpilot-gitops -o jsonpath='{.status.sync.status}/{.status.health.status} revision={.status.sync.revision}{"\n"}'; kubectl get pods -n taskboard-gitops; kubectl logs -n taskboard-gitops deploy/stockpilot-backend -c backend --previous --tail=2; kubectl logs -n taskboard-gitops deploy/stockpilot-frontend --previous --tail=2; echo "node architecture: $(kubectl get node minikube -o jsonpath='{.status.nodeInfo.architecture}')"; docker image inspect --format 'GHCR image {{index .RepoTags 0}} architecture: {{.Architecture}}' ghcr.io/tanishkothari9/stockpilot-backend:68adae859364a8653de35a9ab25473ae19baf14c
+Synced/Progressing revision=01d40ec8619a97be86ca9f2ecc2134253cd94ef2
+NAME                                  READY   STATUS             RESTARTS        AGE
+stockpilot-backend-64dc6879d-cvn7f    0/1     CrashLoopBackOff   5 (113s ago)    6m7s
+stockpilot-frontend-876f87cff-5ppsz   0/1     CrashLoopBackOff   5 (2m49s ago)   6m7s
+stockpilot-postgres-0                 1/1     Running            0               6m7s
+exec /usr/bin/sh: exec format error
+exec /docker-entrypoint.sh: exec format error
+node architecture: arm64
+GHCR image ghcr.io/tanishkothari9/stockpilot-backend:68adae859364a8653de35a9ab25473ae19baf14c architecture: amd64
