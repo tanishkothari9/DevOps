@@ -1,0 +1,3 @@
+# Accepted risks for Trivy. Every entry needs a justification and an expiry date, e.g.
+#   CVE-2099-12345 exp:2026-12-31   # not reachable: feature X is disabled, tracked in issue #N
+# Currently empty - the image and dependencies have no HIGH/CRITICAL findings.

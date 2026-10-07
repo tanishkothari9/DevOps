@@ -1,0 +1,39 @@
+$ python --version && flake8 app tests && echo "flake8: no lint errors" && pytest -v --cov=app --cov-report=term-missing
+Python 3.12.12
+flake8: no lint errors
+============================= test session starts ==============================
+platform darwin -- Python 3.12.12, pytest-8.4.2, pluggy-1.6.0 -- /private/tmp/claude-501/-Users-tanishkothari-Code-learning-sst-devops-devops-2/e68a0ffe-ac42-4077-9a09-92e41c2ade38/scratchpad/venv-cicd/bin/python3.12
+cachedir: .pytest_cache
+rootdir: /Users/tanishkothari/Code/learning/sst/devops/DevOps-main/CICD-GitHub-Actions
+configfile: pytest.ini
+testpaths: tests
+plugins: cov-6.0.0, platformdirs-4.12.3, anyio-4.15.1
+collecting ... collected 15 items
+
+tests/test_api.py::test_index_lists_operations PASSED                    [  6%]
+tests/test_api.py::test_health PASSED                                    [ 13%]
+tests/test_api.py::test_operations[add-15] PASSED                        [ 20%]
+tests/test_api.py::test_operations[subtract-5] PASSED                    [ 26%]
+tests/test_api.py::test_operations[multiply-50] PASSED                   [ 33%]
+tests/test_api.py::test_operations[divide-2] PASSED                      [ 40%]
+tests/test_api.py::test_divide_by_zero_returns_400 PASSED                [ 46%]
+tests/test_api.py::test_missing_params_returns_400 PASSED                [ 53%]
+tests/test_api.py::test_non_numeric_returns_400 PASSED                   [ 60%]
+tests/test_api.py::test_unknown_operation_returns_404 PASSED             [ 66%]
+tests/test_calculator.py::test_add PASSED                                [ 73%]
+tests/test_calculator.py::test_subtract PASSED                           [ 80%]
+tests/test_calculator.py::test_multiply PASSED                           [ 86%]
+tests/test_calculator.py::test_divide PASSED                             [ 93%]
+tests/test_calculator.py::test_divide_by_zero PASSED                     [100%]
+
+--------- coverage: platform darwin, python 3.12.12-final-0 ----------
+Name                Stmts   Miss  Cover   Missing
+-------------------------------------------------
+app/__init__.py         0      0   100%
+app/calculator.py      11      0   100%
+app/main.py            28      0   100%
+-------------------------------------------------
+TOTAL                  39      0   100%
+
+
+============================== 15 passed in 1.19s ==============================

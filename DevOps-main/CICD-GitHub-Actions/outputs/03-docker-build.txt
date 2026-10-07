@@ -1,0 +1,113 @@
+$ docker build --progress=plain --build-arg APP_VERSION=local -t session16-calculator:local . 2>&1 | grep -vE "^#[0-9]+ (sha256|extracting|resolve|\[auth\])" && docker image ls session16-calculator
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 597B 0.1s done
+#1 DONE 0.7s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim
+#2 ...
+
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim
+#2 DONE 29.5s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 144B 0.1s done
+#4 DONE 1.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [1/6] FROM docker.io/library/python:3.12-slim@sha256:05cda9777409a9c3ffddd94a4c476b79f0769a0b4857f0c7ed9226b6800b0d6f
+#6 DONE 0.5s
+
+#6 [1/6] FROM docker.io/library/python:3.12-slim@sha256:05cda9777409a9c3ffddd94a4c476b79f0769a0b4857f0c7ed9226b6800b0d6f
+#6 ...
+
+#5 [internal] load build context
+#5 transferring context: 1.81kB 0.2s done
+#5 DONE 1.5s
+
+#6 [1/6] FROM docker.io/library/python:3.12-slim@sha256:05cda9777409a9c3ffddd94a4c476b79f0769a0b4857f0c7ed9226b6800b0d6f
+#6 DONE 3.0s
+
+#6 [1/6] FROM docker.io/library/python:3.12-slim@sha256:05cda9777409a9c3ffddd94a4c476b79f0769a0b4857f0c7ed9226b6800b0d6f
+#6 DONE 14.2s
+
+#6 [1/6] FROM docker.io/library/python:3.12-slim@sha256:05cda9777409a9c3ffddd94a4c476b79f0769a0b4857f0c7ed9226b6800b0d6f
+#6 DONE 33.1s
+
+#6 [1/6] FROM docker.io/library/python:3.12-slim@sha256:05cda9777409a9c3ffddd94a4c476b79f0769a0b4857f0c7ed9226b6800b0d6f
+#6 DONE 36.3s
+
+#7 [2/6] WORKDIR /app
+#7 DONE 4.2s
+
+#8 [3/6] COPY requirements.txt .
+#8 DONE 1.1s
+
+#9 [4/6] RUN pip install --no-cache-dir -r requirements.txt
+#9 29.02 Collecting flask==3.1.3 (from -r requirements.txt (line 1))
+#9 29.24   Downloading flask-3.1.3-py3-none-any.whl.metadata (3.2 kB)
+#9 29.36 Collecting gunicorn==23.0.0 (from -r requirements.txt (line 2))
+#9 29.45   Downloading gunicorn-23.0.0-py3-none-any.whl.metadata (4.4 kB)
+#9 29.60 Collecting blinker>=1.9.0 (from flask==3.1.3->-r requirements.txt (line 1))
+#9 29.63   Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+#9 29.72 Collecting click>=8.1.3 (from flask==3.1.3->-r requirements.txt (line 1))
+#9 29.80   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#9 29.93 Collecting itsdangerous>=2.2.0 (from flask==3.1.3->-r requirements.txt (line 1))
+#9 29.97   Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+#9 30.70 Collecting jinja2>=3.1.2 (from flask==3.1.3->-r requirements.txt (line 1))
+#9 30.81   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+#9 31.60 Collecting markupsafe>=2.1.1 (from flask==3.1.3->-r requirements.txt (line 1))
+#9 31.68   Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (2.7 kB)
+#9 31.90 Collecting werkzeug>=3.1.0 (from flask==3.1.3->-r requirements.txt (line 1))
+#9 32.00   Downloading werkzeug-3.1.9-py3-none-any.whl.metadata (4.1 kB)
+#9 32.13 Collecting packaging (from gunicorn==23.0.0->-r requirements.txt (line 2))
+#9 32.30   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+#9 32.52 Downloading flask-3.1.3-py3-none-any.whl (103 kB)
+#9 32.69 Downloading gunicorn-23.0.0-py3-none-any.whl (85 kB)
+#9 33.23 Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+#9 33.31 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#9 33.43 Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+#9 33.65 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+#9 33.81 Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (24 kB)
+#9 33.86 Downloading werkzeug-3.1.9-py3-none-any.whl (228 kB)
+#9 33.98 Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#9 34.21 Installing collected packages: packaging, markupsafe, itsdangerous, click, blinker, werkzeug, jinja2, gunicorn, flask
+#9 39.52 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#9 39.52 Successfully installed blinker-1.9.0 click-8.5.0 flask-3.1.3 gunicorn-23.0.0 itsdangerous-2.2.0 jinja2-3.1.6 markupsafe-3.0.4 packaging-26.3 werkzeug-3.1.9
+#9 40.46 
+#9 40.46 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+#9 40.46 [notice] To update, run: pip install --upgrade pip
+#9 DONE 42.8s
+
+#10 [5/6] COPY app ./app
+#10 DONE 0.9s
+
+#11 [6/6] RUN useradd --uid 10001 --no-create-home appuser
+#11 DONE 2.4s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 18.7s done
+#12 exporting manifest sha256:ce5a9ab913fbbbc4da8c1070687638be61cc7ddee2a497e93a34f8383e7e099b
+#12 exporting manifest sha256:ce5a9ab913fbbbc4da8c1070687638be61cc7ddee2a497e93a34f8383e7e099b 0.6s done
+#12 exporting config sha256:11472420a32bd9fb26d1b6f709db67361ba476ec8ed7d9ac91743e640b07f9bb
+#12 exporting config sha256:11472420a32bd9fb26d1b6f709db67361ba476ec8ed7d9ac91743e640b07f9bb 0.8s done
+#12 exporting attestation manifest sha256:524b844a18847533ca1dd1e2b86e9b13b347e0165fb81ad71dca76861efe4dab
+#12 exporting attestation manifest sha256:524b844a18847533ca1dd1e2b86e9b13b347e0165fb81ad71dca76861efe4dab 0.8s done
+#12 exporting manifest list sha256:c58ce50a1f9d40441795150f1a16be469637db27436ae57e85d7542be55c4fb8
+#12 exporting manifest list sha256:c58ce50a1f9d40441795150f1a16be469637db27436ae57e85d7542be55c4fb8 1.2s done
+#12 naming to docker.io/library/session16-calculator:local
+#12 naming to docker.io/library/session16-calculator:local 0.0s done
+#12 unpacking to docker.io/library/session16-calculator:local
+#12 unpacking to docker.io/library/session16-calculator:local 4.7s done
+#12 DONE 31.0s
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                        ID             DISK USAGE   CONTENT SIZE   EXTRA
+session16-calculator:local   c58ce50a1f9d        213MB         45.7MB        

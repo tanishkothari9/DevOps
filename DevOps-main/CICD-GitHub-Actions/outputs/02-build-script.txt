@@ -1,0 +1,22 @@
+$ ./build.sh
+=================================
+Starting Application Build
+=================================
+
+Build files:
+total 24
+drwxr-xr-x@  6 tanishkothari  staff   192 Oct  7 22:30 .
+drwxr-xr-x@ 19 tanishkothari  staff   608 Oct  7 22:30 ..
+drwxr-xr-x@  5 tanishkothari  staff   160 Oct  7 22:30 app
+-rw-r--r--@  1 tanishkothari  staff   176 Oct  7 22:30 build-info.txt
+-rw-r--r--@  1 tanishkothari  staff  1376 Oct  7 22:30 calculator-app.tar.gz
+-rw-r--r--@  1 tanishkothari  staff    30 Oct  7 22:30 requirements.txt
+
+Application : Session 16 Calculator API
+Build Status: SUCCESS
+Build Date  : 2026-10-07T17:00:11Z
+Git Commit  : f6041a2
+Workflow Run: local
+Runner      : local machine (Darwin)
+
+Build completed successfully.

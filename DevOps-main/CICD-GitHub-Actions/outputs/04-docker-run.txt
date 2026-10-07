@@ -1,0 +1,17 @@
+$ docker run -d --name s16-smoke -p 18016:8000 session16-calculator:local; until curl -sf -o /dev/null http://localhost:18016/health; do sleep 1; done; docker ps --filter name=s16-smoke --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"; echo; for p in "/" "/health" "/api/add?a=10&b=5" "/api/divide?a=1&b=0"; do echo "GET $p"; curl -s "http://localhost:18016$p"; done; echo; echo "container user:"; docker exec s16-smoke id; docker rm -f s16-smoke
+880ebd281d6862ace097a59eaec739f84b540a3bffb2ea1a260a577669b42742
+NAMES       IMAGE                        STATUS          PORTS
+s16-smoke   session16-calculator:local   Up 11 seconds   0.0.0.0:18016->8000/tcp, [::]:18016->8000/tcp
+
+GET /
+{"app":"session16-calculator","endpoints":["/health","/api/<operation>?a=<num>&b=<num>"],"operations":["add","divide","multiply","subtract"],"version":"local"}
+GET /health
+{"status":"ok","version":"local"}
+GET /api/add?a=10&b=5
+{"a":10.0,"b":5.0,"operation":"add","result":15.0}
+GET /api/divide?a=1&b=0
+{"error":"Cannot divide by zero"}
+
+container user:
+uid=10001(appuser) gid=10001(appuser) groups=10001(appuser)
+s16-smoke

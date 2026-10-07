@@ -1,0 +1,450 @@
+# =====================================================================
+# Session 17 - Complete CI/CD + DevSecOps pipeline
+# App folder : DevOps-main/DevSecOps
+#
+#  Build -> Unit Test -> SAST -> SCA -> Secret Scan -> Docker Build
+#        -> Container Image Scan -> Security Gate -> Push Image -> Deploy to Kubernetes
+#
+# Every stage `needs:` the previous one, so a failed check stops everything after it.
+# =====================================================================
+name: Session 17 - DevSecOps Pipeline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "DevOps-main/DevSecOps/**"
+      - ".github/workflows/session17-devsecops.yml"
+  workflow_dispatch:
+    inputs:
+      inject_issue:
+        description: "Inject a security problem at runtime (CI only, nothing is committed) to prove the gates block it"
+        type: choice
+        options: [none, secret, sca, sast, image]
+        default: none
+
+permissions:
+  contents: read
+
+concurrency:
+  group: session17-${{ github.ref }}-${{ inputs.inject_issue || 'push' }}
+  cancel-in-progress: false
+
+env:
+  APP_DIR: DevOps-main/DevSecOps
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/session17-devsecops
+  LOCAL_IMAGE: session17-devsecops:${{ github.sha }}
+  PYTHON_VERSION: "3.12"
+  # Trivy is run from its official image pinned to a known-good version
+  # (aquasecurity/trivy-action and setup-trivy are deliberately NOT used).
+  TRIVY_IMAGE: aquasec/trivy:0.75.0
+  GITLEAKS_IMAGE: zricethezav/gitleaks:v8.30.1
+  INJECT: ${{ inputs.inject_issue || 'none' }}
+
+defaults:
+  run:
+    working-directory: DevOps-main/DevSecOps
+
+jobs:
+  # ------------------------------------------------------------------
+  # 1. BUILD - install dependencies, byte-compile, import smoke test
+  # ------------------------------------------------------------------
+  build:
+    name: "1. Build"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: ${{ env.APP_DIR }}/requirements*.txt
+
+      - name: Install runtime dependencies
+        run: pip install -r requirements.txt
+
+      - name: Compile and import the application
+        run: |
+          python -m compileall -q app
+          python -c "from app.app import app; print('routes:', sorted(r.rule for r in app.url_map.iter_rules()))"
+
+      - name: Package build artifact
+        run: |
+          mkdir -p build
+          tar -czf build/devsecops-app.tar.gz app requirements.txt
+          echo "commit=${{ github.sha }} run=${{ github.run_id }}" > build/build-info.txt
+          ls -la build
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: app-build
+          path: ${{ env.APP_DIR }}/build/
+          retention-days: 7
+
+  # ------------------------------------------------------------------
+  # 2. UNIT TEST - pytest with a coverage threshold
+  # ------------------------------------------------------------------
+  unit-test:
+    name: "2. Unit Test"
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: ${{ env.APP_DIR }}/requirements*.txt
+
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run pytest
+        run: |
+          pytest -v --junitxml=reports/junit.xml \
+            --cov=app --cov-report=term-missing \
+            --cov-report=xml:reports/coverage.xml --cov-fail-under=80
+
+      - uses: actions/upload-artifact@v6
+        if: ${{ !cancelled() }}
+        with:
+          name: test-reports
+          path: ${{ env.APP_DIR }}/reports/
+          retention-days: 7
+
+  # ------------------------------------------------------------------
+  # 3. SAST - Bandit + Semgrep scan the source code
+  # ------------------------------------------------------------------
+  sast:
+    name: "3. SAST (Bandit + Semgrep)"
+    needs: unit-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: ${{ env.APP_DIR }}/requirements*.txt
+
+      - name: Install SAST tools
+        run: pip install -r requirements-security.txt
+
+      - name: "[demo] Inject vulnerable code (inject_issue=sast)"
+        if: env.INJECT == 'sast'
+        run: |
+          cat > app/injected_unsafe.py <<'EOF'
+          import subprocess
+
+
+          def run_report(user_input):
+              return subprocess.call("generate-report " + user_input, shell=True)
+
+
+          def evaluate(expression):
+              return eval(expression)
+          EOF
+          echo "::warning::Injected app/injected_unsafe.py (shell=True + eval) for the SAST gate demo"
+
+      - name: Bandit
+        run: |
+          mkdir -p reports
+          bandit -c bandit.yaml -r app -f json -o reports/bandit.json --exit-zero
+          bandit -c bandit.yaml -r app
+
+      - name: Semgrep
+        if: ${{ !cancelled() }}
+        run: |
+          semgrep scan --metrics=off --error \
+            --config p/python --config p/flask --config .semgrep/rules.yml \
+            --json-output=reports/semgrep.json app
+
+      - uses: actions/upload-artifact@v6
+        if: ${{ !cancelled() }}
+        with:
+          name: sast-reports
+          path: ${{ env.APP_DIR }}/reports/
+          retention-days: 7
+
+  # ------------------------------------------------------------------
+  # 4. SCA - known-vulnerable dependencies (pip-audit + trivy fs)
+  # ------------------------------------------------------------------
+  sca:
+    name: "4. SCA (pip-audit + Trivy fs)"
+    needs: sast
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: ${{ env.APP_DIR }}/requirements*.txt
+
+      - name: Install pip-audit
+        run: pip install pip-audit==2.10.1
+
+      - name: "[demo] Add an outdated dependency (inject_issue=sca)"
+        if: env.INJECT == 'sca'
+        run: |
+          echo "requests==2.19.0" >> requirements.txt
+          echo "::warning::Appended requests==2.19.0 to requirements.txt for the SCA gate demo"
+          cat requirements.txt
+
+      - name: pip-audit (PyPI advisory database / OSV)
+        run: pip-audit -r requirements.txt --strict --desc
+
+      - name: Trivy filesystem scan (dependencies, HIGH/CRITICAL)
+        if: ${{ !cancelled() }}
+        run: |
+          docker run --rm -v "$PWD:/src" -w /src \
+            -v "$HOME/.cache/trivy:/root/.cache/trivy" \
+            "$TRIVY_IMAGE" fs --scanners vuln .
+
+  # ------------------------------------------------------------------
+  # 5. SECRET SCAN - gitleaks on this project folder only
+  # ------------------------------------------------------------------
+  secret-scan:
+    name: "5. Secret Scan (Gitleaks)"
+    needs: sca
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: "[demo] Leak a fake credential (inject_issue=secret)"
+        if: env.INJECT == 'secret'
+        run: |
+          # values are generated at runtime and never committed
+          AKID="AKIA$(openssl rand -hex 32 | tr 'a-f0-9' 'A-P' | head -c 16)"
+          API_KEY="dso_live_$(openssl rand -hex 16)"
+          printf 'aws_access_key_id = "%s"\ndashboard_api_key = "%s"\n' "$AKID" "$API_KEY" > leaked_config.py
+          echo "::warning::Wrote leaked_config.py with generated fake keys for the secret-scan gate demo"
+
+      - name: Gitleaks - scan the project folder
+        run: |
+          mkdir -p reports
+          docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/scan" "$GITLEAKS_IMAGE" \
+            dir /scan --config /scan/.gitleaks.toml --redact --verbose \
+            --report-format json --report-path /scan/reports/gitleaks.json
+
+      - uses: actions/upload-artifact@v6
+        if: ${{ !cancelled() }}
+        with:
+          name: gitleaks-report
+          path: ${{ env.APP_DIR }}/reports/
+          retention-days: 7
+
+  # ------------------------------------------------------------------
+  # 6. DOCKER BUILD - build once, smoke test hardened, save as artifact
+  # ------------------------------------------------------------------
+  docker-build:
+    name: "6. Docker Build"
+    needs: secret-scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Build image
+        run: |
+          EXTRA_ARGS=""
+          if [ "$INJECT" = "image" ]; then
+            EXTRA_ARGS="--build-arg BASE_IMAGE=python:3.12.0-alpine3.18"
+            echo "::warning::Building on outdated base python:3.12.0-alpine3.18 for the image gate demo"
+          fi
+          docker build $EXTRA_ARGS --build-arg APP_VERSION=${{ github.sha }} -t "$LOCAL_IMAGE" .
+          docker image ls session17-devsecops
+
+      - name: Smoke test (read-only FS, no capabilities, non-root)
+        run: |
+          docker run -d --name smoke -p 5001:5001 --read-only --tmpfs /tmp \
+            --cap-drop ALL --security-opt no-new-privileges "$LOCAL_IMAGE"
+          for i in $(seq 1 20); do curl -fsS http://localhost:5001/health && break; sleep 1; done
+          echo
+          docker exec smoke id
+          docker rm -f smoke
+
+      - name: Save image
+        run: docker save "$LOCAL_IMAGE" | gzip > image.tar.gz
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: docker-image
+          path: ${{ env.APP_DIR }}/image.tar.gz
+          retention-days: 1
+
+  # ------------------------------------------------------------------
+  # 7. CONTAINER IMAGE SCAN - Trivy: full report + SBOM (never fails)
+  # ------------------------------------------------------------------
+  image-scan:
+    name: "7. Container Image Scan (Trivy)"
+    needs: docker-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: docker-image
+          path: ${{ env.APP_DIR }}
+
+      - name: Trivy image scan (all severities, report only)
+        run: |
+          gunzip image.tar.gz
+          mkdir -p reports
+          TRIVY="docker run --rm -v $PWD:/work -w /work -v $HOME/.cache/trivy:/root/.cache/trivy $TRIVY_IMAGE"
+          $TRIVY image --input image.tar --exit-code 0 \
+            --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          $TRIVY image --input image.tar --exit-code 0 \
+            --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL \
+            --format json --output reports/trivy-image.json
+          $TRIVY image --input image.tar --exit-code 0 \
+            --format cyclonedx --output reports/sbom.cdx.json
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: image-scan-reports
+          path: ${{ env.APP_DIR }}/reports/
+          retention-days: 7
+
+  # ------------------------------------------------------------------
+  # 8. SECURITY GATE - policy: zero HIGH/CRITICAL in image + manifests
+  # ------------------------------------------------------------------
+  security-gate:
+    name: "8. Security Gate"
+    needs: image-scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: image-scan-reports
+          path: ${{ env.APP_DIR }}/reports
+
+      - name: "Gate 1 - image vulnerabilities (HIGH/CRITICAL must be 0)"
+        run: |
+          COUNTS=$(jq -r '[.Results[]?.Vulnerabilities[]?.Severity] | group_by(.) | map("\(.[0])=\(length)") | join(" ")' reports/trivy-image.json)
+          BLOCKING=$(jq '[.Results[]?.Vulnerabilities[]? | select(.Severity=="HIGH" or .Severity=="CRITICAL")] | length' reports/trivy-image.json)
+          echo "All findings by severity: ${COUNTS:-none}"
+          echo "Blocking (HIGH+CRITICAL): $BLOCKING"
+          {
+            echo "### Security Gate"
+            echo "| Check | Result |"
+            echo "|---|---|"
+            echo "| Image vulnerabilities (all) | ${COUNTS:-none} |"
+            echo "| Image HIGH+CRITICAL | $BLOCKING |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$BLOCKING" -gt 0 ]; then
+            jq -r '.Results[]?.Vulnerabilities[]? | select(.Severity=="HIGH" or .Severity=="CRITICAL") | "\(.Severity)\t\(.VulnerabilityID)\t\(.PkgName) \(.InstalledVersion) -> \(.FixedVersion // "no fix")"' reports/trivy-image.json | sort -u
+            echo "::error::Security gate FAILED - $BLOCKING HIGH/CRITICAL vulnerabilities in the image"
+            exit 1
+          fi
+          echo "Gate 1 passed"
+
+      - name: "Gate 2 - Dockerfile + Kubernetes misconfigurations (HIGH/CRITICAL must be 0)"
+        run: |
+          docker run --rm -v "$PWD:/src" -w /src "$TRIVY_IMAGE" config --exit-code 1 .
+          echo "| Dockerfile + k8s misconfig HIGH+CRITICAL | 0 |" >> "$GITHUB_STEP_SUMMARY"
+          echo "Gate 2 passed"
+
+  # ------------------------------------------------------------------
+  # 9. PUSH IMAGE - only the exact image that passed the gate
+  # ------------------------------------------------------------------
+  push-image:
+    name: "9. Push Image (GHCR)"
+    needs: security-gate
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image: ${{ steps.push.outputs.image }}
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: docker-image
+          path: ${{ env.APP_DIR }}
+
+      - name: Load image
+        run: gunzip -c image.tar.gz | docker load
+
+      - name: Login to ghcr.io with GITHUB_TOKEN
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "$GH_TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Tag and push
+        id: push
+        run: |
+          docker tag "$LOCAL_IMAGE" "$IMAGE_NAME:${{ github.sha }}"
+          docker tag "$LOCAL_IMAGE" "$IMAGE_NAME:latest"
+          docker push "$IMAGE_NAME:${{ github.sha }}"
+          docker push "$IMAGE_NAME:latest"
+          echo "image=$IMAGE_NAME:${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          echo "### Pushed \`$IMAGE_NAME:${{ github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
+
+  # ------------------------------------------------------------------
+  # 10. DEPLOY TO KUBERNETES - ephemeral kind cluster on the runner
+  # ------------------------------------------------------------------
+  deploy:
+    name: "10. Deploy to Kubernetes"
+    needs: push-image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    env:
+      IMAGE: ${{ needs.push-image.outputs.image }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1
+        with:
+          cluster_name: devsecops
+
+      - name: Namespace (Pod Security "restricted") + GHCR pull secret
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          kubectl apply -f k8s/namespace.yaml
+          kubectl create secret docker-registry ghcr-pull -n devsecops \
+            --docker-server=ghcr.io \
+            --docker-username="${{ github.actor }}" \
+            --docker-password="$GH_TOKEN"
+          until kubectl get serviceaccount default -n devsecops >/dev/null 2>&1; do sleep 1; done
+          kubectl patch serviceaccount default -n devsecops \
+            -p '{"imagePullSecrets":[{"name":"ghcr-pull"}]}'
+
+      - name: Deploy manifests
+        run: |
+          echo "Deploying $IMAGE"
+          sed -i "s|image: session17-devsecops:local|image: $IMAGE|" k8s/deployment.yaml
+          kubectl apply -f k8s/deployment.yaml -f k8s/service.yaml
+
+      - name: Wait for rollout
+        run: kubectl rollout status deployment/devsecops-dashboard -n devsecops --timeout=180s
+
+      - name: Verify the running service
+        run: |
+          kubectl get deploy,rs,pods,svc -n devsecops -o wide
+          kubectl port-forward -n devsecops service/devsecops-dashboard 8080:80 >/dev/null 2>&1 &
+          sleep 3
+          curl -fsS http://localhost:8080/health; echo
+          curl -fsS http://localhost:8080/api/status; echo
+          curl -fsS -X POST http://localhost:8080/api/calculate \
+            -H "Content-Type: application/json" -d '{"a": 6, "b": 7, "operation": "multiply"}'; echo
+          {
+            echo "### Deployed to Kubernetes (kind)"
+            echo "Image: \`$IMAGE\`"
+            echo '```'
+            kubectl get pods -n devsecops
+            curl -fsS http://localhost:8080/api/status
+            echo
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

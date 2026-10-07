@@ -1,0 +1,13 @@
+# Trivy configuration - auto-loaded from the working directory (default --config trivy.yaml)
+# Used by: SCA (trivy fs), Container Image Scan (trivy image) and the Security Gate.
+severity:
+  - HIGH
+  - CRITICAL
+exit-code: 1          # gate behaviour: non-zero exit when a HIGH/CRITICAL issue is found
+ignorefile: .trivyignore
+scan:
+  skip-dirs:
+    - .venv
+    - reports
+vulnerability:
+  ignore-unfixed: false   # do NOT hide vulnerabilities that have no fix yet

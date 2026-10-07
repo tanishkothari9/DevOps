@@ -1,0 +1,17 @@
+# Bandit - SAST for Python (https://bandit.readthedocs.io)
+# Run: bandit -c bandit.yaml -r app
+# Bandit exits non-zero on ANY finding, so the SAST stage fails on new issues.
+
+# Tests use `assert` on purpose; they are not shipped in the image.
+exclude_dirs:
+  - tests
+  - .venv
+  - build
+
+# Checks we never want to skip, listed explicitly for the course:
+#   B201 flask_debug_true          - debug=True exposes the Werkzeug debugger (RCE)
+#   B104 hardcoded_bind_all_ifaces - binding 0.0.0.0 in code
+#   B105/B106/B107 hardcoded passwords
+#   B311 random                    - non-crypto random module
+#   B602/B605 shell injection      - subprocess/os.system with shell=True
+skips: []

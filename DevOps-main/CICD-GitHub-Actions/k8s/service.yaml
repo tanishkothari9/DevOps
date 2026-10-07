@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: session16-calculator
+  namespace: cicd
+spec:
+  type: ClusterIP
+  selector:
+    app: session16-calculator
+  ports:
+    - port: 80
+      targetPort: 8000

@@ -1,0 +1,4 @@
+# Security tooling used by the pipeline (installed only in CI / local scans)
+bandit==1.9.4
+semgrep==1.179.0
+pip-audit==2.10.1

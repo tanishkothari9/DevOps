@@ -1,0 +1,32 @@
+# Custom Semgrep rules for this project (run together with the p/python and p/flask rulesets)
+rules:
+  - id: flask-debug-enabled
+    languages: [python]
+    severity: ERROR
+    message: Flask debug mode enables the interactive Werkzeug debugger (remote code execution). Never ship it.
+    pattern-either:
+      - pattern: $APP.run(..., debug=True, ...)
+      - pattern: $APP.config["DEBUG"] = True
+
+  - id: hardcoded-flask-secret-key
+    languages: [python]
+    severity: ERROR
+    message: Flask SECRET_KEY is hardcoded. Load it from the environment or a secret store.
+    pattern-either:
+      - pattern: $APP.secret_key = "..."
+      - pattern: $APP.config["SECRET_KEY"] = "..."
+
+  - id: subprocess-shell-true
+    languages: [python]
+    severity: ERROR
+    message: shell=True with dynamic input allows command injection. Pass an argument list instead.
+    pattern: subprocess.$FUNC(..., shell=True, ...)
+
+  - id: insecure-random-for-tokens
+    languages: [python]
+    severity: WARNING
+    message: The `random` module is predictable. Use the `secrets` module for anything security-related.
+    pattern-either:
+      - pattern: random.random(...)
+      - pattern: random.choice(...)
+      - pattern: random.randint(...)

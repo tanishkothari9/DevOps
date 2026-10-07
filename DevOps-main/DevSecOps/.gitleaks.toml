@@ -1,0 +1,22 @@
+# Gitleaks - secret scanning configuration
+# Run: gitleaks dir . --config .gitleaks.toml --redact
+title = "Session 17 DevSecOps - gitleaks config"
+
+# Start from gitleaks' ~200 built-in rules (AWS keys, GitHub tokens, private keys, ...)
+[extend]
+useDefault = true
+
+# Custom rule: this project's (fictional) internal API key format
+[[rules]]
+id = "devsecops-dashboard-api-key"
+description = "DevSecOps Dashboard internal API key"
+regex = '''dso_(live|test)_[0-9a-f]{32}'''
+keywords = ["dso_live_", "dso_test_"]
+
+# Paths that can never contain real secrets (generated / binary output)
+[[allowlists]]
+description = "Generated test reports and screenshots"
+paths = [
+  '''(^|/)reports/''',
+  '''(^|/)screenshots/.*\.png$''',
+]
