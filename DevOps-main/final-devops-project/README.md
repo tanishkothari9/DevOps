@@ -771,7 +771,7 @@ gh run view -R tanishkothari9/DevOps --log --job 112982403807 | cut -f3 | sed -E
 <sub>Full output: [`outputs/56b-ci-log-push-ghcr-multiarch.txt`](outputs/56b-ci-log-push-ghcr-multiarch.txt)</sub>
 
 
-Pipeline history for this project: run [37665137137](https://github.com/tanishkothari9/DevOps/actions/runs/37665137137) ❌ (frontend test bug, gate blocked push), then [37665562873](https://github.com/tanishkothari9/DevOps/actions/runs/37665562873) ✅, [37669286665](https://github.com/tanishkothari9/DevOps/actions/runs/37669286665) ✅, [37670270022](https://github.com/tanishkothari9/DevOps/actions/runs/37670270022) ✅, [37671753311](https://github.com/tanishkothari9/DevOps/actions/runs/37671753311) ✅ and [37676579566](https://github.com/tanishkothari9/DevOps/actions/runs/37676579566) ✅ (multi-arch). Full list: [workflow runs](https://github.com/tanishkothari9/DevOps/actions/workflows/final-devops-project.yml).
+Pipeline history for this project: run [37665137137](https://github.com/tanishkothari9/DevOps/actions/runs/37665137137) ❌ (frontend test bug, gate blocked push), then [37665562873](https://github.com/tanishkothari9/DevOps/actions/runs/37665562873) ✅, [37669286665](https://github.com/tanishkothari9/DevOps/actions/runs/37669286665) ✅, [37670270022](https://github.com/tanishkothari9/DevOps/actions/runs/37670270022) ✅, [37671753311](https://github.com/tanishkothari9/DevOps/actions/runs/37671753311) ✅ and [37676579566](https://github.com/tanishkothari9/DevOps/actions/runs/37676579566) ✅ (multi-arch) and [37678597656](https://github.com/tanishkothari9/DevOps/actions/runs/37678597656) ✅ (README commit). Full list: [workflow runs](https://github.com/tanishkothari9/DevOps/actions/workflows/final-devops-project.yml).
 
 ### Git history
 

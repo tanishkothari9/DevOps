@@ -1,4 +1,5 @@
 $ git log --oneline --format='%h %ad %s' --date=format:'%H:%M' -- . ../../.github/workflows/final-devops-project.yml
+2e3b0f0 01:29 docs(final): full project README with architecture, rubric checklist, evidence for every step and lessons learned
 6d3fc4c 01:21 feat(final): promote multi-arch build 7023eeb to the GitOps environment
 7023eeb 01:12 ci(final): build and scan amd64 + arm64 images natively and publish one multi-arch SHA tag
 4b043bb 00:55 docs: publish session 9 README and refresh in-progress evidence for sessions 10-15, 20, 21
