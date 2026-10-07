@@ -1,0 +1,32 @@
+$ cd terraform && terraform plan -input=false -var-file=localstack.tfvars -out=localstack.tfplan -no-color | grep -E '^  # |^Plan:|Saved the plan'
+  # aws_eip.nat[0] will be created
+  # aws_instance.k3s[0] will be created
+  # aws_internet_gateway.main will be created
+  # aws_nat_gateway.main[0] will be created
+  # aws_route.private_nat[0] will be created
+  # aws_route.public_internet will be created
+  # aws_route_table.private will be created
+  # aws_route_table.public will be created
+  # aws_route_table_association.private[0] will be created
+  # aws_route_table_association.private[1] will be created
+  # aws_route_table_association.public[0] will be created
+  # aws_route_table_association.public[1] will be created
+  # aws_s3_bucket.artifacts will be created
+  # aws_s3_bucket_public_access_block.artifacts will be created
+  # aws_s3_bucket_server_side_encryption_configuration.artifacts will be created
+  # aws_s3_bucket_versioning.artifacts will be created
+  # aws_security_group.ingress will be created
+  # aws_security_group.nodes will be created
+  # aws_subnet.private[0] will be created
+  # aws_subnet.private[1] will be created
+  # aws_subnet.public[0] will be created
+  # aws_subnet.public[1] will be created
+  # aws_vpc.main will be created
+  # aws_vpc_security_group_egress_rule.ingress_all will be created
+  # aws_vpc_security_group_egress_rule.nodes_all will be created
+  # aws_vpc_security_group_ingress_rule.ingress_http["0.0.0.0/0"] will be created
+  # aws_vpc_security_group_ingress_rule.ingress_https["0.0.0.0/0"] will be created
+  # aws_vpc_security_group_ingress_rule.nodes_from_ingress will be created
+  # aws_vpc_security_group_ingress_rule.nodes_kube_api["10.20.0.0/16"] will be created
+  # aws_vpc_security_group_ingress_rule.nodes_self will be created
+Plan: 30 to add, 0 to change, 0 to destroy.

@@ -1,0 +1,14 @@
+$ cd terraform && terraform plan -input=false -var-file=localstack.tfvars -no-color -detailed-exitcode | grep -E '^  # |^Plan:|No changes|~ |http_tokens'; echo "plan exit code: ${PIPESTATUS[0]}"
+  ~ update in-place
+  # aws_instance.k3s[0] will be updated in-place
+  ~ resource "aws_instance" "k3s" {
+      ~ vpc_security_group_ids               = [
+          + http_tokens        = "required"
+  # aws_vpc_security_group_ingress_rule.nodes_from_ingress will be updated in-place
+  ~ resource "aws_vpc_security_group_ingress_rule" "nodes_from_ingress" {
+      ~ referenced_security_group_id = "000000000000/sg-69bcce01ef8dd0afb" -> "sg-69bcce01ef8dd0afb"
+  # aws_vpc_security_group_ingress_rule.nodes_self will be updated in-place
+  ~ resource "aws_vpc_security_group_ingress_rule" "nodes_self" {
+      ~ referenced_security_group_id = "000000000000/sg-ff31299deb1f1fc66" -> "sg-ff31299deb1f1fc66"
+Plan: 0 to add, 3 to change, 0 to destroy.
+plan exit code: 2

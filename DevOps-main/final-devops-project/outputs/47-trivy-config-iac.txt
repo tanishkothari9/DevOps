@@ -1,0 +1,22 @@
+$ trivy config --quiet --severity HIGH,CRITICAL --format json --output security/reports/trivy-config.json . ; trivy config --quiet --severity HIGH,CRITICAL . 2>&1 | grep -E 'Tests:|Failures:|^[A-Z]+ ?\(|AVD-|^\S+ \(' | head -40; jq -r '[.Results[]? | .Misconfigurations // [] | .[] | select(.Status=="FAIL")] | group_by(.ID) | map({id: .[0].ID, severity: .[0].Severity, title: .[0].Title, count: length}) | .[] | "\(.severity)\t\(.id)\t\(.count)x\t\(.title)"' security/reports/trivy-config.json
+helm/stockpilot/templates/postgres.yaml (helm)
+Tests: 24 (SUCCESSES: 21, FAILURES: 3)
+Failures: 3 (HIGH: 3, CRITICAL: 0)
+KSV-0014 (HIGH): Container 'postgres' of StatefulSet 'stockpilot-postgres' should set 'securityContext.readOnlyRootFilesystem' to true
+KSV-0118 (HIGH): container stockpilot-postgres in default namespace is using the default security context
+KSV-0118 (HIGH): statefulset stockpilot-postgres in default namespace is using the default security context, which allows root privileges
+kubernetes/postgres.yaml (kubernetes)
+Tests: 27 (SUCCESSES: 24, FAILURES: 3)
+Failures: 3 (HIGH: 3, CRITICAL: 0)
+KSV-0014 (HIGH): Container 'postgres' of StatefulSet 'stockpilot-postgres' should set 'securityContext.readOnlyRootFilesystem' to true
+KSV-0118 (HIGH): container stockpilot-postgres in default namespace is using the default security context
+KSV-0118 (HIGH): statefulset stockpilot-postgres in default namespace is using the default security context, which allows root privileges
+terraform/eks.tf (terraform)
+Tests: 2 (SUCCESSES: 0, FAILURES: 2)
+Failures: 2 (HIGH: 0, CRITICAL: 2)
+AWS-0040 (CRITICAL): Public cluster access is enabled.
+AWS-0041 (CRITICAL): Cluster allows access from a public CIDR: 203.0.113.10/32
+CRITICAL	AWS-0040	1x	EKS Clusters should have the public access disabled
+CRITICAL	AWS-0041	1x	EKS cluster should not have open CIDR range for public access
+HIGH	KSV-0014	2x	Root file system is not read-only
+HIGH	KSV-0118	4x	Default security context configured

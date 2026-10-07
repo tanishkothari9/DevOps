@@ -1,0 +1,14 @@
+$ cd terraform && terraform destroy -input=false -auto-approve -var-file=localstack.tfvars -no-color | grep -E 'Destruction complete|Destroy complete|Error' | tail -12 && terraform state list | wc -l | xargs echo 'resources left in state:'
+aws_route_table.public: Destruction complete after 1s
+aws_route_table.private: Destruction complete after 1s
+aws_instance.k3s[0]: Destruction complete after 13s
+aws_security_group.nodes: Destruction complete after 0s
+aws_security_group.ingress: Destruction complete after 0s
+aws_nat_gateway.main[0]: Destruction complete after 21s
+aws_subnet.public[1]: Destruction complete after 2s
+aws_subnet.public[0]: Destruction complete after 2s
+aws_eip.nat[0]: Destruction complete after 2s
+aws_internet_gateway.main: Destruction complete after 2s
+aws_vpc.main: Destruction complete after 1s
+Destroy complete! Resources: 30 destroyed.
+resources left in state: 0

@@ -1,0 +1,20 @@
+# Copy to terraform.tfvars (git-ignored) for a REAL AWS deployment.
+# Credentials come from the standard AWS chain (aws configure / AWS_PROFILE / SSO) - never put keys here.
+aws_region     = "ap-south-1"
+project        = "stockpilot"
+environment    = "dev"
+use_localstack = false
+
+vpc_cidr             = "10.20.0.0/16"
+public_subnet_cidrs  = ["10.20.0.0/24", "10.20.1.0/24"]
+private_subnet_cidrs = ["10.20.10.0/24", "10.20.11.0/24"]
+enable_nat_gateway   = true
+
+enable_eks              = true
+kubernetes_version      = "1.33"
+node_instance_type      = "t3.medium"
+node_desired_size       = 2
+eks_public_endpoint     = false              # true + eks_public_access_cidrs = ["<your-ip>/32"] for laptop access
+
+enable_ecr      = true
+enable_k3s_node = false

@@ -1,0 +1,26 @@
+$ cd terraform && terraform output
+artifacts_bucket = "stockpilot-dev-artifacts-ap-south-1"
+availability_zones = tolist([
+  "ap-south-1a",
+  "ap-south-1b",
+])
+ecr_repository_urls = {}
+k3s_node = {
+  "instance_id" = "i-941a4118f7e4baa9a"
+  "private_ip" = "10.20.0.4"
+  "public_ip" = "54.214.115.128"
+}
+nat_gateway_id = "nat-6a448740b41033e1f"
+private_subnet_ids = [
+  "subnet-6a68dbea",
+  "subnet-4d824bfb",
+]
+public_subnet_ids = [
+  "subnet-183b03d8",
+  "subnet-f9e538a0",
+]
+security_group_ids = {
+  "ingress" = "sg-69bcce01ef8dd0afb"
+  "nodes" = "sg-ff31299deb1f1fc66"
+}
+vpc_id = "vpc-a145ff49"

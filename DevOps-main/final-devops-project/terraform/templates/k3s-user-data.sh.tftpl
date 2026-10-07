@@ -1,0 +1,11 @@
+#!/bin/bash
+# cloud-init for the single-node k3s host: pinned k3s, ingress-nginx instead of Traefik, Helm for the app chart.
+set -euo pipefail
+export INSTALL_K3S_VERSION="${k3s_version}"
+curl -sfL https://get.k3s.io -o /tmp/k3s-install.sh
+sh /tmp/k3s-install.sh --disable traefik --write-kubeconfig-mode 0640
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 -o /tmp/get-helm.sh
+bash /tmp/get-helm.sh
+helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx \
+  --namespace ingress-nginx --create-namespace --set controller.service.type=LoadBalancer
