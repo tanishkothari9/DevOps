@@ -1,0 +1,74 @@
+{{- $name := printf "%s-frontend" (include "stockpilot.fullname" .) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "stockpilot.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+spec:
+  replicas: {{ .Values.frontend.replicaCount }}
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: {maxSurge: 1, maxUnavailable: 0}
+  selector:
+    matchLabels:
+      {{- include "stockpilot.selectorLabels" (dict "ctx" $ "component" "frontend") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "stockpilot.labels" . | nindent 8 }}
+        {{- include "stockpilot.selectorLabels" (dict "ctx" $ "component" "frontend") | nindent 8 }}
+    spec:
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- include "stockpilot.podSecurity" . | nindent 8 }}
+        runAsUser: 101
+        runAsGroup: 101
+      containers:
+        - name: frontend
+          image: {{ include "stockpilot.image" (dict "ctx" $ "image" .Values.frontend.image) }}
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.frontend.port }}
+          env:
+            - name: BACKEND_URL
+              value: http://{{ include "stockpilot.fullname" . }}-backend:{{ .Values.backend.port }}
+          readinessProbe:
+            httpGet: {path: /healthz, port: http}
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /healthz, port: http}
+            initialDelaySeconds: 5
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.frontend.resources | nindent 12 }}
+          securityContext:
+            {{- include "stockpilot.containerSecurity" . | nindent 12 }}
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+            - {name: nginx-conf, mountPath: /etc/nginx/conf.d}
+      volumes:
+        - {name: tmp, emptyDir: {}}
+        - {name: nginx-conf, emptyDir: {}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "stockpilot.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "stockpilot.selectorLabels" (dict "ctx" $ "component" "frontend") | nindent 4 }}
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

@@ -1,0 +1,76 @@
+# Default values for the StockPilot chart.
+
+global:
+  # Image registry prefix, e.g. ghcr.io/tanishkothari9
+  imageRegistry: ghcr.io/tanishkothari9
+  imagePullSecrets: []
+
+app:
+  env: kubernetes
+  logLevel: INFO
+
+backend:
+  image:
+    repository: stockpilot-backend
+    tag: "1.0.0"
+    pullPolicy: IfNotPresent
+  replicaCount: 2
+  port: 8000
+  resources:
+    requests: {cpu: 50m, memory: 96Mi}
+    limits: {cpu: 250m, memory: 256Mi}
+  probes:
+    readinessPath: /ready
+    livenessPath: /health
+
+frontend:
+  image:
+    repository: stockpilot-frontend
+    tag: "1.0.0"
+    pullPolicy: IfNotPresent
+  replicaCount: 2
+  port: 8080
+  resources:
+    requests: {cpu: 10m, memory: 16Mi}
+    limits: {cpu: 100m, memory: 64Mi}
+
+postgres:
+  image: postgres:16-alpine
+  database: stockpilot
+  port: 5432
+  storage:
+    size: 1Gi
+    storageClassName: ""   # "" = cluster default StorageClass
+  resources:
+    requests: {cpu: 50m, memory: 128Mi}
+    limits: {cpu: 500m, memory: 384Mi}
+
+# Database credentials. Dummy values for local/dev only: in a real environment set
+# auth.existingSecret to a Secret managed outside Git (Sealed Secrets / External Secrets / Vault).
+auth:
+  existingSecret: ""
+  username: stockpilot
+  password: dev-only-change-me
+
+ingress:
+  enabled: true
+  className: nginx
+  host: stockpilot.local
+  annotations: {}
+
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 60
+
+monitoring:
+  serviceMonitor:
+    enabled: true
+    interval: 15s
+    labels: {}
+  prometheusRule:
+    enabled: true
+    labels: {}
+  grafanaDashboard:
+    enabled: true

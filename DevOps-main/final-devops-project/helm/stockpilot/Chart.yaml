@@ -1,0 +1,9 @@
+apiVersion: v2
+name: stockpilot
+description: StockPilot inventory app - FastAPI backend, React/nginx frontend, PostgreSQL with PVC, Ingress, HPA, ServiceMonitor and alert rules
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords: [inventory, fastapi, react, postgresql]
+maintainers:
+  - name: tanishkothari9

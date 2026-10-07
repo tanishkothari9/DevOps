@@ -1,0 +1,17 @@
+$ helm upgrade --install stockpilot helm/stockpilot -n taskboard -f helm/stockpilot/values-local.yaml --wait --timeout 6m
+Release "stockpilot" does not exist. Installing it now.
+NAME: stockpilot
+LAST DEPLOYED: Wed Oct  7 23:29:19 2026
+NAMESPACE: taskboard
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+NOTES:
+StockPilot 1.0.0 is deployed as release "stockpilot" in namespace "taskboard".
+
+  kubectl get pods,svc,ing,hpa,pvc -n taskboard
+  helm test stockpilot -n taskboard
+
+Through the ingress controller:
+  kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8082:80
+  curl -H "Host: stockpilot.local" http://localhost:8082/api/info

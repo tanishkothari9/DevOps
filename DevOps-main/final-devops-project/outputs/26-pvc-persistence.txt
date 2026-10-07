@@ -1,0 +1,23 @@
+$ curl -s -H 'Host: stockpilot.local' localhost:8082/api/stats | jq -c '{total_skus,total_units}' && kubectl delete pod stockpilot-postgres-0 -n taskboard && sleep 5 && kubectl get pods -n taskboard && curl -s -o /dev/null -w 'API while the DB pod restarts -> HTTP %{http_code}\n' -H 'Host: stockpilot.local' localhost:8082/api/stats; kubectl wait --for=condition=Ready pod/stockpilot-postgres-0 -n taskboard --timeout=120s && kubectl wait --for=condition=Ready pod -l app.kubernetes.io/component=backend -n taskboard --timeout=120s && sleep 3 && kubectl get pvc,pod -n taskboard && curl -s -H 'Host: stockpilot.local' localhost:8082/api/stats | jq -c '{total_skus,total_units}'
+{"total_skus":7,"total_units":287}
+pod "stockpilot-postgres-0" deleted from taskboard namespace
+NAME                                   READY   STATUS    RESTARTS   AGE
+stockpilot-backend-586ddb8bb5-22xfs    1/1     Running   0          4m56s
+stockpilot-backend-586ddb8bb5-v8hb4    1/1     Running   0          4m56s
+stockpilot-frontend-6b44d5c648-69lgn   1/1     Running   0          4m56s
+stockpilot-frontend-6b44d5c648-f999j   1/1     Running   0          4m56s
+stockpilot-postgres-0                  0/1     Running   0          5s
+API while the DB pod restarts -> HTTP 500
+pod/stockpilot-postgres-0 condition met
+pod/stockpilot-backend-586ddb8bb5-22xfs condition met
+pod/stockpilot-backend-586ddb8bb5-v8hb4 condition met
+NAME                                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/stockpilot-postgres-data   Bound    pvc-7d1a6e89-7232-4d71-87e6-159b89315e97   1Gi        RWO            standard       <unset>                 5m6s
+
+NAME                                       READY   STATUS    RESTARTS   AGE
+pod/stockpilot-backend-586ddb8bb5-22xfs    1/1     Running   0          5m6s
+pod/stockpilot-backend-586ddb8bb5-v8hb4    1/1     Running   0          5m6s
+pod/stockpilot-frontend-6b44d5c648-69lgn   1/1     Running   0          5m6s
+pod/stockpilot-frontend-6b44d5c648-f999j   1/1     Running   0          5m6s
+pod/stockpilot-postgres-0                  1/1     Running   0          15s
+{"total_skus":7,"total_units":287}

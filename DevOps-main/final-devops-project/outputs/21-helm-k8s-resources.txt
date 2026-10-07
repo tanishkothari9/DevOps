@@ -1,0 +1,41 @@
+$ kubectl get all,ing,hpa,pvc,cm,secret -n taskboard -o wide
+NAME                                       READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+pod/stockpilot-backend-586ddb8bb5-22xfs    1/1     Running   0          70s   10.244.0.122   minikube   <none>           <none>
+pod/stockpilot-backend-586ddb8bb5-v8hb4    1/1     Running   0          70s   10.244.0.124   minikube   <none>           <none>
+pod/stockpilot-frontend-6b44d5c648-69lgn   1/1     Running   0          70s   10.244.0.121   minikube   <none>           <none>
+pod/stockpilot-frontend-6b44d5c648-f999j   1/1     Running   0          70s   10.244.0.120   minikube   <none>           <none>
+pod/stockpilot-postgres-0                  1/1     Running   0          70s   10.244.0.123   minikube   <none>           <none>
+
+NAME                          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE   SELECTOR
+service/stockpilot-backend    ClusterIP   10.103.148.106   <none>        8000/TCP   70s   app.kubernetes.io/component=backend,app.kubernetes.io/instance=stockpilot,app.kubernetes.io/name=stockpilot
+service/stockpilot-frontend   ClusterIP   10.108.96.24     <none>        80/TCP     70s   app.kubernetes.io/component=frontend,app.kubernetes.io/instance=stockpilot,app.kubernetes.io/name=stockpilot
+service/stockpilot-postgres   ClusterIP   10.111.169.22    <none>        5432/TCP   70s   app.kubernetes.io/component=postgres,app.kubernetes.io/instance=stockpilot,app.kubernetes.io/name=stockpilot
+
+NAME                                  READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                      SELECTOR
+deployment.apps/stockpilot-backend    2/2     2            2           70s   backend      stockpilot-backend:local    app.kubernetes.io/component=backend,app.kubernetes.io/instance=stockpilot,app.kubernetes.io/name=stockpilot
+deployment.apps/stockpilot-frontend   2/2     2            2           70s   frontend     stockpilot-frontend:local   app.kubernetes.io/component=frontend,app.kubernetes.io/instance=stockpilot,app.kubernetes.io/name=stockpilot
+
+NAME                                             DESIRED   CURRENT   READY   AGE   CONTAINERS   IMAGES                      SELECTOR
+replicaset.apps/stockpilot-backend-586ddb8bb5    2         2         2       70s   backend      stockpilot-backend:local    app.kubernetes.io/component=backend,app.kubernetes.io/instance=stockpilot,app.kubernetes.io/name=stockpilot,pod-template-hash=586ddb8bb5
+replicaset.apps/stockpilot-frontend-6b44d5c648   2         2         2       70s   frontend     stockpilot-frontend:local   app.kubernetes.io/component=frontend,app.kubernetes.io/instance=stockpilot,app.kubernetes.io/name=stockpilot,pod-template-hash=6b44d5c648
+
+NAME                                   READY   AGE   CONTAINERS   IMAGES
+statefulset.apps/stockpilot-postgres   1/1     70s   postgres     postgres:16-alpine
+
+NAME                                                     REFERENCE                       TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/stockpilot-backend   Deployment/stockpilot-backend   cpu: <unknown>/60%   2         5         2          70s
+
+NAME                                   CLASS   HOSTS              ADDRESS        PORTS   AGE
+ingress.networking.k8s.io/stockpilot   nginx   stockpilot.local   192.168.49.2   80      70s
+
+NAME                                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE   VOLUMEMODE
+persistentvolumeclaim/stockpilot-postgres-data   Bound    pvc-7d1a6e89-7232-4d71-87e6-159b89315e97   1Gi        RWO            standard       <unset>                 70s   Filesystem
+
+NAME                                     DATA   AGE
+configmap/kube-root-ca.crt               1      8m24s
+configmap/stockpilot-config              5      70s
+configmap/stockpilot-grafana-dashboard   1      70s
+
+NAME                                      TYPE                 DATA   AGE
+secret/sh.helm.release.v1.stockpilot.v1   helm.sh/release.v1   1      71s
+secret/stockpilot-db                      Opaque               2      70s

@@ -1,0 +1,87 @@
+{{- $fullname := include "stockpilot.fullname" . -}}
+{{- $ns := .Release.Namespace -}}
+{{- if .Values.monitoring.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ $fullname }}-backend
+  labels:
+    {{- include "stockpilot.labels" . | nindent 4 }}
+    {{- with .Values.monitoring.serviceMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  namespaceSelector:
+    matchNames: [{{ $ns }}]
+  selector:
+    matchLabels:
+      {{- include "stockpilot.selectorLabels" (dict "ctx" $ "component" "backend") | nindent 6 }}
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: {{ .Values.monitoring.serviceMonitor.interval }}
+{{- end }}
+{{- if .Values.monitoring.prometheusRule.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ $fullname }}-alerts
+  labels:
+    {{- include "stockpilot.labels" . | nindent 4 }}
+    {{- with .Values.monitoring.prometheusRule.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  groups:
+    - name: stockpilot.rules
+      rules:
+        - alert: StockPilotBackendDown
+          expr: sum(up{namespace="{{ $ns }}", service="{{ $fullname }}-backend"}) == 0 or absent(up{namespace="{{ $ns }}", service="{{ $fullname }}-backend"})
+          for: 2m
+          labels: {severity: critical, app: stockpilot}
+          annotations:
+            summary: StockPilot backend has no healthy scrape targets in {{ $ns }}
+            description: Prometheus cannot scrape any backend pod. Check `kubectl get pods -n {{ $ns }}` and pod logs.
+        - alert: StockPilotHighErrorRate
+          expr: |
+            sum(rate(http_requests_total{namespace="{{ $ns }}", status="5xx"}[5m]))
+              / clamp_min(sum(rate(http_requests_total{namespace="{{ $ns }}"}[5m])), 1e-9) > 0.05
+          for: 5m
+          labels: {severity: warning, app: stockpilot}
+          annotations:
+            summary: More than 5% of StockPilot API requests fail with 5xx
+        - alert: StockPilotHighLatencyP95
+          expr: |
+            histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{namespace="{{ $ns }}", handler!="/metrics"}[5m]))) > 0.5
+          for: 10m
+          labels: {severity: warning, app: stockpilot}
+          annotations:
+            summary: StockPilot API p95 latency above 500ms
+        - alert: StockPilotPodRestarting
+          expr: increase(kube_pod_container_status_restarts_total{namespace="{{ $ns }}", pod=~"{{ $fullname }}-.*"}[15m]) > 2
+          labels: {severity: warning, app: stockpilot}
+          annotations:
+            summary: StockPilot container {{ "{{ $labels.container }}" }} in pod {{ "{{ $labels.pod }}" }} is restarting
+        - alert: StockPilotHPAAtMaxReplicas
+          expr: |
+            kube_horizontalpodautoscaler_status_current_replicas{namespace="{{ $ns }}", horizontalpodautoscaler="{{ $fullname }}-backend"}
+              >= kube_horizontalpodautoscaler_spec_max_replicas{namespace="{{ $ns }}", horizontalpodautoscaler="{{ $fullname }}-backend"}
+          for: 15m
+          labels: {severity: info, app: stockpilot}
+          annotations:
+            summary: Backend HPA has been at max replicas for 15 minutes - consider raising maxReplicas
+{{- end }}
+{{- if .Values.monitoring.grafanaDashboard.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $fullname }}-grafana-dashboard
+  labels:
+    {{- include "stockpilot.labels" . | nindent 4 }}
+    grafana_dashboard: "1"
+data:
+  stockpilot-overview.json: |-
+    {{- .Files.Get "dashboards/stockpilot-overview.json" | nindent 4 }}
+{{- end }}

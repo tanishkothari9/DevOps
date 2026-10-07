@@ -1,0 +1,84 @@
+{{- $name := printf "%s-postgres" (include "stockpilot.fullname" .) -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $name }}-data
+  labels:
+    {{- include "stockpilot.labels" . | nindent 4 }}
+    app.kubernetes.io/component: postgres
+spec:
+  accessModes: [ReadWriteOnce]
+  {{- with .Values.postgres.storage.storageClassName }}
+  storageClassName: {{ . }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.postgres.storage.size }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "stockpilot.labels" . | nindent 4 }}
+    app.kubernetes.io/component: postgres
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "stockpilot.selectorLabels" (dict "ctx" $ "component" "postgres") | nindent 4 }}
+  ports:
+    - name: postgres
+      port: {{ .Values.postgres.port }}
+      targetPort: postgres
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "stockpilot.labels" . | nindent 4 }}
+    app.kubernetes.io/component: postgres
+spec:
+  serviceName: {{ $name }}
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "stockpilot.selectorLabels" (dict "ctx" $ "component" "postgres") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "stockpilot.labels" . | nindent 8 }}
+        {{- include "stockpilot.selectorLabels" (dict "ctx" $ "component" "postgres") | nindent 8 }}
+    spec:
+      containers:
+        - name: postgres
+          image: {{ .Values.postgres.image }}
+          ports:
+            - name: postgres
+              containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom: {configMapKeyRef: {name: {{ include "stockpilot.fullname" . }}-config, key: DB_NAME}}
+            - name: POSTGRES_USER
+              valueFrom: {secretKeyRef: {name: {{ include "stockpilot.secretName" . }}, key: DB_USER}}
+            - name: POSTGRES_PASSWORD
+              valueFrom: {secretKeyRef: {name: {{ include "stockpilot.secretName" . }}, key: DB_PASSWORD}}
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          readinessProbe:
+            exec: {command: ["sh", "-c", "pg_isready -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\""]}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            exec: {command: ["sh", "-c", "pg_isready -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\""]}
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.postgres.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ $name }}-data

@@ -1,0 +1,11 @@
+# minikube: images are built locally and loaded with `minikube image load`.
+global:
+  imageRegistry: ""
+app:
+  env: minikube
+backend:
+  image: {repository: stockpilot-backend, tag: local, pullPolicy: Never}
+frontend:
+  image: {repository: stockpilot-frontend, tag: local, pullPolicy: Never}
+ingress:
+  host: stockpilot.local

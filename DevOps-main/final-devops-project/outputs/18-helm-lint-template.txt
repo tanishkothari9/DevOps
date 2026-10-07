@@ -1,0 +1,16 @@
+$ helm lint helm/stockpilot -f helm/stockpilot/values-local.yaml && helm template stockpilot helm/stockpilot -n taskboard -f helm/stockpilot/values-local.yaml | grep -E '^kind:' | sort | uniq -c
+==> Linting helm/stockpilot
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
+   2 kind: ConfigMap
+   2 kind: Deployment
+   1 kind: HorizontalPodAutoscaler
+   1 kind: Ingress
+   1 kind: PersistentVolumeClaim
+   1 kind: Pod
+   1 kind: PrometheusRule
+   1 kind: Secret
+   3 kind: Service
+   1 kind: ServiceMonitor
+   1 kind: StatefulSet

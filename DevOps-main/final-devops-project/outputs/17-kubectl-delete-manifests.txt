@@ -1,0 +1,15 @@
+$ kubectl delete -k kubernetes/ --wait=true && kubectl get all -n taskboard
+configmap "stockpilot-config" deleted from taskboard namespace
+secret "stockpilot-db" deleted from taskboard namespace
+service "stockpilot-backend" deleted from taskboard namespace
+service "stockpilot-frontend" deleted from taskboard namespace
+service "stockpilot-postgres" deleted from taskboard namespace
+persistentvolumeclaim "stockpilot-postgres-data" deleted from taskboard namespace
+deployment.apps "stockpilot-backend" deleted from taskboard namespace
+deployment.apps "stockpilot-frontend" deleted from taskboard namespace
+statefulset.apps "stockpilot-postgres" deleted from taskboard namespace
+horizontalpodautoscaler.autoscaling "stockpilot-backend" deleted from taskboard namespace
+ingress.networking.k8s.io "stockpilot" deleted from taskboard namespace
+NAME                                     READY   STATUS        RESTARTS   AGE
+pod/stockpilot-backend-b9fbc4468-cnntc   1/1     Terminating   0          2m20s
+pod/stockpilot-backend-b9fbc4468-fc45v   1/1     Terminating   0          71s

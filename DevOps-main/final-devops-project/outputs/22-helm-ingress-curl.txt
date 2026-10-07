@@ -1,0 +1,15 @@
+$ BASE_URL=http://localhost:8082 HOST_HEADER=stockpilot.local ./scripts/seed.sh; kubectl get ingress stockpilot -n taskboard && curl -s -H 'Host: stockpilot.local' localhost:8082/api/info && echo && curl -s -H 'Host: stockpilot.local' 'localhost:8082/api/items?low_stock=true' | jq -c '.[] | {sku,quantity,reorder_level}' && curl -s -H 'Host: stockpilot.local' localhost:8082/ | head -c 300; echo
+already seeded
+NAME         CLASS   HOSTS              ADDRESS        PORTS   AGE
+stockpilot   nginx   stockpilot.local   192.168.49.2   80      93s
+{"service":"StockPilot API","version":"1.0.0","environment":"minikube"}
+{"sku":"HD-0520","quantity":0,"reorder_level":5}
+{"sku":"MS-2210","quantity":5,"reorder_level":12}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="StockPilot - inventory management for small warehouses" />
+    <title>StockPilot</title>
+    <link rel="icon" href

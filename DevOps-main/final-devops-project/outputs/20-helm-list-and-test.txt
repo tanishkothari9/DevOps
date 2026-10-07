@@ -1,0 +1,19 @@
+$ helm list -n taskboard && helm test stockpilot -n taskboard --logs
+NAME      	NAMESPACE	REVISION	UPDATED                             	STATUS  	CHART           	APP VERSION
+stockpilot	taskboard	1       	2026-10-07 23:29:19.716141 +0530 IST	deployed	stockpilot-1.0.0	1.0.0      
+NAME: stockpilot
+LAST DEPLOYED: Wed Oct  7 23:29:19 2026
+NAMESPACE: taskboard
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE:     stockpilot-test-api
+Last Started:   Wed Oct  7 23:30:10 2026
+Last Completed: Wed Oct  7 23:30:21 2026
+Phase:          Succeeded
+
+POD LOGS: stockpilot-test-api (smoke)
+{"status":"READY"}
+{"service":"StockPilot API","version":"1.0.0","environment":"minikube"}
+ok
+

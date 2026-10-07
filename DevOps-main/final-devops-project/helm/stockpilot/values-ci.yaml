@@ -1,0 +1,11 @@
+# Ephemeral kind cluster inside GitHub Actions: no Prometheus Operator CRDs, no ingress controller.
+app:
+  env: ci-kind
+global:
+  imagePullSecrets: [{name: ghcr-pull}]
+ingress:
+  enabled: false
+monitoring:
+  serviceMonitor: {enabled: false}
+  prometheusRule: {enabled: false}
+  grafanaDashboard: {enabled: false}

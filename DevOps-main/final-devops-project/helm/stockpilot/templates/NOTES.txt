@@ -1,0 +1,14 @@
+StockPilot {{ .Chart.AppVersion }} is deployed as release "{{ .Release.Name }}" in namespace "{{ .Release.Namespace }}".
+
+  kubectl get pods,svc,ing,hpa,pvc -n {{ .Release.Namespace }}
+  helm test {{ .Release.Name }} -n {{ .Release.Namespace }}
+{{- if .Values.ingress.enabled }}
+
+Through the ingress controller:
+  kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8082:80
+  curl -H "Host: {{ .Values.ingress.host }}" http://localhost:8082/api/info
+{{- else }}
+
+Without an ingress:
+  kubectl port-forward -n {{ .Release.Namespace }} svc/{{ include "stockpilot.fullname" . }}-frontend 8080:80
+{{- end }}
